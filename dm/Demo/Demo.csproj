@@ -79,7 +79,7 @@
     <ProjectReference Include="..\c\c.csproj">
       <Project>{308418cb-20d9-461a-96fd-80e233d91957}</Project>
       <Name>c</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

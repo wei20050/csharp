@@ -41,15 +41,16 @@ namespace Demo
         private void Form1_Load(object sender, EventArgs e)
         {
             //窗体打开的事件中注册钩子 绑事件
-            c.cHook hook = new c.cHook();
+            c.CHook hook = new c.CHook();
             hook.SetHook();//注册全局钩子
             hook.OnKeyDownEvent += a;//绑定钩子事件
         }
         //测试大漠功能的按钮
         private void button1_Click(object sender, EventArgs e)
         {
-            c.dmsoft dm = new c.dmsoft();
-            dm.MoveTo(100, 100);
+            var dm = new c.Dmsoft();
+            dm.MoveTo(20, 20);
+            dm.LeftDoubleClick();
             dm.Delay(1000);
             dm.MoveTo(300, 600);
         }
