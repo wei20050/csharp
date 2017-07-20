@@ -39,7 +39,7 @@ namespace c.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("c.Properties.Resources", typeof(Resources).Assembly);
+                    var temp = new global::System.Resources.ResourceManager("c.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -65,7 +65,7 @@ namespace c.Properties {
         /// </summary>
         internal static byte[] dm {
             get {
-                object obj = ResourceManager.GetObject("dm", resourceCulture);
+                var obj = ResourceManager.GetObject("dm", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -75,7 +75,7 @@ namespace c.Properties {
         /// </summary>
         internal static byte[] dmc {
             get {
-                object obj = ResourceManager.GetObject("dmc", resourceCulture);
+                var obj = ResourceManager.GetObject("dmc", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -6,14 +6,14 @@ using System.Windows.Forms;
 
 namespace c
 {
-    public class cHook
+    public class CHook
     {
         #region 常数和结构
-        public const int WM_KEYDOWN = 0x100;
-        public const int WM_KEYUP = 0x101;
-        public const int WM_SYSKEYDOWN = 0x104;
-        public const int WM_SYSKEYUP = 0x105;
-        public const int WH_KEYBOARD_LL = 13;
+        public const int WmKeydown = 0x100;
+        public const int WmKeyup = 0x101;
+        public const int WmSyskeydown = 0x104;
+        public const int WmSyskeyup = 0x105;
+        public const int WhKeyboardLl = 13;
 
         [StructLayout(LayoutKind.Sequential)] //声明键盘钩子的封送结构类型 
         public class KeyboardHookStruct
@@ -47,74 +47,74 @@ namespace c
         #endregion
 
         #region 钩子方法定义
-        int hHook;
-        HookProc KeyboardHookDelegate;
+        int _hHook;
+        HookProc _keyboardHookDelegate;
         //按下按键触发
         public event KeyEventHandler OnKeyDownEvent;
         //弹起按键触发
         public event KeyEventHandler OnKeyUpEvent;
         //按下并弹起按键触发
         public event KeyPressEventHandler OnKeyPressEvent;
-        private List<Keys> preKeysList = new List<Keys>();//存放被按下的控制键，用来生成具体的键
+        private List<Keys> _preKeysList = new List<Keys>();//存放被按下的控制键，用来生成具体的键
         private int KeyboardHookProc(int nCode, Int32 wParam, IntPtr lParam)
         {
             //如果该消息被丢弃（nCode<0）或者没有事件绑定处理程序则不会触发事件
             if ((nCode >= 0) && (OnKeyDownEvent != null || OnKeyUpEvent != null || OnKeyPressEvent != null))
             {
-                KeyboardHookStruct KeyDataFromHook = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
-                Keys keyData = (Keys)KeyDataFromHook.vkCode;
+                var keyDataFromHook = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
+                var keyData = (Keys)keyDataFromHook.vkCode;
                 //按下控制键
-                if ((OnKeyDownEvent != null || OnKeyPressEvent != null) && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
+                if ((OnKeyDownEvent != null || OnKeyPressEvent != null) && (wParam == WmKeydown || wParam == WmSyskeydown))
                 {
-                    if (IsCtrlAltShiftKeys(keyData) && preKeysList.IndexOf(keyData) == -1)
+                    if (IsCtrlAltShiftKeys(keyData) && _preKeysList.IndexOf(keyData) == -1)
                     {
-                        preKeysList.Add(keyData);
+                        _preKeysList.Add(keyData);
                     }
                 }
                 //WM_KEYDOWN和WM_SYSKEYDOWN消息，将会引发OnKeyDownEvent事件
-                if (OnKeyDownEvent != null && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
+                if (OnKeyDownEvent != null && (wParam == WmKeydown || wParam == WmSyskeydown))
                 {
-                    KeyEventArgs e = new KeyEventArgs(GetDownKeys(keyData));
+                    var e = new KeyEventArgs(GetDownKeys(keyData));
 
                     OnKeyDownEvent(this, e);
                 }
                 //WM_KEYDOWN消息将引发OnKeyPressEvent 
-                if (OnKeyPressEvent != null && wParam == WM_KEYDOWN)
+                if (OnKeyPressEvent != null && wParam == WmKeydown)
                 {
-                    byte[] keyState = new byte[256];
+                    var keyState = new byte[256];
                     GetKeyboardState(keyState);
-                    byte[] inBuffer = new byte[2];
-                    if (ToAscii(KeyDataFromHook.vkCode, KeyDataFromHook.scanCode, keyState, inBuffer, KeyDataFromHook.flags) == 1)
+                    var inBuffer = new byte[2];
+                    if (ToAscii(keyDataFromHook.vkCode, keyDataFromHook.scanCode, keyState, inBuffer, keyDataFromHook.flags) == 1)
                     {
-                        KeyPressEventArgs e = new KeyPressEventArgs((char)inBuffer[0]);
+                        var e = new KeyPressEventArgs((char)inBuffer[0]);
                         OnKeyPressEvent(this, e);
                     }
                 }
                 //松开控制键
-                if ((OnKeyDownEvent != null || OnKeyPressEvent != null) && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
+                if ((OnKeyDownEvent != null || OnKeyPressEvent != null) && (wParam == WmKeyup || wParam == WmSyskeyup))
                 {
                     if (IsCtrlAltShiftKeys(keyData))
                     {
-                        for (int i = preKeysList.Count - 1; i >= 0; i--)
+                        for (var i = _preKeysList.Count - 1; i >= 0; i--)
                         {
-                            if (preKeysList[i] == keyData) { preKeysList.RemoveAt(i); }
+                            if (_preKeysList[i] == keyData) { _preKeysList.RemoveAt(i); }
                         }
                     }
                 }
                 //WM_KEYUP和WM_SYSKEYUP消息，将引发OnKeyUpEvent事件 
-                if (OnKeyUpEvent != null && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
+                if (OnKeyUpEvent != null && (wParam == WmKeyup || wParam == WmSyskeyup))
                 {
-                    KeyEventArgs e = new KeyEventArgs(GetDownKeys(keyData));
+                    var e = new KeyEventArgs(GetDownKeys(keyData));
                     OnKeyUpEvent(this, e);
                 }
             }
-            return CallNextHookEx(hHook, nCode, wParam, lParam);
+            return CallNextHookEx(_hHook, nCode, wParam, lParam);
         }
         //根据已经按下的控制键生成key
         private Keys GetDownKeys(Keys key)
         {
-            Keys rtnKey = Keys.None;
-            foreach (Keys i in preKeysList)
+            var rtnKey = Keys.None;
+            foreach (var i in _preKeysList)
             {
                 if (i == Keys.LControlKey || i == Keys.RControlKey) { rtnKey = rtnKey | Keys.Control; }
                 if (i == Keys.LMenu || i == Keys.RMenu) { rtnKey = rtnKey | Keys.Alt; }
@@ -132,18 +132,18 @@ namespace c
         /// </summary>
         public void SetHook()
         {
-            KeyboardHookDelegate = new HookProc(KeyboardHookProc);
-            Process cProcess = Process.GetCurrentProcess();
-            ProcessModule cModule = cProcess.MainModule;
+            _keyboardHookDelegate = KeyboardHookProc;
+            var cProcess = Process.GetCurrentProcess();
+            var cModule = cProcess.MainModule;
             var mh = GetModuleHandle(cModule.ModuleName);
-            hHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardHookDelegate, mh, 0);
+            _hHook = SetWindowsHookEx(WhKeyboardLl, _keyboardHookDelegate, mh, 0);
         }
         /// <summary>
         /// 注销钩子
         /// </summary>
         public void UnHook()
         {
-            UnhookWindowsHookEx(hHook);
+            UnhookWindowsHookEx(_hHook);
         }
         #endregion
     }

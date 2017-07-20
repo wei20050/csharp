@@ -4,990 +4,988 @@ using System.Runtime.InteropServices;
 
 namespace c
 {
-    public class dmsoft : IDisposable
+    public class Dmsoft : IDisposable
     {
-        private const string dmPath = "C:\\ProgramData\\dm.dll";
-        private const string dmcPath = "C:\\ProgramData\\dmc.dll";
+        private const string DmPath = @"C:\Windows\Temp\dm.dll";
+        private const string DmcPath = @"C:\Windows\Temp\dmc.dll";
         #region import DLL 函数
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr CreateDM(string dmpath);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FreeDM();
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string Ver(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetPath(IntPtr dm, string path);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string Ocr(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FindStr(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetResultCount(IntPtr dm, string str);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetResultPos(IntPtr dm, string str, int index, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int StrStr(IntPtr dm, string s, string str);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SendCommand(IntPtr dm, string cmd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int UseDict(IntPtr dm, int index);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetBasePath(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetDictPwd(IntPtr dm, string pwd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string OcrInFile(IntPtr dm, int x1, int y1, int x2, int y2, string pic_name, string color, double sim);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string OcrInFile(IntPtr dm, int x1, int y1, int x2, int y2, string picName, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int Capture(IntPtr dm, int x1, int y1, int x2, int y2, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int Capture(IntPtr dm, int x1, int y1, int x2, int y2, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int KeyPress(IntPtr dm, int vk);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int KeyDown(IntPtr dm, int vk);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int KeyUp(IntPtr dm, int vk);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LeftClick(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int RightClick(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int MiddleClick(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LeftDoubleClick(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LeftDown(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LeftUp(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int RightDown(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int RightUp(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int MoveTo(IntPtr dm, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int MoveR(IntPtr dm, int rx, int ry);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetColor(IntPtr dm, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetColorBGR(IntPtr dm, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string RGB2BGR(IntPtr dm, string rgb_color);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string RGB2BGR(IntPtr dm, string rgbColor);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string BGR2RGB(IntPtr dm, string bgr_color);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string BGR2RGB(IntPtr dm, string bgrColor);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int UnBindWindow(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int CmpColor(IntPtr dm, int x, int y, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ClientToScreen(IntPtr dm, int hwnd, ref object x, ref object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ScreenToClient(IntPtr dm, int hwnd, ref object x, ref object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ShowScrMsg(IntPtr dm, int x1, int y1, int x2, int y2, string msg, string color);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetMinRowGap(IntPtr dm, int row_gap);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetMinRowGap(IntPtr dm, int rowGap);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetMinColGap(IntPtr dm, int col_gap);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetMinColGap(IntPtr dm, int colGap);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FindColor(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim, int dir, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindColorEx(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetWordLineHeight(IntPtr dm, int line_height);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetWordLineHeight(IntPtr dm, int lineHeight);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetWordGap(IntPtr dm, int word_gap);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetWordGap(IntPtr dm, int wordGap);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetRowGapNoDict(IntPtr dm, int row_gap);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetRowGapNoDict(IntPtr dm, int rowGap);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetColGapNoDict(IntPtr dm, int col_gap);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetColGapNoDict(IntPtr dm, int colGap);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetWordLineHeightNoDict(IntPtr dm, int line_height);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetWordLineHeightNoDict(IntPtr dm, int lineHeight);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetWordGapNoDict(IntPtr dm, int word_gap);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetWordGapNoDict(IntPtr dm, int wordGap);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetWordResultCount(IntPtr dm, string str);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetWordResultPos(IntPtr dm, string str, int index, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetWordResultStr(IntPtr dm, string str, int index);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetWords(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetWordsNoDict(IntPtr dm, int x1, int y1, int x2, int y2, string color);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetShowErrorMsg(IntPtr dm, int show);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetClientSize(IntPtr dm, int hwnd, out object width, out object height);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int MoveWindow(IntPtr dm, int hwnd, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetColorHSV(IntPtr dm, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetAveRGB(IntPtr dm, int x1, int y1, int x2, int y2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetAveHSV(IntPtr dm, int x1, int y1, int x2, int y2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetForegroundWindow(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetForegroundFocus(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetMousePointWindow(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetPointWindow(IntPtr dm, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string EnumWindow(IntPtr dm, int parent, string title, string class_name, int filter);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string EnumWindow(IntPtr dm, int parent, string title, string className, int filter);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetWindowState(IntPtr dm, int hwnd, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetWindow(IntPtr dm, int hwnd, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetSpecialWindow(IntPtr dm, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetWindowText(IntPtr dm, int hwnd, string text);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetWindowSize(IntPtr dm, int hwnd, int width, int height);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetWindowRect(IntPtr dm, int hwnd, out object x1, out object y1, out object x2, out object y2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetWindowTitle(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetWindowClass(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetWindowState(IntPtr dm, int hwnd, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int CreateFoobarRect(IntPtr dm, int hwnd, int x, int y, int w, int h);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int CreateFoobarRoundRect(IntPtr dm, int hwnd, int x, int y, int w, int h, int rw, int rh);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int CreateFoobarEllipse(IntPtr dm, int hwnd, int x, int y, int w, int h);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CreateFoobarCustom(IntPtr dm, int hwnd, int x, int y, string pic, string trans_color, double sim);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CreateFoobarCustom(IntPtr dm, int hwnd, int x, int y, string pic, string transColor, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarFillRect(IntPtr dm, int hwnd, int x1, int y1, int x2, int y2, string color);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarDrawText(IntPtr dm, int hwnd, int x, int y, int w, int h, string text, string color, int align);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FoobarDrawPic(IntPtr dm, int hwnd, int x, int y, string pic, string trans_color);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FoobarDrawPic(IntPtr dm, int hwnd, int x, int y, string pic, string transColor);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarUpdate(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarLock(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarUnlock(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FoobarSetFont(IntPtr dm, int hwnd, string font_name, int size, int flag);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FoobarSetFont(IntPtr dm, int hwnd, string fontName, int size, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarTextRect(IntPtr dm, int hwnd, int x, int y, int w, int h);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarPrintText(IntPtr dm, int hwnd, string text, string color);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarClearText(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarTextLineGap(IntPtr dm, int hwnd, int gap);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int Play(IntPtr dm, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int Play(IntPtr dm, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FaqCapture(IntPtr dm, int x1, int y1, int x2, int y2, int quality, int delay, int time);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FaqRelease(IntPtr dm, int handle);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FaqSend(IntPtr dm, string server, int handle, int request_type, int time_out);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FaqSend(IntPtr dm, string server, int handle, int requestType, int timeOut);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int Beep(IntPtr dm, int fre, int delay);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarClose(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int MoveDD(IntPtr dm, int dx, int dy);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FaqGetSize(IntPtr dm, int handle);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int LoadPic(IntPtr dm, string pic_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int LoadPic(IntPtr dm, string picName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FreePic(IntPtr dm, string pic_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FreePic(IntPtr dm, string picName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetScreenData(IntPtr dm, int x1, int y1, int x2, int y2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FreeScreenData(IntPtr dm, int handle);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int WheelUp(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int WheelDown(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetMouseDelay(IntPtr dm, string type_, int delay);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetMouseDelay(IntPtr dm, string type, int delay);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetKeypadDelay(IntPtr dm, string type_, int delay);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetKeypadDelay(IntPtr dm, string type, int delay);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetEnv(IntPtr dm, int index, string name);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetEnv(IntPtr dm, int index, string name, string value);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SendString(IntPtr dm, int hwnd, string str);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int DelEnv(IntPtr dm, int index, string name);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetPath(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetDict(IntPtr dm, int index, string dict_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetDict(IntPtr dm, int index, string dictName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindPic(IntPtr dm, int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir, out object x, out object y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindPic(IntPtr dm, int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindPicEx(IntPtr dm, int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindPicEx(IntPtr dm, int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetClientSize(IntPtr dm, int hwnd, int width, int height);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int ReadInt(IntPtr dm, int hwnd, string addr, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int ReadInt(IntPtr dm, int hwnd, string addr, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ReadFloat(IntPtr dm, int hwnd, string addr);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ReadDouble(IntPtr dm, int hwnd, string addr);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindInt(IntPtr dm, int hwnd, string addr_range, int int_value_min, int int_value_max, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindInt(IntPtr dm, int hwnd, string addrRange, int intValueMin, int intValueMax, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindFloat(IntPtr dm, int hwnd, string addr_range, Single float_value_min, Single float_value_max);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindFloat(IntPtr dm, int hwnd, string addrRange, Single floatValueMin, Single floatValueMax);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindDouble(IntPtr dm, int hwnd, string addr_range, double double_value_min, double double_value_max);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindDouble(IntPtr dm, int hwnd, string addrRange, double doubleValueMin, double doubleValueMax);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindString(IntPtr dm, int hwnd, string addr_range, string string_value, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindString(IntPtr dm, int hwnd, string addrRange, string stringValue, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int GetModuleBaseAddr(IntPtr dm, int hwnd, string module_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetModuleBaseAddr(IntPtr dm, int hwnd, string moduleName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string MoveToEx(IntPtr dm, int x, int y, int w, int h);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string MatchPicName(IntPtr dm, string pic_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string MatchPicName(IntPtr dm, string picName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int AddDict(IntPtr dm, int index, string dict_info);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int AddDict(IntPtr dm, int index, string dictInfo);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnterCri(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LeaveCri(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int WriteInt(IntPtr dm, int hwnd, string addr, int type_, int v);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int WriteInt(IntPtr dm, int hwnd, string addr, int type, int v);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int WriteFloat(IntPtr dm, int hwnd, string addr, Single v);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int WriteDouble(IntPtr dm, int hwnd, string addr, double v);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int WriteString(IntPtr dm, int hwnd, string addr, int type_, string v);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int WriteString(IntPtr dm, int hwnd, string addr, int type, string v);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int AsmAdd(IntPtr dm, string asm_ins);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int AsmAdd(IntPtr dm, string asmIns);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int AsmClear(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int AsmCall(IntPtr dm, int hwnd, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindMultiColor(IntPtr dm, int x1, int y1, int x2, int y2, string first_color, string offset_color, double sim, int dir, out object x, out object y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindMultiColor(IntPtr dm, int x1, int y1, int x2, int y2, string firstColor, string offsetColor, double sim, int dir, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindMultiColorEx(IntPtr dm, int x1, int y1, int x2, int y2, string first_color, string offset_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindMultiColorEx(IntPtr dm, int x1, int y1, int x2, int y2, string firstColor, string offsetColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string AsmCode(IntPtr dm, int base_addr);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string AsmCode(IntPtr dm, int baseAddr);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string Assemble(IntPtr dm, string asm_code, int base_addr, int is_upper);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string Assemble(IntPtr dm, string asmCode, int baseAddr, int isUpper);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetWindowTransparent(IntPtr dm, int hwnd, int v);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string ReadData(IntPtr dm, int hwnd, string addr, int len);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int WriteData(IntPtr dm, int hwnd, string addr, string data);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindData(IntPtr dm, int hwnd, string addr_range, string data);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindData(IntPtr dm, int hwnd, string addrRange, string data);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetPicPwd(IntPtr dm, string pwd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int Log(IntPtr dm, string info);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrE(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindColorE(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindPicE(IntPtr dm, int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindPicE(IntPtr dm, int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindMultiColorE(IntPtr dm, int x1, int y1, int x2, int y2, string first_color, string offset_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindMultiColorE(IntPtr dm, int x1, int y1, int x2, int y2, string firstColor, string offsetColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetExactOcr(IntPtr dm, int exact_ocr);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetExactOcr(IntPtr dm, int exactOcr);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string ReadString(IntPtr dm, int hwnd, string addr, int type_, int len);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string ReadString(IntPtr dm, int hwnd, string addr, int type, int len);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarTextPrintDir(IntPtr dm, int hwnd, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string OcrEx(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetDisplayInput(IntPtr dm, string mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetTime(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetScreenWidth(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetScreenHeight(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int BindWindowEx(IntPtr dm, int hwnd, string display, string mouse, string keypad, string public_desc, int mode);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int BindWindowEx(IntPtr dm, int hwnd, string display, string mouse, string keypad, string publicDesc, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetDiskSerial(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string Md5(IntPtr dm, string str);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetMac(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ActiveInputMethod(IntPtr dm, int hwnd, string id);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int CheckInputMethod(IntPtr dm, int hwnd, string id);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FindInputMethod(IntPtr dm, string id);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetCursorPos(IntPtr dm, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int BindWindow(IntPtr dm, int hwnd, string display, string mouse, string keypad, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindWindow(IntPtr dm, string class_name, string title_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindWindow(IntPtr dm, string className, string titleName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetScreenDepth(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetScreen(IntPtr dm, int width, int height, int depth);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int ExitOs(IntPtr dm, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int ExitOs(IntPtr dm, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string GetDir(IntPtr dm, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string GetDir(IntPtr dm, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetOsType(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindWindowEx(IntPtr dm, int parent, string class_name, string title_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindWindowEx(IntPtr dm, int parent, string className, string titleName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetExportDict(IntPtr dm, int index, string dict_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetExportDict(IntPtr dm, int index, string dictName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetCursorShape(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int DownCpu(IntPtr dm, int rate);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetCursorSpot(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SendString2(IntPtr dm, int hwnd, string str);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FaqPost(IntPtr dm, string server, int handle, int request_type, int time_out);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FaqPost(IntPtr dm, string server, int handle, int requestType, int timeOut);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FaqFetch(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FetchWord(IntPtr dm, int x1, int y1, int x2, int y2, string color, string word);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CaptureJpg(IntPtr dm, int x1, int y1, int x2, int y2, string file_, int quality);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CaptureJpg(IntPtr dm, int x1, int y1, int x2, int y2, string file, int quality);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindStrWithFont(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, string font_name, int font_size, int flag, out object x, out object y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindStrWithFont(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, string fontName, int fontSize, int flag, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindStrWithFontE(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, string font_name, int font_size, int flag);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindStrWithFontE(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, string fontName, int fontSize, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindStrWithFontEx(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, string font_name, int font_size, int flag);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindStrWithFontEx(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, string fontName, int fontSize, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string GetDictInfo(IntPtr dm, string str, string font_name, int font_size, int flag);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string GetDictInfo(IntPtr dm, string str, string fontName, int fontSize, int flag);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SaveDict(IntPtr dm, int index, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SaveDict(IntPtr dm, int index, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetWindowProcessId(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetWindowProcessPath(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LockInput(IntPtr dm, int lock1);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string GetPicSize(IntPtr dm, string pic_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string GetPicSize(IntPtr dm, string picName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetID(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CapturePng(IntPtr dm, int x1, int y1, int x2, int y2, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CapturePng(IntPtr dm, int x1, int y1, int x2, int y2, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CaptureGif(IntPtr dm, int x1, int y1, int x2, int y2, string file_, int delay, int time);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CaptureGif(IntPtr dm, int x1, int y1, int x2, int y2, string file, int delay, int time);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int ImageToBmp(IntPtr dm, string pic_name, string bmp_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int ImageToBmp(IntPtr dm, string picName, string bmpName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FindStrFast(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrFastEx(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrFastE(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int EnableDisplayDebug(IntPtr dm, int enable_debug);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int EnableDisplayDebug(IntPtr dm, int enableDebug);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CapturePre(IntPtr dm, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CapturePre(IntPtr dm, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int RegEx(IntPtr dm, string code, string Ver, string ip);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int RegEx(IntPtr dm, string code, string ver, string ip);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetMachineCode(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetClipboard(IntPtr dm, string data);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetClipboard(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetNowDict(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int Is64Bit(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetColorNum(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string EnumWindowByProcess(IntPtr dm, string process_name, string title, string class_name, int filter);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string EnumWindowByProcess(IntPtr dm, string processName, string title, string className, int filter);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetDictCount(IntPtr dm, int index);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLastError(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetNetTime(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableGetColorByCapture(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int CheckUAC(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetUAC(IntPtr dm, int uac);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int DisableFontSmooth(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int CheckFontSmooth(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetDisplayAcceler(IntPtr dm, int level);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindWindowByProcess(IntPtr dm, string process_name, string class_name, string title_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindWindowByProcess(IntPtr dm, string processName, string className, string titleName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindWindowByProcessId(IntPtr dm, int process_id, string class_name, string title_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindWindowByProcessId(IntPtr dm, int processId, string className, string titleName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string ReadIni(IntPtr dm, string section, string key, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string ReadIni(IntPtr dm, string section, string key, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int WriteIni(IntPtr dm, string section, string key, string v, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int WriteIni(IntPtr dm, string section, string key, string v, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int RunApp(IntPtr dm, string path, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int delay(IntPtr dm, int mis);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FindWindowSuper(IntPtr dm, string spec1, int flag1, int type1, string spec2, int flag2, int type2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string ExcludePos(IntPtr dm, string all_pos, int type_, int x1, int y1, int x2, int y2);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string ExcludePos(IntPtr dm, string allPos, int type, int x1, int y1, int x2, int y2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindNearestPos(IntPtr dm, string all_pos, int type_, int x, int y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindNearestPos(IntPtr dm, string allPos, int type, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string SortPosDistance(IntPtr dm, string all_pos, int type_, int x, int y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string SortPosDistance(IntPtr dm, string allPos, int type, int x, int y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindPicMem(IntPtr dm, int x1, int y1, int x2, int y2, string pic_info, string delta_color, double sim, int dir, out object x, out object y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindPicMem(IntPtr dm, int x1, int y1, int x2, int y2, string picInfo, string deltaColor, double sim, int dir, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindPicMemEx(IntPtr dm, int x1, int y1, int x2, int y2, string pic_info, string delta_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindPicMemEx(IntPtr dm, int x1, int y1, int x2, int y2, string picInfo, string deltaColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindPicMemE(IntPtr dm, int x1, int y1, int x2, int y2, string pic_info, string delta_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindPicMemE(IntPtr dm, int x1, int y1, int x2, int y2, string picInfo, string deltaColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string AppendPicAddr(IntPtr dm, string pic_info, int addr, int size);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string AppendPicAddr(IntPtr dm, string picInfo, int addr, int size);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int WriteFile(IntPtr dm, string file_, string content);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int WriteFile(IntPtr dm, string file, string content);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int Stop(IntPtr dm, int id);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetDictMem(IntPtr dm, int index, int addr, int size);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetNetTimeSafe(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ForceUnBindWindow(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string ReadIniPwd(IntPtr dm, string section, string key, string file_, string pwd);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string ReadIniPwd(IntPtr dm, string section, string key, string file, string pwd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int WriteIniPwd(IntPtr dm, string section, string key, string v, string file_, string pwd);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int WriteIniPwd(IntPtr dm, string section, string key, string v, string file, string pwd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int DecodeFile(IntPtr dm, string file_, string pwd);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int DecodeFile(IntPtr dm, string file, string pwd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int KeyDownChar(IntPtr dm, string key_str);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int KeyDownChar(IntPtr dm, string keyStr);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int KeyUpChar(IntPtr dm, string key_str);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int KeyUpChar(IntPtr dm, string keyStr);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int KeyPressChar(IntPtr dm, string key_str);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int KeyPressChar(IntPtr dm, string keyStr);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int KeyPressStr(IntPtr dm, string key_str, int delay);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int KeyPressStr(IntPtr dm, string keyStr, int delay);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableKeypadPatch(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int EnableKeypadSync(IntPtr dm, int en, int time_out);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int EnableKeypadSync(IntPtr dm, int en, int timeOut);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int EnableMouseSync(IntPtr dm, int en, int time_out);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int EnableMouseSync(IntPtr dm, int en, int timeOut);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int DmGuard(IntPtr dm, int en, string type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int DmGuard(IntPtr dm, int en, string type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FaqCaptureFromFile(IntPtr dm, int x1, int y1, int x2, int y2, string file_, int quality);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FaqCaptureFromFile(IntPtr dm, int x1, int y1, int x2, int y2, string file, int quality);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindIntEx(IntPtr dm, int hwnd, string addr_range, int int_value_min, int int_value_max, int type_, int step, int multi_thread, int mode);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindIntEx(IntPtr dm, int hwnd, string addrRange, int intValueMin, int intValueMax, int type, int step, int multiThread, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindFloatEx(IntPtr dm, int hwnd, string addr_range, Single float_value_min, Single float_value_max, int step, int multi_thread, int mode);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindFloatEx(IntPtr dm, int hwnd, string addrRange, Single floatValueMin, Single floatValueMax, int step, int multiThread, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindDoubleEx(IntPtr dm, int hwnd, string addr_range, double double_value_min, double double_value_max, int step, int multi_thread, int mode);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindDoubleEx(IntPtr dm, int hwnd, string addrRange, double doubleValueMin, double doubleValueMax, int step, int multiThread, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindStringEx(IntPtr dm, int hwnd, string addr_range, string string_value, int type_, int step, int multi_thread, int mode);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindStringEx(IntPtr dm, int hwnd, string addrRange, string stringValue, int type, int step, int multiThread, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindDataEx(IntPtr dm, int hwnd, string addr_range, string data, int step, int multi_thread, int mode);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindDataEx(IntPtr dm, int hwnd, string addrRange, string data, int step, int multiThread, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableRealMouse(IntPtr dm, int en, int mousedelay, int mousestep);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableRealKeypad(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SendStringIme(IntPtr dm, string str);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FoobarDrawLine(IntPtr dm, int hwnd, int x1, int y1, int x2, int y2, string color, int style, int width);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrEx(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int IsBind(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetDisplayDelay(IntPtr dm, int t);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetDmCount(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int DisableScreenSave(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int DisablePowerSave(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetMemoryHwndAsProcessId(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FindShape(IntPtr dm, int x1, int y1, int x2, int y2, string offset_color, double sim, int dir, out object x, out object y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FindShape(IntPtr dm, int x1, int y1, int x2, int y2, string offsetColor, double sim, int dir, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindShapeE(IntPtr dm, int x1, int y1, int x2, int y2, string offset_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindShapeE(IntPtr dm, int x1, int y1, int x2, int y2, string offsetColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindShapeEx(IntPtr dm, int x1, int y1, int x2, int y2, string offset_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindShapeEx(IntPtr dm, int x1, int y1, int x2, int y2, string offsetColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrS(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrExS(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrFastS(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string FindStrFastExS(IntPtr dm, int x1, int y1, int x2, int y2, string str, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindPicS(IntPtr dm, int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir, out object x, out object y);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindPicS(IntPtr dm, int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir, out object x, out object y);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FindPicExS(IntPtr dm, int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FindPicExS(IntPtr dm, int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ClearDict(IntPtr dm, int index);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetMachineCodeNoMac(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetClientRect(IntPtr dm, int hwnd, out object x1, out object y1, out object x2, out object y2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableFakeActive(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetScreenDataBmp(IntPtr dm, int x1, int y1, int x2, int y2, out object data, out object size);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int EncodeFile(IntPtr dm, string file_, string pwd);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int EncodeFile(IntPtr dm, string file, string pwd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string GetCursorShapeEx(IntPtr dm, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string GetCursorShapeEx(IntPtr dm, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FaqCancel(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string IntToData(IntPtr dm, int int_value, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string IntToData(IntPtr dm, int intValue, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string FloatToData(IntPtr dm, Single float_value);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string FloatToData(IntPtr dm, Single floatValue);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string DoubleToData(IntPtr dm, double double_value);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string DoubleToData(IntPtr dm, double doubleValue);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string StringToData(IntPtr dm, string string_value, int type_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string StringToData(IntPtr dm, string stringValue, int type);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int SetMemoryFindResultToFile(IntPtr dm, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int SetMemoryFindResultToFile(IntPtr dm, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableBind(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetSimMode(IntPtr dm, int mode);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LockMouseRect(IntPtr dm, int x1, int y1, int x2, int y2);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SendPaste(IntPtr dm, int hwnd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int IsDisplayDead(IntPtr dm, int x1, int y1, int x2, int y2, int t);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int GetKeyState(IntPtr dm, int vk);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CopyFile(IntPtr dm, string src_file, string dst_file, int over);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CopyFile(IntPtr dm, string srcFile, string dstFile, int over);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int IsFileExist(IntPtr dm, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int IsFileExist(IntPtr dm, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int DeleteFile(IntPtr dm, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int DeleteFile(IntPtr dm, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int MoveFile(IntPtr dm, string src_file, string dst_file);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int MoveFile(IntPtr dm, string srcFile, string dstFile);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CreateFolder(IntPtr dm, string folder_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CreateFolder(IntPtr dm, string folderName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int DeleteFolder(IntPtr dm, string folder_name);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int DeleteFolder(IntPtr dm, string folderName);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int GetFileLength(IntPtr dm, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetFileLength(IntPtr dm, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string ReadFile(IntPtr dm, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string ReadFile(IntPtr dm, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int WaitKey(IntPtr dm, int key_code, int time_out);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int WaitKey(IntPtr dm, int keyCode, int timeOut);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int DeleteIni(IntPtr dm, string section, string key, string file_);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int DeleteIni(IntPtr dm, string section, string key, string file);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int DeleteIniPwd(IntPtr dm, string section, string key, string file_, string pwd);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int DeleteIniPwd(IntPtr dm, string section, string key, string file, string pwd);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableSpeedDx(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableIme(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int Reg(IntPtr dm, string code, string Ver);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int Reg(IntPtr dm, string code, string ver);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string SelectFile(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string SelectDirectory(IntPtr dm);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int LockDisplay(IntPtr dm, int lock1);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int FoobarSetSave(IntPtr dm, int hwnd, string file_, int en, string header);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int FoobarSetSave(IntPtr dm, int hwnd, string file, int en, string header);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string EnumWindowSuper(IntPtr dm, string spec1, int flag1, int type1, string spec2, int flag2, int type2, int sort);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int DownloadFile(IntPtr dm, string url, string save_file, int timeout);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int DownloadFile(IntPtr dm, string url, string saveFile, int timeout);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableKeypadMsg(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int EnableMouseMsg(IntPtr dm, int en);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int RegNoMac(IntPtr dm, string code, string Ver);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int RegNoMac(IntPtr dm, string code, string ver);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern int RegExNoMac(IntPtr dm, string code, string Ver, string ip);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern int RegExNoMac(IntPtr dm, string code, string ver, string ip);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetEnumWindowDelay(IntPtr dm, int delay);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int FindMulColor(IntPtr dm, int x1, int y1, int x2, int y2, string color, double sim);
 
-        [DllImport(dmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        public static extern string GetDict(IntPtr dm, int index, int font_index);
+        [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern string GetDict(IntPtr dm, int index, int fontIndex);
 
 
         #endregion
 
         #region 大漠函数封装
-        private IntPtr _dm = IntPtr.Zero;
-        private bool disposed = false;
+        private IntPtr _dm;
+        private bool _disposed;
         //public IntPtr DM
         //{
         //    get { return _dm; }
         //    set { _dm = value; }
         //}
-        public dmsoft()
+        public Dmsoft()
         {
-            if (!File.Exists(dmPath))
+            if (!File.Exists(DmPath))
             {
-                File.WriteAllBytes(dmPath, Properties.Resources.dm);
+                File.WriteAllBytes(DmPath, Properties.Resources.dm);
             }
-            if (!File.Exists(dmcPath))
+            if (!File.Exists(DmcPath))
             {
-                File.WriteAllBytes(dmcPath, Properties.Resources.dmc);
+                File.WriteAllBytes(DmcPath, Properties.Resources.dmc);
             }
-            _dm = CreateDM(dmPath);
+            _dm = CreateDM(DmPath);
         }
-
-        //public string Ver()
-        //{
-        //    return Ver(_dm);
-        //}
-
-
+        //版本固定为3.1233  不需要版本号查询了
+        /*public string Ver()
+        {
+            return Ver(_dm);
+        }*/
 
         public int SetPath(string path)
         {
@@ -1039,14 +1037,14 @@ namespace c
             return SetDictPwd(_dm, pwd);
         }
 
-        public string OcrInFile(int x1, int y1, int x2, int y2, string pic_name, string color, double sim)
+        public string OcrInFile(int x1, int y1, int x2, int y2, string picName, string color, double sim)
         {
-            return OcrInFile(_dm, x1, y1, x2, y2, pic_name, color, sim);
+            return OcrInFile(_dm, x1, y1, x2, y2, picName, color, sim);
         }
 
-        public int Capture(int x1, int y1, int x2, int y2, string file_)
+        public int Capture(int x1, int y1, int x2, int y2, string file)
         {
-            return Capture(_dm, x1, y1, x2, y2, file_);
+            return Capture(_dm, x1, y1, x2, y2, file);
         }
 
         public int KeyPress(int vk)
@@ -1119,19 +1117,19 @@ namespace c
             return GetColor(_dm, x, y);
         }
 
-        public string GetColorBGR(int x, int y)
+        public string GetColorBgr(int x, int y)
         {
             return GetColorBGR(_dm, x, y);
         }
 
-        public string RGB2BGR(string rgb_color)
+        public string Rgb2Bgr(string rgbColor)
         {
-            return RGB2BGR(_dm, rgb_color);
+            return RGB2BGR(_dm, rgbColor);
         }
 
-        public string BGR2RGB(string bgr_color)
+        public string Bgr2Rgb(string bgrColor)
         {
-            return BGR2RGB(_dm, bgr_color);
+            return BGR2RGB(_dm, bgrColor);
         }
 
         public int UnBindWindow()
@@ -1159,14 +1157,14 @@ namespace c
             return ShowScrMsg(_dm, x1, y1, x2, y2, msg, color);
         }
 
-        public int SetMinRowGap(int row_gap)
+        public int SetMinRowGap(int rowGap)
         {
-            return SetMinRowGap(_dm, row_gap);
+            return SetMinRowGap(_dm, rowGap);
         }
 
-        public int SetMinColGap(int col_gap)
+        public int SetMinColGap(int colGap)
         {
-            return SetMinColGap(_dm, col_gap);
+            return SetMinColGap(_dm, colGap);
         }
 
         public int FindColor(int x1, int y1, int x2, int y2, string color, double sim, int dir, out object x, out object y)
@@ -1179,34 +1177,34 @@ namespace c
             return FindColorEx(_dm, x1, y1, x2, y2, color, sim, dir);
         }
 
-        public int SetWordLineHeight(int line_height)
+        public int SetWordLineHeight(int lineHeight)
         {
-            return SetWordLineHeight(_dm, line_height);
+            return SetWordLineHeight(_dm, lineHeight);
         }
 
-        public int SetWordGap(int word_gap)
+        public int SetWordGap(int wordGap)
         {
-            return SetWordGap(_dm, word_gap);
+            return SetWordGap(_dm, wordGap);
         }
 
-        public int SetRowGapNoDict(int row_gap)
+        public int SetRowGapNoDict(int rowGap)
         {
-            return SetRowGapNoDict(_dm, row_gap);
+            return SetRowGapNoDict(_dm, rowGap);
         }
 
-        public int SetColGapNoDict(int col_gap)
+        public int SetColGapNoDict(int colGap)
         {
-            return SetColGapNoDict(_dm, col_gap);
+            return SetColGapNoDict(_dm, colGap);
         }
 
-        public int SetWordLineHeightNoDict(int line_height)
+        public int SetWordLineHeightNoDict(int lineHeight)
         {
-            return SetWordLineHeightNoDict(_dm, line_height);
+            return SetWordLineHeightNoDict(_dm, lineHeight);
         }
 
-        public int SetWordGapNoDict(int word_gap)
+        public int SetWordGapNoDict(int wordGap)
         {
-            return SetWordGapNoDict(_dm, word_gap);
+            return SetWordGapNoDict(_dm, wordGap);
         }
 
         public int GetWordResultCount(string str)
@@ -1249,17 +1247,17 @@ namespace c
             return MoveWindow(_dm, hwnd, x, y);
         }
 
-        public string GetColorHSV(int x, int y)
+        public string GetColorHsv(int x, int y)
         {
             return GetColorHSV(_dm, x, y);
         }
 
-        public string GetAveRGB(int x1, int y1, int x2, int y2)
+        public string GetAveRgb(int x1, int y1, int x2, int y2)
         {
             return GetAveRGB(_dm, x1, y1, x2, y2);
         }
 
-        public string GetAveHSV(int x1, int y1, int x2, int y2)
+        public string GetAveHsv(int x1, int y1, int x2, int y2)
         {
             return GetAveHSV(_dm, x1, y1, x2, y2);
         }
@@ -1284,9 +1282,9 @@ namespace c
             return GetPointWindow(_dm, x, y);
         }
 
-        public string EnumWindow(int parent, string title, string class_name, int filter)
+        public string EnumWindow(int parent, string title, string className, int filter)
         {
-            return EnumWindow(_dm, parent, title, class_name, filter);
+            return EnumWindow(_dm, parent, title, className, filter);
         }
 
         public int GetWindowState(int hwnd, int flag)
@@ -1349,9 +1347,9 @@ namespace c
             return CreateFoobarEllipse(_dm, hwnd, x, y, w, h);
         }
 
-        public int CreateFoobarCustom(int hwnd, int x, int y, string pic, string trans_color, double sim)
+        public int CreateFoobarCustom(int hwnd, int x, int y, string pic, string transColor, double sim)
         {
-            return CreateFoobarCustom(_dm, hwnd, x, y, pic, trans_color, sim);
+            return CreateFoobarCustom(_dm, hwnd, x, y, pic, transColor, sim);
         }
 
         public int FoobarFillRect(int hwnd, int x1, int y1, int x2, int y2, string color)
@@ -1364,9 +1362,9 @@ namespace c
             return FoobarDrawText(_dm, hwnd, x, y, w, h, text, color, align);
         }
 
-        public int FoobarDrawPic(int hwnd, int x, int y, string pic, string trans_color)
+        public int FoobarDrawPic(int hwnd, int x, int y, string pic, string transColor)
         {
-            return FoobarDrawPic(_dm, hwnd, x, y, pic, trans_color);
+            return FoobarDrawPic(_dm, hwnd, x, y, pic, transColor);
         }
 
         public int FoobarUpdate(int hwnd)
@@ -1384,9 +1382,9 @@ namespace c
             return FoobarUnlock(_dm, hwnd);
         }
 
-        public int FoobarSetFont(int hwnd, string font_name, int size, int flag)
+        public int FoobarSetFont(int hwnd, string fontName, int size, int flag)
         {
-            return FoobarSetFont(_dm, hwnd, font_name, size, flag);
+            return FoobarSetFont(_dm, hwnd, fontName, size, flag);
         }
 
         public int FoobarTextRect(int hwnd, int x, int y, int w, int h)
@@ -1409,9 +1407,9 @@ namespace c
             return FoobarTextLineGap(_dm, hwnd, gap);
         }
 
-        public int Play(string file_)
+        public int Play(string file)
         {
-            return Play(_dm, file_);
+            return Play(_dm, file);
         }
 
         public int FaqCapture(int x1, int y1, int x2, int y2, int quality, int delay, int time)
@@ -1424,9 +1422,9 @@ namespace c
             return FaqRelease(_dm, handle);
         }
 
-        public string FaqSend(string server, int handle, int request_type, int time_out)
+        public string FaqSend(string server, int handle, int requestType, int timeOut)
         {
-            return FaqSend(_dm, server, handle, request_type, time_out);
+            return FaqSend(_dm, server, handle, requestType, timeOut);
         }
 
         public int Beep(int fre, int delay)
@@ -1439,7 +1437,7 @@ namespace c
             return FoobarClose(_dm, hwnd);
         }
 
-        public int MoveDD(int dx, int dy)
+        public int MoveDd(int dx, int dy)
         {
             return MoveDD(_dm, dx, dy);
         }
@@ -1449,14 +1447,14 @@ namespace c
             return FaqGetSize(_dm, handle);
         }
 
-        public int LoadPic(string pic_name)
+        public int LoadPic(string picName)
         {
-            return LoadPic(_dm, pic_name);
+            return LoadPic(_dm, picName);
         }
 
-        public int FreePic(string pic_name)
+        public int FreePic(string picName)
         {
-            return FreePic(_dm, pic_name);
+            return FreePic(_dm, picName);
         }
 
         public int GetScreenData(int x1, int y1, int x2, int y2)
@@ -1479,14 +1477,14 @@ namespace c
             return WheelDown(_dm);
         }
 
-        public int SetMouseDelay(string type_, int delay)
+        public int SetMouseDelay(string type, int delay)
         {
-            return SetMouseDelay(_dm, type_, delay);
+            return SetMouseDelay(_dm, type, delay);
         }
 
-        public int SetKeypadDelay(string type_, int delay)
+        public int SetKeypadDelay(string type, int delay)
         {
-            return SetKeypadDelay(_dm, type_, delay);
+            return SetKeypadDelay(_dm, type, delay);
         }
 
         public string GetEnv(int index, string name)
@@ -1514,19 +1512,19 @@ namespace c
             return GetPath(_dm);
         }
 
-        public int SetDict(int index, string dict_name)
+        public int SetDict(int index, string dictName)
         {
-            return SetDict(_dm, index, dict_name);
+            return SetDict(_dm, index, dictName);
         }
 
-        public int FindPic(int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir, out object x, out object y)
+        public int FindPic(int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir, out object x, out object y)
         {
-            return FindPic(_dm, x1, y1, x2, y2, pic_name, delta_color, sim, dir, out x, out y);
+            return FindPic(_dm, x1, y1, x2, y2, picName, deltaColor, sim, dir, out x, out y);
         }
 
-        public string FindPicEx(int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir)
+        public string FindPicEx(int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir)
         {
-            return FindPicEx(_dm, x1, y1, x2, y2, pic_name, delta_color, sim, dir);
+            return FindPicEx(_dm, x1, y1, x2, y2, picName, deltaColor, sim, dir);
         }
 
         public int SetClientSize(int hwnd, int width, int height)
@@ -1534,9 +1532,9 @@ namespace c
             return SetClientSize(_dm, hwnd, width, height);
         }
 
-        public int ReadInt(int hwnd, string addr, int type_)
+        public int ReadInt(int hwnd, string addr, int type)
         {
-            return ReadInt(_dm, hwnd, addr, type_);
+            return ReadInt(_dm, hwnd, addr, type);
         }
 
         public int ReadFloat(int hwnd, string addr)
@@ -1549,29 +1547,29 @@ namespace c
             return ReadDouble(_dm, hwnd, addr);
         }
 
-        public string FindInt(int hwnd, string addr_range, int int_value_min, int int_value_max, int type_)
+        public string FindInt(int hwnd, string addrRange, int intValueMin, int intValueMax, int type)
         {
-            return FindInt(_dm, hwnd, addr_range, int_value_min, int_value_max, type_);
+            return FindInt(_dm, hwnd, addrRange, intValueMin, intValueMax, type);
         }
 
-        public string FindFloat(int hwnd, string addr_range, Single float_value_min, Single float_value_max)
+        public string FindFloat(int hwnd, string addrRange, Single floatValueMin, Single floatValueMax)
         {
-            return FindFloat(_dm, hwnd, addr_range, float_value_min, float_value_max);
+            return FindFloat(_dm, hwnd, addrRange, floatValueMin, floatValueMax);
         }
 
-        public string FindDouble(int hwnd, string addr_range, double double_value_min, double double_value_max)
+        public string FindDouble(int hwnd, string addrRange, double doubleValueMin, double doubleValueMax)
         {
-            return FindDouble(_dm, hwnd, addr_range, double_value_min, double_value_max);
+            return FindDouble(_dm, hwnd, addrRange, doubleValueMin, doubleValueMax);
         }
 
-        public string FindString(int hwnd, string addr_range, string string_value, int type_)
+        public string FindString(int hwnd, string addrRange, string stringValue, int type)
         {
-            return FindString(_dm, hwnd, addr_range, string_value, type_);
+            return FindString(_dm, hwnd, addrRange, stringValue, type);
         }
 
-        public int GetModuleBaseAddr(int hwnd, string module_name)
+        public int GetModuleBaseAddr(int hwnd, string moduleName)
         {
-            return GetModuleBaseAddr(_dm, hwnd, module_name);
+            return GetModuleBaseAddr(_dm, hwnd, moduleName);
         }
 
         public string MoveToEx(int x, int y, int w, int h)
@@ -1579,14 +1577,14 @@ namespace c
             return MoveToEx(_dm, x, y, w, h);
         }
 
-        public string MatchPicName(string pic_name)
+        public string MatchPicName(string picName)
         {
-            return MatchPicName(_dm, pic_name);
+            return MatchPicName(_dm, picName);
         }
 
-        public int AddDict(int index, string dict_info)
+        public int AddDict(int index, string dictInfo)
         {
-            return AddDict(_dm, index, dict_info);
+            return AddDict(_dm, index, dictInfo);
         }
 
         public int EnterCri()
@@ -1599,9 +1597,9 @@ namespace c
             return LeaveCri(_dm);
         }
 
-        public int WriteInt(int hwnd, string addr, int type_, int v)
+        public int WriteInt(int hwnd, string addr, int type, int v)
         {
-            return WriteInt(_dm, hwnd, addr, type_, v);
+            return WriteInt(_dm, hwnd, addr, type, v);
         }
 
         public int WriteFloat(int hwnd, string addr, Single v)
@@ -1614,14 +1612,14 @@ namespace c
             return WriteDouble(_dm, hwnd, addr, v);
         }
 
-        public int WriteString(int hwnd, string addr, int type_, string v)
+        public int WriteString(int hwnd, string addr, int type, string v)
         {
-            return WriteString(_dm, hwnd, addr, type_, v);
+            return WriteString(_dm, hwnd, addr, type, v);
         }
 
-        public int AsmAdd(string asm_ins)
+        public int AsmAdd(string asmIns)
         {
-            return AsmAdd(_dm, asm_ins);
+            return AsmAdd(_dm, asmIns);
         }
 
         public int AsmClear()
@@ -1634,24 +1632,24 @@ namespace c
             return AsmCall(_dm, hwnd, mode);
         }
 
-        public int FindMultiColor(int x1, int y1, int x2, int y2, string first_color, string offset_color, double sim, int dir, out object x, out object y)
+        public int FindMultiColor(int x1, int y1, int x2, int y2, string firstColor, string offsetColor, double sim, int dir, out object x, out object y)
         {
-            return FindMultiColor(_dm, x1, y1, x2, y2, first_color, offset_color, sim, dir, out x, out y);
+            return FindMultiColor(_dm, x1, y1, x2, y2, firstColor, offsetColor, sim, dir, out x, out y);
         }
 
-        public string FindMultiColorEx(int x1, int y1, int x2, int y2, string first_color, string offset_color, double sim, int dir)
+        public string FindMultiColorEx(int x1, int y1, int x2, int y2, string firstColor, string offsetColor, double sim, int dir)
         {
-            return FindMultiColorEx(_dm, x1, y1, x2, y2, first_color, offset_color, sim, dir);
+            return FindMultiColorEx(_dm, x1, y1, x2, y2, firstColor, offsetColor, sim, dir);
         }
 
-        public string AsmCode(int base_addr)
+        public string AsmCode(int baseAddr)
         {
-            return AsmCode(_dm, base_addr);
+            return AsmCode(_dm, baseAddr);
         }
 
-        public string Assemble(string asm_code, int base_addr, int is_upper)
+        public string Assemble(string asmCode, int baseAddr, int isUpper)
         {
-            return Assemble(_dm, asm_code, base_addr, is_upper);
+            return Assemble(_dm, asmCode, baseAddr, isUpper);
         }
 
         public int SetWindowTransparent(int hwnd, int v)
@@ -1669,9 +1667,9 @@ namespace c
             return WriteData(_dm, hwnd, addr, data);
         }
 
-        public string FindData(int hwnd, string addr_range, string data)
+        public string FindData(int hwnd, string addrRange, string data)
         {
-            return FindData(_dm, hwnd, addr_range, data);
+            return FindData(_dm, hwnd, addrRange, data);
         }
 
         public int SetPicPwd(string pwd)
@@ -1694,24 +1692,24 @@ namespace c
             return FindColorE(_dm, x1, y1, x2, y2, color, sim, dir);
         }
 
-        public string FindPicE(int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir)
+        public string FindPicE(int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir)
         {
-            return FindPicE(_dm, x1, y1, x2, y2, pic_name, delta_color, sim, dir);
+            return FindPicE(_dm, x1, y1, x2, y2, picName, deltaColor, sim, dir);
         }
 
-        public string FindMultiColorE(int x1, int y1, int x2, int y2, string first_color, string offset_color, double sim, int dir)
+        public string FindMultiColorE(int x1, int y1, int x2, int y2, string firstColor, string offsetColor, double sim, int dir)
         {
-            return FindMultiColorE(_dm, x1, y1, x2, y2, first_color, offset_color, sim, dir);
+            return FindMultiColorE(_dm, x1, y1, x2, y2, firstColor, offsetColor, sim, dir);
         }
 
-        public int SetExactOcr(int exact_ocr)
+        public int SetExactOcr(int exactOcr)
         {
-            return SetExactOcr(_dm, exact_ocr);
+            return SetExactOcr(_dm, exactOcr);
         }
 
-        public string ReadString(int hwnd, string addr, int type_, int len)
+        public string ReadString(int hwnd, string addr, int type, int len)
         {
-            return ReadString(_dm, hwnd, addr, type_, len);
+            return ReadString(_dm, hwnd, addr, type, len);
         }
 
         public int FoobarTextPrintDir(int hwnd, int dir)
@@ -1744,9 +1742,9 @@ namespace c
             return GetScreenHeight(_dm);
         }
 
-        public int BindWindowEx(int hwnd, string display, string mouse, string keypad, string public_desc, int mode)
+        public int BindWindowEx(int hwnd, string display, string mouse, string keypad, string publicDesc, int mode)
         {
-            return BindWindowEx(_dm, hwnd, display, mouse, keypad, public_desc, mode);
+            return BindWindowEx(_dm, hwnd, display, mouse, keypad, publicDesc, mode);
         }
 
         public string GetDiskSerial()
@@ -1789,9 +1787,9 @@ namespace c
             return BindWindow(_dm, hwnd, display, mouse, keypad, mode);
         }
 
-        public int FindWindow(string class_name, string title_name)
+        public int FindWindow(string className, string titleName)
         {
-            return FindWindow(_dm, class_name, title_name);
+            return FindWindow(_dm, className, titleName);
         }
 
         public int GetScreenDepth()
@@ -1804,14 +1802,14 @@ namespace c
             return SetScreen(_dm, width, height, depth);
         }
 
-        public int ExitOs(int type_)
+        public int ExitOs(int type)
         {
-            return ExitOs(_dm, type_);
+            return ExitOs(_dm, type);
         }
 
-        public string GetDir(int type_)
+        public string GetDir(int type)
         {
-            return GetDir(_dm, type_);
+            return GetDir(_dm, type);
         }
 
         public int GetOsType()
@@ -1819,14 +1817,14 @@ namespace c
             return GetOsType(_dm);
         }
 
-        public int FindWindowEx(int parent, string class_name, string title_name)
+        public int FindWindowEx(int parent, string className, string titleName)
         {
-            return FindWindowEx(_dm, parent, class_name, title_name);
+            return FindWindowEx(_dm, parent, className, titleName);
         }
 
-        public int SetExportDict(int index, string dict_name)
+        public int SetExportDict(int index, string dictName)
         {
-            return SetExportDict(_dm, index, dict_name);
+            return SetExportDict(_dm, index, dictName);
         }
 
         public string GetCursorShape()
@@ -1849,9 +1847,9 @@ namespace c
             return SendString2(_dm, hwnd, str);
         }
 
-        public int FaqPost(string server, int handle, int request_type, int time_out)
+        public int FaqPost(string server, int handle, int requestType, int timeOut)
         {
-            return FaqPost(_dm, server, handle, request_type, time_out);
+            return FaqPost(_dm, server, handle, requestType, timeOut);
         }
 
         public string FaqFetch()
@@ -1864,34 +1862,34 @@ namespace c
             return FetchWord(_dm, x1, y1, x2, y2, color, word);
         }
 
-        public int CaptureJpg(int x1, int y1, int x2, int y2, string file_, int quality)
+        public int CaptureJpg(int x1, int y1, int x2, int y2, string file, int quality)
         {
-            return CaptureJpg(_dm, x1, y1, x2, y2, file_, quality);
+            return CaptureJpg(_dm, x1, y1, x2, y2, file, quality);
         }
 
-        public int FindStrWithFont(int x1, int y1, int x2, int y2, string str, string color, double sim, string font_name, int font_size, int flag, out object x, out object y)
+        public int FindStrWithFont(int x1, int y1, int x2, int y2, string str, string color, double sim, string fontName, int fontSize, int flag, out object x, out object y)
         {
-            return FindStrWithFont(_dm, x1, y1, x2, y2, str, color, sim, font_name, font_size, flag, out x, out y);
+            return FindStrWithFont(_dm, x1, y1, x2, y2, str, color, sim, fontName, fontSize, flag, out x, out y);
         }
 
-        public string FindStrWithFontE(int x1, int y1, int x2, int y2, string str, string color, double sim, string font_name, int font_size, int flag)
+        public string FindStrWithFontE(int x1, int y1, int x2, int y2, string str, string color, double sim, string fontName, int fontSize, int flag)
         {
-            return FindStrWithFontE(_dm, x1, y1, x2, y2, str, color, sim, font_name, font_size, flag);
+            return FindStrWithFontE(_dm, x1, y1, x2, y2, str, color, sim, fontName, fontSize, flag);
         }
 
-        public string FindStrWithFontEx(int x1, int y1, int x2, int y2, string str, string color, double sim, string font_name, int font_size, int flag)
+        public string FindStrWithFontEx(int x1, int y1, int x2, int y2, string str, string color, double sim, string fontName, int fontSize, int flag)
         {
-            return FindStrWithFontEx(_dm, x1, y1, x2, y2, str, color, sim, font_name, font_size, flag);
+            return FindStrWithFontEx(_dm, x1, y1, x2, y2, str, color, sim, fontName, fontSize, flag);
         }
 
-        public string GetDictInfo(string str, string font_name, int font_size, int flag)
+        public string GetDictInfo(string str, string fontName, int fontSize, int flag)
         {
-            return GetDictInfo(_dm, str, font_name, font_size, flag);
+            return GetDictInfo(_dm, str, fontName, fontSize, flag);
         }
 
-        public int SaveDict(int index, string file_)
+        public int SaveDict(int index, string file)
         {
-            return SaveDict(_dm, index, file_);
+            return SaveDict(_dm, index, file);
         }
 
         public int GetWindowProcessId(int hwnd)
@@ -1909,29 +1907,29 @@ namespace c
             return LockInput(_dm, lock1);
         }
 
-        public string GetPicSize(string pic_name)
+        public string GetPicSize(string picName)
         {
-            return GetPicSize(_dm, pic_name);
+            return GetPicSize(_dm, picName);
         }
 
-        public int GetID()
+        public int GetId()
         {
             return GetID(_dm);
         }
 
-        public int CapturePng(int x1, int y1, int x2, int y2, string file_)
+        public int CapturePng(int x1, int y1, int x2, int y2, string file)
         {
-            return CapturePng(_dm, x1, y1, x2, y2, file_);
+            return CapturePng(_dm, x1, y1, x2, y2, file);
         }
 
-        public int CaptureGif(int x1, int y1, int x2, int y2, string file_, int delay, int time)
+        public int CaptureGif(int x1, int y1, int x2, int y2, string file, int delay, int time)
         {
-            return CaptureGif(_dm, x1, y1, x2, y2, file_, delay, time);
+            return CaptureGif(_dm, x1, y1, x2, y2, file, delay, time);
         }
 
-        public int ImageToBmp(string pic_name, string bmp_name)
+        public int ImageToBmp(string picName, string bmpName)
         {
-            return ImageToBmp(_dm, pic_name, bmp_name);
+            return ImageToBmp(_dm, picName, bmpName);
         }
 
         public int FindStrFast(int x1, int y1, int x2, int y2, string str, string color, double sim, out object x, out object y)
@@ -1949,19 +1947,19 @@ namespace c
             return FindStrFastE(_dm, x1, y1, x2, y2, str, color, sim);
         }
 
-        public int EnableDisplayDebug(int enable_debug)
+        public int EnableDisplayDebug(int enableDebug)
         {
-            return EnableDisplayDebug(_dm, enable_debug);
+            return EnableDisplayDebug(_dm, enableDebug);
         }
 
-        public int CapturePre(string file_)
+        public int CapturePre(string file)
         {
-            return CapturePre(_dm, file_);
+            return CapturePre(_dm, file);
         }
 
-        public int RegEx(string code, string Ver, string ip)
+        public int RegEx(string code, string ver, string ip)
         {
-            return RegEx(_dm, code, Ver, ip);
+            return RegEx(_dm, code, ver, ip);
         }
 
         public string GetMachineCode()
@@ -1994,9 +1992,9 @@ namespace c
             return GetColorNum(_dm, x1, y1, x2, y2, color, sim);
         }
 
-        public string EnumWindowByProcess(string process_name, string title, string class_name, int filter)
+        public string EnumWindowByProcess(string processName, string title, string className, int filter)
         {
-            return EnumWindowByProcess(_dm, process_name, title, class_name, filter);
+            return EnumWindowByProcess(_dm, processName, title, className, filter);
         }
 
         public int GetDictCount(int index)
@@ -2019,12 +2017,12 @@ namespace c
             return EnableGetColorByCapture(_dm, en);
         }
 
-        public int CheckUAC()
+        public int CheckUac()
         {
             return CheckUAC(_dm);
         }
 
-        public int SetUAC(int uac)
+        public int SetUac(int uac)
         {
             return SetUAC(_dm, uac);
         }
@@ -2044,24 +2042,24 @@ namespace c
             return SetDisplayAcceler(_dm, level);
         }
 
-        public int FindWindowByProcess(string process_name, string class_name, string title_name)
+        public int FindWindowByProcess(string processName, string className, string titleName)
         {
-            return FindWindowByProcess(_dm, process_name, class_name, title_name);
+            return FindWindowByProcess(_dm, processName, className, titleName);
         }
 
-        public int FindWindowByProcessId(int process_id, string class_name, string title_name)
+        public int FindWindowByProcessId(int processId, string className, string titleName)
         {
-            return FindWindowByProcessId(_dm, process_id, class_name, title_name);
+            return FindWindowByProcessId(_dm, processId, className, titleName);
         }
 
-        public string ReadIni(string section, string key, string file_)
+        public string ReadIni(string section, string key, string file)
         {
-            return ReadIni(_dm, section, key, file_);
+            return ReadIni(_dm, section, key, file);
         }
 
-        public int WriteIni(string section, string key, string v, string file_)
+        public int WriteIni(string section, string key, string v, string file)
         {
-            return WriteIni(_dm, section, key, v, file_);
+            return WriteIni(_dm, section, key, v, file);
         }
 
         public int RunApp(string path, int mode)
@@ -2085,44 +2083,44 @@ namespace c
             return FindWindowSuper(_dm, spec1, flag1, type1, spec2, flag2, type2);
         }
 
-        public string ExcludePos(string all_pos, int type_, int x1, int y1, int x2, int y2)
+        public string ExcludePos(string allPos, int type, int x1, int y1, int x2, int y2)
         {
-            return ExcludePos(_dm, all_pos, type_, x1, y1, x2, y2);
+            return ExcludePos(_dm, allPos, type, x1, y1, x2, y2);
         }
 
-        public string FindNearestPos(string all_pos, int type_, int x, int y)
+        public string FindNearestPos(string allPos, int type, int x, int y)
         {
-            return FindNearestPos(_dm, all_pos, type_, x, y);
+            return FindNearestPos(_dm, allPos, type, x, y);
         }
 
-        public string SortPosDistance(string all_pos, int type_, int x, int y)
+        public string SortPosDistance(string allPos, int type, int x, int y)
         {
-            return SortPosDistance(_dm, all_pos, type_, x, y);
+            return SortPosDistance(_dm, allPos, type, x, y);
         }
 
-        public int FindPicMem(int x1, int y1, int x2, int y2, string pic_info, string delta_color, double sim, int dir, out object x, out object y)
+        public int FindPicMem(int x1, int y1, int x2, int y2, string picInfo, string deltaColor, double sim, int dir, out object x, out object y)
         {
-            return FindPicMem(_dm, x1, y1, x2, y2, pic_info, delta_color, sim, dir, out x, out y);
+            return FindPicMem(_dm, x1, y1, x2, y2, picInfo, deltaColor, sim, dir, out x, out y);
         }
 
-        public string FindPicMemEx(int x1, int y1, int x2, int y2, string pic_info, string delta_color, double sim, int dir)
+        public string FindPicMemEx(int x1, int y1, int x2, int y2, string picInfo, string deltaColor, double sim, int dir)
         {
-            return FindPicMemEx(_dm, x1, y1, x2, y2, pic_info, delta_color, sim, dir);
+            return FindPicMemEx(_dm, x1, y1, x2, y2, picInfo, deltaColor, sim, dir);
         }
 
-        public string FindPicMemE(int x1, int y1, int x2, int y2, string pic_info, string delta_color, double sim, int dir)
+        public string FindPicMemE(int x1, int y1, int x2, int y2, string picInfo, string deltaColor, double sim, int dir)
         {
-            return FindPicMemE(_dm, x1, y1, x2, y2, pic_info, delta_color, sim, dir);
+            return FindPicMemE(_dm, x1, y1, x2, y2, picInfo, deltaColor, sim, dir);
         }
 
-        public string AppendPicAddr(string pic_info, int addr, int size)
+        public string AppendPicAddr(string picInfo, int addr, int size)
         {
-            return AppendPicAddr(_dm, pic_info, addr, size);
+            return AppendPicAddr(_dm, picInfo, addr, size);
         }
 
-        public int WriteFile(string file_, string content)
+        public int WriteFile(string file, string content)
         {
-            return WriteFile(_dm, file_, content);
+            return WriteFile(_dm, file, content);
         }
 
         public int Stop(int id)
@@ -2145,39 +2143,39 @@ namespace c
             return ForceUnBindWindow(_dm, hwnd);
         }
 
-        public string ReadIniPwd(string section, string key, string file_, string pwd)
+        public string ReadIniPwd(string section, string key, string file, string pwd)
         {
-            return ReadIniPwd(_dm, section, key, file_, pwd);
+            return ReadIniPwd(_dm, section, key, file, pwd);
         }
 
-        public int WriteIniPwd(string section, string key, string v, string file_, string pwd)
+        public int WriteIniPwd(string section, string key, string v, string file, string pwd)
         {
-            return WriteIniPwd(_dm, section, key, v, file_, pwd);
+            return WriteIniPwd(_dm, section, key, v, file, pwd);
         }
 
-        public int DecodeFile(string file_, string pwd)
+        public int DecodeFile(string file, string pwd)
         {
-            return DecodeFile(_dm, file_, pwd);
+            return DecodeFile(_dm, file, pwd);
         }
 
-        public int KeyDownChar(string key_str)
+        public int KeyDownChar(string keyStr)
         {
-            return KeyDownChar(_dm, key_str);
+            return KeyDownChar(_dm, keyStr);
         }
 
-        public int KeyUpChar(string key_str)
+        public int KeyUpChar(string keyStr)
         {
-            return KeyUpChar(_dm, key_str);
+            return KeyUpChar(_dm, keyStr);
         }
 
-        public int KeyPressChar(string key_str)
+        public int KeyPressChar(string keyStr)
         {
-            return KeyPressChar(_dm, key_str);
+            return KeyPressChar(_dm, keyStr);
         }
 
-        public int KeyPressStr(string key_str, int delay)
+        public int KeyPressStr(string keyStr, int delay)
         {
-            return KeyPressStr(_dm, key_str, delay);
+            return KeyPressStr(_dm, keyStr, delay);
         }
 
         public int EnableKeypadPatch(int en)
@@ -2185,49 +2183,49 @@ namespace c
             return EnableKeypadPatch(_dm, en);
         }
 
-        public int EnableKeypadSync(int en, int time_out)
+        public int EnableKeypadSync(int en, int timeOut)
         {
-            return EnableKeypadSync(_dm, en, time_out);
+            return EnableKeypadSync(_dm, en, timeOut);
         }
 
-        public int EnableMouseSync(int en, int time_out)
+        public int EnableMouseSync(int en, int timeOut)
         {
-            return EnableMouseSync(_dm, en, time_out);
+            return EnableMouseSync(_dm, en, timeOut);
         }
 
-        public int DmGuard(int en, string type_)
+        public int DmGuard(int en, string type)
         {
-            return DmGuard(_dm, en, type_);
+            return DmGuard(_dm, en, type);
         }
 
-        public int FaqCaptureFromFile(int x1, int y1, int x2, int y2, string file_, int quality)
+        public int FaqCaptureFromFile(int x1, int y1, int x2, int y2, string file, int quality)
         {
-            return FaqCaptureFromFile(_dm, x1, y1, x2, y2, file_, quality);
+            return FaqCaptureFromFile(_dm, x1, y1, x2, y2, file, quality);
         }
 
-        public string FindIntEx(int hwnd, string addr_range, int int_value_min, int int_value_max, int type_, int step, int multi_thread, int mode)
+        public string FindIntEx(int hwnd, string addrRange, int intValueMin, int intValueMax, int type, int step, int multiThread, int mode)
         {
-            return FindIntEx(_dm, hwnd, addr_range, int_value_min, int_value_max, type_, step, multi_thread, mode);
+            return FindIntEx(_dm, hwnd, addrRange, intValueMin, intValueMax, type, step, multiThread, mode);
         }
 
-        public string FindFloatEx(int hwnd, string addr_range, Single float_value_min, Single float_value_max, int step, int multi_thread, int mode)
+        public string FindFloatEx(int hwnd, string addrRange, Single floatValueMin, Single floatValueMax, int step, int multiThread, int mode)
         {
-            return FindFloatEx(_dm, hwnd, addr_range, float_value_min, float_value_max, step, multi_thread, mode);
+            return FindFloatEx(_dm, hwnd, addrRange, floatValueMin, floatValueMax, step, multiThread, mode);
         }
 
-        public string FindDoubleEx(int hwnd, string addr_range, double double_value_min, double double_value_max, int step, int multi_thread, int mode)
+        public string FindDoubleEx(int hwnd, string addrRange, double doubleValueMin, double doubleValueMax, int step, int multiThread, int mode)
         {
-            return FindDoubleEx(_dm, hwnd, addr_range, double_value_min, double_value_max, step, multi_thread, mode);
+            return FindDoubleEx(_dm, hwnd, addrRange, doubleValueMin, doubleValueMax, step, multiThread, mode);
         }
 
-        public string FindStringEx(int hwnd, string addr_range, string string_value, int type_, int step, int multi_thread, int mode)
+        public string FindStringEx(int hwnd, string addrRange, string stringValue, int type, int step, int multiThread, int mode)
         {
-            return FindStringEx(_dm, hwnd, addr_range, string_value, type_, step, multi_thread, mode);
+            return FindStringEx(_dm, hwnd, addrRange, stringValue, type, step, multiThread, mode);
         }
 
-        public string FindDataEx(int hwnd, string addr_range, string data, int step, int multi_thread, int mode)
+        public string FindDataEx(int hwnd, string addrRange, string data, int step, int multiThread, int mode)
         {
-            return FindDataEx(_dm, hwnd, addr_range, data, step, multi_thread, mode);
+            return FindDataEx(_dm, hwnd, addrRange, data, step, multiThread, mode);
         }
 
         public int EnableRealMouse(int en, int mousedelay, int mousestep)
@@ -2285,19 +2283,19 @@ namespace c
             return SetMemoryHwndAsProcessId(_dm, en);
         }
 
-        public int FindShape(int x1, int y1, int x2, int y2, string offset_color, double sim, int dir, out object x, out object y)
+        public int FindShape(int x1, int y1, int x2, int y2, string offsetColor, double sim, int dir, out object x, out object y)
         {
-            return FindShape(_dm, x1, y1, x2, y2, offset_color, sim, dir, out x, out y);
+            return FindShape(_dm, x1, y1, x2, y2, offsetColor, sim, dir, out x, out y);
         }
 
-        public string FindShapeE(int x1, int y1, int x2, int y2, string offset_color, double sim, int dir)
+        public string FindShapeE(int x1, int y1, int x2, int y2, string offsetColor, double sim, int dir)
         {
-            return FindShapeE(_dm, x1, y1, x2, y2, offset_color, sim, dir);
+            return FindShapeE(_dm, x1, y1, x2, y2, offsetColor, sim, dir);
         }
 
-        public string FindShapeEx(int x1, int y1, int x2, int y2, string offset_color, double sim, int dir)
+        public string FindShapeEx(int x1, int y1, int x2, int y2, string offsetColor, double sim, int dir)
         {
-            return FindShapeEx(_dm, x1, y1, x2, y2, offset_color, sim, dir);
+            return FindShapeEx(_dm, x1, y1, x2, y2, offsetColor, sim, dir);
         }
 
         public string FindStrS(int x1, int y1, int x2, int y2, string str, string color, double sim, out object x, out object y)
@@ -2320,14 +2318,14 @@ namespace c
             return FindStrFastExS(_dm, x1, y1, x2, y2, str, color, sim);
         }
 
-        public string FindPicS(int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir, out object x, out object y)
+        public string FindPicS(int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir, out object x, out object y)
         {
-            return FindPicS(_dm, x1, y1, x2, y2, pic_name, delta_color, sim, dir, out x, out y);
+            return FindPicS(_dm, x1, y1, x2, y2, picName, deltaColor, sim, dir, out x, out y);
         }
 
-        public string FindPicExS(int x1, int y1, int x2, int y2, string pic_name, string delta_color, double sim, int dir)
+        public string FindPicExS(int x1, int y1, int x2, int y2, string picName, string deltaColor, double sim, int dir)
         {
-            return FindPicExS(_dm, x1, y1, x2, y2, pic_name, delta_color, sim, dir);
+            return FindPicExS(_dm, x1, y1, x2, y2, picName, deltaColor, sim, dir);
         }
 
         public int ClearDict(int index)
@@ -2355,14 +2353,14 @@ namespace c
             return GetScreenDataBmp(_dm, x1, y1, x2, y2, out data, out size);
         }
 
-        public int EncodeFile(string file_, string pwd)
+        public int EncodeFile(string file, string pwd)
         {
-            return EncodeFile(_dm, file_, pwd);
+            return EncodeFile(_dm, file, pwd);
         }
 
-        public string GetCursorShapeEx(int type_)
+        public string GetCursorShapeEx(int type)
         {
-            return GetCursorShapeEx(_dm, type_);
+            return GetCursorShapeEx(_dm, type);
         }
 
         public int FaqCancel()
@@ -2370,29 +2368,29 @@ namespace c
             return FaqCancel(_dm);
         }
 
-        public string IntToData(int int_value, int type_)
+        public string IntToData(int intValue, int type)
         {
-            return IntToData(_dm, int_value, type_);
+            return IntToData(_dm, intValue, type);
         }
 
-        public string FloatToData(Single float_value)
+        public string FloatToData(Single floatValue)
         {
-            return FloatToData(_dm, float_value);
+            return FloatToData(_dm, floatValue);
         }
 
-        public string DoubleToData(double double_value)
+        public string DoubleToData(double doubleValue)
         {
-            return DoubleToData(_dm, double_value);
+            return DoubleToData(_dm, doubleValue);
         }
 
-        public string StringToData(string string_value, int type_)
+        public string StringToData(string stringValue, int type)
         {
-            return StringToData(_dm, string_value, type_);
+            return StringToData(_dm, stringValue, type);
         }
 
-        public int SetMemoryFindResultToFile(string file_)
+        public int SetMemoryFindResultToFile(string file)
         {
-            return SetMemoryFindResultToFile(_dm, file_);
+            return SetMemoryFindResultToFile(_dm, file);
         }
 
         public int EnableBind(int en)
@@ -2425,59 +2423,59 @@ namespace c
             return GetKeyState(_dm, vk);
         }
 
-        public int CopyFile(string src_file, string dst_file, int over)
+        public int CopyFile(string srcFile, string dstFile, int over)
         {
-            return CopyFile(_dm, src_file, dst_file, over);
+            return CopyFile(_dm, srcFile, dstFile, over);
         }
 
-        public int IsFileExist(string file_)
+        public int IsFileExist(string file)
         {
-            return IsFileExist(_dm, file_);
+            return IsFileExist(_dm, file);
         }
 
-        public int DeleteFile(string file_)
+        public int DeleteFile(string file)
         {
-            return DeleteFile(_dm, file_);
+            return DeleteFile(_dm, file);
         }
 
-        public int MoveFile(string src_file, string dst_file)
+        public int MoveFile(string srcFile, string dstFile)
         {
-            return MoveFile(_dm, src_file, dst_file);
+            return MoveFile(_dm, srcFile, dstFile);
         }
 
-        public int CreateFolder(string folder_name)
+        public int CreateFolder(string folderName)
         {
-            return CreateFolder(_dm, folder_name);
+            return CreateFolder(_dm, folderName);
         }
 
-        public int DeleteFolder(string folder_name)
+        public int DeleteFolder(string folderName)
         {
-            return DeleteFolder(_dm, folder_name);
+            return DeleteFolder(_dm, folderName);
         }
 
-        public int GetFileLength(string file_)
+        public int GetFileLength(string file)
         {
-            return GetFileLength(_dm, file_);
+            return GetFileLength(_dm, file);
         }
 
-        public string ReadFile(string file_)
+        public string ReadFile(string file)
         {
-            return ReadFile(_dm, file_);
+            return ReadFile(_dm, file);
         }
 
-        public int WaitKey(int key_code, int time_out)
+        public int WaitKey(int keyCode, int timeOut)
         {
-            return WaitKey(_dm, key_code, time_out);
+            return WaitKey(_dm, keyCode, timeOut);
         }
 
-        public int DeleteIni(string section, string key, string file_)
+        public int DeleteIni(string section, string key, string file)
         {
-            return DeleteIni(_dm, section, key, file_);
+            return DeleteIni(_dm, section, key, file);
         }
 
-        public int DeleteIniPwd(string section, string key, string file_, string pwd)
+        public int DeleteIniPwd(string section, string key, string file, string pwd)
         {
-            return DeleteIniPwd(_dm, section, key, file_, pwd);
+            return DeleteIniPwd(_dm, section, key, file, pwd);
         }
 
         public int EnableSpeedDx(int en)
@@ -2490,9 +2488,9 @@ namespace c
             return EnableIme(_dm, en);
         }
 
-        public int Reg(string code, string Ver)
+        public int Reg(string code, string ver)
         {
-            return Reg(_dm, code, Ver);
+            return Reg(_dm, code, ver);
         }
 
         public string SelectFile()
@@ -2510,9 +2508,9 @@ namespace c
             return LockDisplay(_dm, lock1);
         }
 
-        public int FoobarSetSave(int hwnd, string file_, int en, string header)
+        public int FoobarSetSave(int hwnd, string file, int en, string header)
         {
-            return FoobarSetSave(_dm, hwnd, file_, en, header);
+            return FoobarSetSave(_dm, hwnd, file, en, header);
         }
 
         public string EnumWindowSuper(string spec1, int flag1, int type1, string spec2, int flag2, int type2, int sort)
@@ -2520,9 +2518,9 @@ namespace c
             return EnumWindowSuper(_dm, spec1, flag1, type1, spec2, flag2, type2, sort);
         }
 
-        public int DownloadFile(string url, string save_file, int timeout)
+        public int DownloadFile(string url, string saveFile, int timeout)
         {
-            return DownloadFile(_dm, url, save_file, timeout);
+            return DownloadFile(_dm, url, saveFile, timeout);
         }
 
         public int EnableKeypadMsg(int en)
@@ -2535,14 +2533,14 @@ namespace c
             return EnableMouseMsg(_dm, en);
         }
 
-        public int RegNoMac(string code, string Ver)
+        public int RegNoMac(string code, string ver)
         {
-            return RegNoMac(_dm, code, Ver);
+            return RegNoMac(_dm, code, ver);
         }
 
-        public int RegExNoMac(string code, string Ver, string ip)
+        public int RegExNoMac(string code, string ver, string ip)
         {
-            return RegExNoMac(_dm, code, Ver, ip);
+            return RegExNoMac(_dm, code, ver, ip);
         }
 
         public int SetEnumWindowDelay(int delay)
@@ -2555,9 +2553,9 @@ namespace c
             return FindMulColor(_dm, x1, y1, x2, y2, color, sim);
         }
 
-        public string GetDict(int index, int font_index)
+        public string GetDict(int index, int fontIndex)
         {
-            return GetDict(_dm, index, font_index);
+            return GetDict(_dm, index, fontIndex);
         }
         #endregion
 
@@ -2567,14 +2565,14 @@ namespace c
             Dispose();
         }
 
-        ~dmsoft()
+        ~Dmsoft()
         {
             Dispose();
         }
 
         public void Dispose()
         {
-            if (disposed)
+            if (_disposed)
             {
                 return;
             }
@@ -2582,9 +2580,9 @@ namespace c
             {
                 UnBindWindow();
                 _dm = IntPtr.Zero;
-                int ret = FreeDM();
+                FreeDM();
             }
-            disposed = true;
+            _disposed = true;
             GC.SuppressFinalize(this);
         }
         #endregion
