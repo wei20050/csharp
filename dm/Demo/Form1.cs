@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Demo
@@ -14,7 +8,7 @@ namespace Demo
         public Form1()
         {
             //解析程序集失败的时候调用加载资源文件中的dll, 这句必须写在构造里面 InitializeComponent之前.
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             InitializeComponent();
         }
         /// <summary>
@@ -35,13 +29,13 @@ namespace Demo
         //需要执行的事件
         private void a(object sender, KeyEventArgs e)
         {
-            MessageBox.Show("您按下了:" + e.KeyData.ToString());
+            MessageBox.Show(@"您按下了:" + e.KeyData);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             //窗体打开的事件中注册钩子 绑事件
-            c.CHook hook = new c.CHook();
+            var hook = new c.CHook();
             hook.SetHook();//注册全局钩子
             hook.OnKeyDownEvent += a;//绑定钩子事件
         }
