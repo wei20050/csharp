@@ -35,9 +35,11 @@ namespace mysql_tengxunyun
         {
             return GetValue(Get_Object(key), out msg);
         }
-        public static int Del(string key, out string msg)
+        public static int Del(string key)
         {
-            return GetValue(Delete_Object(key), out msg);
+            int ret;
+            int.TryParse(Delete_Object(key),out ret);
+            return ret;
         }
         public static int Get_B(string key, out List<string> msg)
         {
