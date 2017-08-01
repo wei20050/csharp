@@ -18,7 +18,7 @@ namespace mysql_tengxunyun
                 ret = Cos.Get(ls[0], out ostr);
                 if (ret == 200)
                 {
-                    string[] key = ls[0].Replace(@"nba2k/user/", "").Replace("<", "").Replace(">", "").Split(',');
+                    string[] key = ls[0].Replace(@"user/", "").Replace("<", "").Replace(">", "").Split(',');
                     string[] value = ostr.Split(',');
                     u.uid = uid;
                     u.regtime = key[1];
