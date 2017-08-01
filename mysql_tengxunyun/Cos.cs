@@ -16,37 +16,98 @@ namespace mysql_tengxunyun
         private static extern string Delete_Object(string key);
         [DllImport("COS.dll")]
         private static extern string Get_Bucket(string key);
-        /// <summary>
-        /// 获取接口数据
-        /// </summary>
-        /// <returns></returns>
         private static int GetValue(string value,out string msg)
         {
             var v = value.Split('_');
             msg = v[1];
             return Convert.ToInt32(v[0]);
         }
-
-        public static int Put(string key,string text, out string msg)
+        private static int Get_B(string key, out List<string> msg)
+        {
+            string msgTmp;
+            var ret = GetValue(Get_Bucket(key), out msgTmp);
+            if (ret != 200)
+            {
+                msg = null;
+            }
+            else
+            {
+                msg = msgTmp.Split('~').ToList();
+            }
+            return ret;
+        }
+        /// <summary>
+        /// 添加一条数据/修改一条数据
+        /// </summary>
+        /// <param name="key">数据名</param>
+        /// <param name="text">数据内容</param>
+        /// <param name="msg">返回信息</param>
+        /// <returns></returns>
+        public static int Add(string key,string text, out string msg)
         {
             return GetValue(Put_Object(key,text),out msg);
         }
-        public static int Get(string key, out string msg)
+        /// <summary>
+        /// 修改数据
+        /// </summary>
+        /// <param name="key">数据名</param>
+        /// <returns>真假</returns>
+        public static bool Save(string key,string name)
         {
-            return GetValue(Get_Object(key), out msg);
+            string ret = find(key);
+            if (ret.Equals(""))
+            {
+                return false;
+            }
+            else
+            {
+                string msg;
+                Add(name, "", out msg);
+                Del(ret);
+                return true;
+            }
         }
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        /// <param name="key">数据名称</param>
+        /// <returns>返回信息</returns>
         public static int Del(string key)
         {
             int ret;
             int.TryParse(Delete_Object(key),out ret);
             return ret;
         }
-        public static int Get_B(string key, out List<string> msg)
+        /// <summary>
+        /// 获取数据内容
+        /// </summary>
+        /// <param name="key">数据名</param>
+        /// <param name="msg">返回数据内容</param>
+        /// <returns></returns>
+        public static int Get(string key, out string msg)
         {
-            string msgTmp;
-            var ret = GetValue(Get_Bucket(key), out msgTmp);
-            msg = msgTmp.Split(',').ToList();
-            return ret;
+            return GetValue(Get_Object(key), out msg);
+        }
+        /// <summary>
+        /// 查询一条数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string find(string key)
+        {
+            var ls = findall(key);
+            return ls.Equals(null) ? "" : findall(key)[0];
+        }
+        /// <summary>
+        /// 查询所有符合条件的数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static List<string> findall(string key)
+        {
+            List<string> ls = new List<string>();
+            int ret = Get_B(key,out ls);
+            return ls;
         }
     }
 }

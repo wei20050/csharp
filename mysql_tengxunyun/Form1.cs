@@ -27,7 +27,12 @@ namespace mysql_tengxunyun
             //}
             // string a;
             //int ret = Cos.Get("aaa",out a);
-            nba2k.GetUser("新建");
+            //p(nba2k.GetUser("新建"));
+            Cos.Save("(name)","namea");
+        }
+        public void p(object o)
+        {
+            MessageBox.Show(o.ToString());
         }
     }
 }
