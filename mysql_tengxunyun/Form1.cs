@@ -10,29 +10,41 @@ namespace mysql_tengxunyun
         {
             InitializeComponent();
         }
-        //写入
-        //string msgn;
-        //for (int i = 0; i < 10; i++)
-        //{
-        //    Cos.Put(i.ToString(),i.ToString(),out msgn);
-        //}
         private void button1_Click(object sender, System.EventArgs e)
         {
-            //List<string> msg;
-            //var a = Cos.Get_B("", out msg);
-            //foreach (var item in msg)
-            //{
-            //    Console.WriteLine(item);
-            //    Cos.Del(item);
-            //}
-            // string a;
-            //int ret = Cos.Get("aaa",out a);
-            //p(nba2k.GetUser("新建"));
-            Cos.Save("(name)","namea");
+           
         }
         public void p(object o)
         {
             MessageBox.Show(o.ToString());
+        }
+        public void test()
+        {
+            user u = new user();
+            u.uid = "756090666";
+            u.pwd = "111111111";
+            u.regtime = "201708021111";
+            u.endtime = "201709021111";
+            p(nba2k.SetUser(u));
+        }
+        public void test1()
+        {
+            user u = nba2k.GetUser("756090666");
+        }
+        public void test3()
+        {
+            var a = Cos.findall("user");
+            foreach (var item in a)
+            {
+                Cos.Del(item);
+            }
+        }
+       
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            sjzy s = new sjzy();
+            s.ShowDialog();
         }
     }
 }

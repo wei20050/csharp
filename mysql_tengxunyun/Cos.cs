@@ -19,6 +19,10 @@ namespace mysql_tengxunyun
         private static int GetValue(string value,out string msg)
         {
             var v = value.Split('_');
+            if (v.Length != 2)
+            {
+                Common.WLog("GetValue : " + value);
+            }
             msg = v[1];
             return Convert.ToInt32(v[0]);
         }
@@ -28,6 +32,7 @@ namespace mysql_tengxunyun
             var ret = GetValue(Get_Bucket(key), out msgTmp);
             if (ret != 200)
             {
+                Common.WLog("Get_B : " + ret + "_" + msgTmp);
                 msg = null;
             }
             else
@@ -76,6 +81,7 @@ namespace mysql_tengxunyun
         {
             int ret;
             int.TryParse(Delete_Object(key),out ret);
+            if (ret != 204)Common.WLog("Del : " + "key:"+ key + "返回值：" + ret);
             return ret;
         }
         /// <summary>
@@ -96,7 +102,11 @@ namespace mysql_tengxunyun
         public static string find(string key)
         {
             var ls = findall(key);
-            return ls.Equals(null) ? "" : findall(key)[0];
+            if (ls == null)
+            {
+                return "";
+            }
+            return ls[0];
         }
         /// <summary>
         /// 查询所有符合条件的数据

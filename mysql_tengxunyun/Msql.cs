@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace mysql_tengxunyun
 {
@@ -9,9 +10,9 @@ namespace mysql_tengxunyun
         /// 建立数据库连接.
         /// </summary>
         /// <returns>返回MySqlConnection对象</returns>
-        public MySqlConnection Getmysqlcon()
+        public static MySqlConnection GetMysqlCon()
         {
-            const string mStrSqlcon = "server=localhost;user id=root;password=;database=yxdb"; //根据自己的设置
+            string mStrSqlcon = Common.RCfg("mysqlstr"); //根据自己的设置
             var myCon = new MySqlConnection(mStrSqlcon);
             return myCon;
         }
@@ -22,33 +23,34 @@ namespace mysql_tengxunyun
         /// 执行MySqlCommand
         /// </summary>
         /// <param name="mStrSqlstr">SQL语句</param>
-        public void Getmysqlcom(string mStrSqlstr)
+        /// <returns>返回受影响的行数</returns>
+        public static int Getmysqlcom(string mStrSqlstr)
         {
-            var mysqlcon = Getmysqlcon();
+            var mysqlcon = GetMysqlCon();
             mysqlcon.Open();
             var mysqlcom = new MySqlCommand(mStrSqlstr, mysqlcon);
-            mysqlcom.ExecuteNonQuery();
+            int ret = mysqlcom.ExecuteNonQuery();
             mysqlcom.Dispose();
             mysqlcon.Close();
             mysqlcon.Dispose();
+            return ret;
         }
         #endregion
 
-        #region  创建MySqlDataReader对象
         /// <summary>
-        /// 创建一个MySqlDataReader对象
+        /// 创建一个适配器
         /// </summary>
         /// <param name="mStrSqlstr">SQL语句</param>
-        /// <returns>返回MySqlDataReader对象</returns>
-        public MySqlDataReader Getmysqlread(string mStrSqlstr)
+        /// <returns>适配器返回</returns>
+        public static DataTable GetMysql(string mStrSqlstr)
         {
-            var mysqlcon = Getmysqlcon();
-            var mysqlcom = new MySqlCommand(mStrSqlstr, mysqlcon);
+            var mysqlcon = GetMysqlCon();
             mysqlcon.Open();
-            var mysqlread = mysqlcom.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
-            return mysqlread;
+            MySqlDataAdapter mysqladapt = new MySqlDataAdapter(mStrSqlstr, mysqlcon);
+            mysqladapt.SelectCommand.CommandTimeout = 0;
+            DataTable dt = new DataTable();
+            mysqladapt.Fill(dt);
+            return dt;
         }
-        #endregion
-
     }
 }
