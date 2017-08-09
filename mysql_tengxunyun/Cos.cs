@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace mysql_tengxunyun
 {
@@ -29,6 +27,7 @@ namespace mysql_tengxunyun
         private static int Get_B(string key, out List<string> msg)
         {
             string msgTmp;
+            msg = new List<string>();
             var ret = GetValue(Get_Bucket(key), out msgTmp);
             if (ret != 200)
             {
@@ -37,7 +36,10 @@ namespace mysql_tengxunyun
             }
             else
             {
-                msg = msgTmp.Split('~').ToList();
+                foreach (var item in msgTmp.Split('~'))
+                {
+                    msg.Add(item);
+                }
             }
             return ret;
         }
