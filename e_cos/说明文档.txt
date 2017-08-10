@@ -12,8 +12,8 @@ TC封装示例:
 功能 del(key)
     返回 动态库调用("rc:t.dll", "char *", "del", "char *", key)
 结束
-功能 upd(key)
-    返回 动态库调用("rc:t.dll", "char *", "upd", "char *", key)
+功能 upd(key,newkey)
+    返回 动态库调用("rc:t.dll", "char *", "upd", "char *", key, "char *", newkey)
 结束
 功能 get(key)
     返回 动态库调用("rc:t.dll", "char *", "get", "char *", key)
