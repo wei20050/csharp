@@ -1,5 +1,5 @@
 ﻿功能 wlog(txt)
-    文件追加文本("c:\\log.txt", txt)
+    文件写日志(txt, "d:/log.txt")
 结束
 功能 add(key, value)
     返回 动态库调用("rc:t.dll", "char *", "add", "char *", key, "char *", value)
@@ -7,14 +7,24 @@
 功能 del(key)
     返回 动态库调用("rc:t.dll", "char *", "del", "char *", key)
 结束
-功能 upd(key)
-    返回 动态库调用("rc:t.dll", "char *", "upd", "char *", key)
+功能 upd(key, newkey)
+    返回 动态库调用("rc:t.dll", "char *", "upd", "char *", key, "char *", newkey)
 结束
 功能 get(key)
     返回 动态库调用("rc:t.dll", "char *", "get", "char *", key)
 结束
 功能 list(key)
     返回 动态库调用("rc:t.dll", "char *", "list", "char *", key)
+结束
+功能 delall(keys)
+    var keyarr
+    字符串分割(keys, "~", keyarr)
+    遍历(变量 i = 0; i < 数组大小(keyarr); i++)
+        var ret = del(keyarr[i])
+        if(ret != 204)
+            del(keyarr[i])
+        end
+    结束
 结束
 功能 set8User(userinfo)
     变量 userstr = "user/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & "),(" & userinfo[5] & "),(" & userinfo[6] & "),(" & userinfo[7] & ")"
