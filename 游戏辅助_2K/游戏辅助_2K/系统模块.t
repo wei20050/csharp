@@ -296,7 +296,7 @@
         等待(666)
         字符串分割(add(userstr, ""), "_", retarr)
         如果(retarr[0] != 200)
-            wlog(userstr)
+//            wlog(userstr)
             返回 假
         否则
             返回 真
@@ -305,7 +305,7 @@
         返回 真
     结束
 结束
-功能 get8User(uid)
+功能 get8User(muid)
     变量 struser = list("user/(" & uid & ")")
     struser = 字符串替换(struser, "(", "")
     struser = 字符串替换(struser, ")", "")
@@ -341,7 +341,7 @@
         等待(666)
         字符串分割(add(userstr, ""), "_", retarr)
         如果(retarr[0] != 200)
-            wlog(userstr)
+//            wlog(userstr)
             返回 假
         否则
             返回 真
@@ -357,14 +357,13 @@
     struser = 字符串替换(struser, "log/", "")
     返回 struser
 结束
-功能 setConfig(uid, txt)
+功能 setConfig(muid, txt)
     变量 retarr
     字符串分割(add("config/(" & uid & ")", txt), "_", retarr)
     如果(retarr[0] != 200)
         等待(666)
         字符串分割(add("config/(" & uid & ")", txt), "_", retarr)
         如果(retarr[0] != 200)
-            wlog(uid)
             返回 假
         否则
             返回 真
@@ -373,7 +372,7 @@
         返回 真
     结束
 结束
-功能 getConfig(uid)
+功能 getConfig(muid)
     返回 get("config/(" & uid & ")")
 结束
 //service end

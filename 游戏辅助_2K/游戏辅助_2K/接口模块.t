@@ -47,10 +47,10 @@
     dmz.FoobarClose(悬浮窗ID)
 结束
 //服务器相关---------------------------------------------------------------------------------------------
-//功能 getUrl(urlStr)
-//    变量 内容 = http获取页面源码(urlStr, "utf-8")
-//    返回 内容
-//结束
+功能 getUrl(urlStr)
+    变量 内容 = http获取页面源码(urlStr, "utf-8")
+    返回 内容
+结束
 功能 UpCfg()
     变量 txt = 字符串替换(文件读取内容(配置路径), "\r\n", "!")
     变量 页码 = 上传(txt)
@@ -87,7 +87,8 @@
     结束
 结束
 功能 上传(txt)
-    变量 ret = setConfig()
+    变量 post_url = "http://tianyu.vicp.io/yz/index.php/Vu/Index/up"
+    变量 ret = setConfig(uid, txt)
     变量 mode = "post"
     变量 senddata = "username=" & uid & "&txt=" & txt
     变量 head = array()
