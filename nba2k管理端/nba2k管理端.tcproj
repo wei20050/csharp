@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Project>
+<ProjInfo>
+<EnterFile>nba2k管理端.t</EnterFile>
+<Language>0</Language>
+<Version>7.0</Version>
+<ExeIco/>
+<Platform>pc</Platform>
+</ProjInfo>
+<DesignInfo>
+<LockedCtrl>窗口: nba2k管理端 选项卡0| 窗口结束窗口: 顶级管理界面 按钮2|按钮1|标签5|编辑_管理号| 窗口结束</LockedCtrl>
+</DesignInfo>
+</Project>
