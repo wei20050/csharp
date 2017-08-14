@@ -296,7 +296,7 @@
         等待(666)
         字符串分割(add(userstr, ""), "_", retarr)
         如果(retarr[0] != 200)
-//            wlog(userstr)
+            //            wlog(userstr)
             返回 假
         否则
             返回 真
@@ -306,7 +306,7 @@
     结束
 结束
 功能 get8User(muid)
-    变量 struser = list("user/(" & uid & ")")
+    变量 struser = list("user/(" & muid & ")")
     struser = 字符串替换(struser, "(", "")
     struser = 字符串替换(struser, ")", "")
     struser = 字符串替换(struser, "user/", "")
@@ -319,8 +319,8 @@
     struser = 字符串替换(struser, "user/", "")
     返回 struser
 结束
-功能 get3cami(ukey)
-    变量 struser = list("cami/(" & ukey & ")")
+功能 get3cami(mukey)
+    变量 struser = list("cami/(" & mukey & ")")
     struser = 字符串替换(struser, "(", "")
     struser = 字符串替换(struser, ")", "")
     struser = 字符串替换(struser, "cami/", "")
@@ -341,7 +341,7 @@
         等待(666)
         字符串分割(add(userstr, ""), "_", retarr)
         如果(retarr[0] != 200)
-//            wlog(userstr)
+            //            wlog(userstr)
             返回 假
         否则
             返回 真
@@ -350,19 +350,12 @@
         返回 真
     结束
 结束
-功能 getLog()
-    变量 struser = list("log")
-    struser = 字符串替换(struser, "(", "")
-    struser = 字符串替换(struser, ")", "")
-    struser = 字符串替换(struser, "log/", "")
-    返回 struser
-结束
 功能 setConfig(muid, txt)
     变量 retarr
-    字符串分割(add("config/(" & uid & ")", txt), "_", retarr)
+    字符串分割(add("config/(" & muid & ")", txt), "_", retarr)
     如果(retarr[0] != 200)
         等待(666)
-        字符串分割(add("config/(" & uid & ")", txt), "_", retarr)
+        字符串分割(add("config/(" & muid & ")", txt), "_", retarr)
         如果(retarr[0] != 200)
             返回 假
         否则

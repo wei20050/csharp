@@ -14,7 +14,7 @@
         p("请输入会员密码")
         返回
     结束
-    变量 页码 = getUrl("http://tianyu.vicp.io/yz/index.php/Vu/Index/index?username=" & username & "&password=" & password & "&mcode=" & code)
+    变量 页码 = 登录(username, password, code)
     如果(页码 != "")
         变量 infos
         变量 count = 字符串分割(页码, "|", infos)
@@ -57,7 +57,7 @@
         p("请输入充值卡密")
         返回
     结束
-    变量 页码 = getUrl("http://tianyu.vicp.io/yz/index.php/Vu/Index/vchange?username=" & username & "&password=" & password & "&mcode=" & code & "&ukey=" & ukey)
+    变量 页码 = 注册_充值(username, password, code, ukey)
     如果(页码 != "")
         变量 infos
         变量 count = 字符串分割(页码, "|", infos)
@@ -72,7 +72,7 @@
 结束
 功能 an_jiebang_点击()
     wuser()
-    如果(对话框("申请解绑可以解除当前电脑对软件的绑定,每人每天有一次免费解绑机会,再次解绑会成倍消耗到期时间,是否解绑?", "2K提示", 2, 真) == 4)
+    如果(对话框("申请解绑可以解除当前电脑对软件的绑定,解绑会扣除到期时间,是否解绑?(注:普通会员当天解绑两次后不扣时)", "2K提示", 2, 真) == 4)
         返回
     结束
     变量 username = 编辑框获取文本("bj_uid", "登录界面")
@@ -89,7 +89,7 @@
         p("请输入会员密码")
         返回
     结束
-    变量 页码 = getUrl("http://tianyu.vicp.io/yz/index.php/Vu/Index/ua?username=" & username & "&password=" & password & "&mcode=" & code)
+    变量 页码 = 解绑(username, password, code)
     如果(页码 != "")
         变量 infos
         变量 count = 字符串分割(页码, "|", infos)
