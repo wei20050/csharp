@@ -154,10 +154,10 @@
     热键关闭()
     默认时间配置()
     默认时间设置()
-    for(var i = 0; i < 75; i++)
+    遍历(变量 i = 0; i < 75; i++)
         热键设置键码("热键" & i, "", 0)
         复选框设置状态("复选框" & i, 假)
-    end
+    结束
 结束
 功能 软件开关()
     如果(是否关闭)
@@ -233,11 +233,11 @@
 结束
 功能 bjqh(index, istl = 真)
     变量 n = 15
-    if(istl)
+    如果(istl)
         n = 0
-    end
+    结束
     变量 nx = 转整型(index / 15)
-    return nx * 15 + index + n
+    返回 nx * 15 + index + n
 结束
 功能 取随机(n)
     返回 转整型(随机数(1, n))
@@ -285,35 +285,25 @@
 功能 get(key)
     返回 动态库调用("rc:t.dll", "char *", "get", "char *", key)
 结束
+功能 del(key)
+    返回 动态库调用("rc:t.dll", "char *", "del", "char *", key)
+结束
 功能 list(key)
     返回 动态库调用("rc:t.dll", "char *", "list", "char *", key)
 结束
 功能 set8User(userinfo)
     变量 userstr = "user/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & "),(" & userinfo[5] & "),(" & userinfo[6] & "),(" & userinfo[7] & ")"
     变量 retarr
-    字符串分割(add(userstr, ""), "_", retarr)
-    如果(retarr[0] != 200)
-        等待(666)
+    遍历(变量 i = 0; i < 6; i++)
         字符串分割(add(userstr, ""), "_", retarr)
-        如果(retarr[0] != 200)
-            //            wlog(userstr)
-            返回 假
-        否则
+        如果(retarr[0] == 200)
             返回 真
         结束
-    否则
-        返回 真
     结束
+    返回 假
 结束
 功能 get8User(muid)
     变量 struser = list("user/(" & muid & ")")
-    struser = 字符串替换(struser, "(", "")
-    struser = 字符串替换(struser, ")", "")
-    struser = 字符串替换(struser, "user/", "")
-    返回 struser
-结束
-功能 getUser()
-    变量 struser = list("user")
     struser = 字符串替换(struser, "(", "")
     struser = 字符串替换(struser, ")", "")
     struser = 字符串替换(struser, "user/", "")
@@ -326,44 +316,26 @@
     struser = 字符串替换(struser, "cami/", "")
     返回 struser
 结束
-功能 getcami()
-    变量 struser = list("cami")
-    struser = 字符串替换(struser, "(", "")
-    struser = 字符串替换(struser, ")", "")
-    struser = 字符串替换(struser, "cami/", "")
-    返回 struser
-结束
 功能 set5Log(userinfo)
     变量 userstr = "log/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & ")"
     变量 retarr
-    字符串分割(add(userstr, ""), "_", retarr)
-    如果(retarr[0] != 200)
-        等待(666)
+    遍历(变量 i = 0; i < 6; i++)
         字符串分割(add(userstr, ""), "_", retarr)
-        如果(retarr[0] != 200)
-            //            wlog(userstr)
-            返回 假
-        否则
+        如果(retarr[0] == 200)
             返回 真
         结束
-    否则
-        返回 真
     结束
+    返回 假
 结束
 功能 setConfig(muid, txt)
     变量 retarr
-    字符串分割(add("config/(" & muid & ")", txt), "_", retarr)
-    如果(retarr[0] != 200)
-        等待(666)
+    遍历(变量 i = 0; i < 6; i++)
         字符串分割(add("config/(" & muid & ")", txt), "_", retarr)
-        如果(retarr[0] != 200)
-            返回 假
-        否则
+        如果(retarr[0] == 200)
             返回 真
         结束
-    否则
-        返回 真
     结束
+    返回 假
 结束
 功能 getConfig(muid)
     返回 get("config/(" & uid & ")")
@@ -372,198 +344,198 @@
 功能 GetKeyName(KeyValue)
     选择(KeyValue) 
         条件 37
-        return "上"
+        返回 "上"
         条件 38
-        return "下"
+        返回 "下"
         条件 39
-        return "左"
+        返回 "左"
         条件 40
-        return "右"
+        返回 "右"
         条件 8
-        return "BackSpace"
+        返回 "BackSpace"
         条件 9
-        return "Tab"
+        返回 "Tab"
         条件 13
-        return "Enter"
+        返回 "Enter"
         条件 16
-        return "Shift"
+        返回 "Shift"
         条件 17
-        return "Ctrl"
+        返回 "Ctrl"
         条件 19
-        return "PauseBreak"
+        返回 "PauseBreak"
         条件 20
-        return "CapsLock"
+        返回 "CapsLock"
         条件 27
-        return "Esc"
+        返回 "Esc"
         条件 32
-        return "Space"
+        返回 "Space"
         条件 33
-        return "PageUp"
+        返回 "PageUp"
         条件 34
-        return "PageDown"
+        返回 "PageDown"
         条件 35
-        return "End"
+        返回 "End"
         条件 36
-        return "Home"
+        返回 "Home"
         条件 45
-        return "Insert"
+        返回 "Insert"
         条件 46
-        return "Delete"
+        返回 "Delete"
         条件 91
-        return "Windows"
+        返回 "Windows"
         条件 144
-        return "NumLock"
+        返回 "NumLock"
         条件 145
-        return "ScrollLock"
+        返回 "ScrollLock"
         条件 164
-        return "左Alt"
+        返回 "左Alt"
         条件 165
-        return "右Alt"
+        返回 "右Alt"
         条件 106
-        return "Num*"
+        返回 "Num*"
         条件 107
-        return "Num+"
+        返回 "Num+"
         条件 109
-        return "Num-"
+        返回 "Num-"
         条件 110
-        return "Num."
+        返回 "Num."
         条件 111
-        return "Num/"
+        返回 "Num/"
         条件 187
-        return "="
+        返回 "="
         条件 188
-        return ","
+        返回 ","
         条件 189
-        return "-"
+        返回 "-"
         条件 190
-        return "."
+        返回 "."
         条件 191
-        return "/"
+        返回 "/"
         条件 192
-        return "`"
+        返回 "`"
         条件 219
-        return "["
+        返回 "["
         条件 220
-        return "\\"
+        返回 "\\"
         条件 221
-        return "]"
+        返回 "]"
         条件 112
-        return "F1"
+        返回 "F1"
         条件 113
-        return "F2"
+        返回 "F2"
         条件 114
-        return "F3"
+        返回 "F3"
         条件 115
-        return "F4"
+        返回 "F4"
         条件 116
-        return "F5"
+        返回 "F5"
         条件 117
-        return "F6"
+        返回 "F6"
         条件 118
-        return "F7"
+        返回 "F7"
         条件 119
-        return "F8"
+        返回 "F8"
         条件 120
-        return "F9"
+        返回 "F9"
         条件 121
-        return "F10"
+        返回 "F10"
         条件 122
-        return "F11"
+        返回 "F11"
         条件 123
-        return "F12"
+        返回 "F12"
         条件 65
-        return "A"
+        返回 "A"
         条件 66
-        return "B"
+        返回 "B"
         条件 67
-        return "C"
+        返回 "C"
         条件 68
-        return "D"
+        返回 "D"
         条件 69
-        return "E"
+        返回 "E"
         条件 70
-        return "F"
+        返回 "F"
         条件 71
-        return "G"
+        返回 "G"
         条件 72
-        return "H"
+        返回 "H"
         条件 73
-        return "I"
+        返回 "I"
         条件 74
-        return "J"
+        返回 "J"
         条件 75
-        return "K"
+        返回 "K"
         条件 76
-        return "L"
+        返回 "L"
         条件 77
-        return "M"
+        返回 "M"
         条件 78
-        return "N"
+        返回 "N"
         条件 79
-        return "O"
+        返回 "O"
         条件 80
-        return "P"
+        返回 "P"
         条件 81
-        return "Q"
+        返回 "Q"
         条件 82
-        return "R"
+        返回 "R"
         条件 83
-        return "S"
+        返回 "S"
         条件 84
-        return "T"
+        返回 "T"
         条件 85
-        return "U"
+        返回 "U"
         条件 86
-        return "V"
+        返回 "V"
         条件 87
-        return "W"
+        返回 "W"
         条件 88
-        return "X"
+        返回 "X"
         条件 89
-        return "Y"
+        返回 "Y"
         条件 90
-        return "Z"
+        返回 "Z"
         条件 48
-        return "0"
+        返回 "0"
         条件 49
-        return "1"
+        返回 "1"
         条件 50
-        return "2"
+        返回 "2"
         条件 51
-        return "3"
+        返回 "3"
         条件 52
-        return "4"
+        返回 "4"
         条件 53
-        return "5"
+        返回 "5"
         条件 54
-        return "6"
+        返回 "6"
         条件 55
-        return "7"
+        返回 "7"
         条件 56
-        return "8"
+        返回 "8"
         条件 57
-        return "9"
+        返回 "9"
         条件 96
-        return "Num0"
+        返回 "Num0"
         条件 97
-        return "Num1"
+        返回 "Num1"
         条件 98
-        return "Num2"
+        返回 "Num2"
         条件 99
-        return "Num3"
+        返回 "Num3"
         条件 100
-        return "Num4"
+        返回 "Num4"
         条件 101
-        return "Num5"
+        返回 "Num5"
         条件 102
-        return "Num6"
+        返回 "Num6"
         条件 103
-        return "Num7"
+        返回 "Num7"
         条件 104
-        return "Num8"
+        返回 "Num8"
         条件 105
-        return "Num9"
+        返回 "Num9"
         默认 
-        return ""
+        返回 ""
     结束 
 结束

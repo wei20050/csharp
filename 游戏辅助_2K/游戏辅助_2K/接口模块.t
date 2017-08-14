@@ -64,7 +64,7 @@
     结束
     变量 retarr
     字符串分割(get8User(username), "_", retarr)
-    如果(retarr[0] == 403 || retarr[1] == "")
+    如果(retarr[0] == 403)
         字符串分割(get8User(username), "_", retarr)
     结束
     如果(retarr[0] == 403)
@@ -72,7 +72,7 @@
     否则
         如果(retarr[0] == 200)
             如果(retarr[1] == "")
-                返回 "账号不存在,请重新登录!|8|8"
+                返回 "账号不存在!|8|8"
             否则
                 变量 user
                 字符串分割(retarr[1], ",", user)
@@ -86,30 +86,42 @@
                 结束
                 如果(mcode != ucode)
                     如果(ucode == "")
+                        变量 okey = "user/(" & user[0] & "),(" & user[1] & "),(" & user[2] & "),(" & user[3] & "),(" & user[4] & "),(" & user[5] & "),(" & user[6] & "),(" & user[7] & ")"
                         user[7] = mcode
                         变量 nkey = "user/(" & user[0] & "),(" & user[1] & "),(" & user[2] & "),(" & user[3] & "),(" & user[4] & "),(" & user[5] & "),(" & user[6] & "),(" & user[7] & ")"
-                        如果(retarr[1] == nkey)
+                        如果(okey == nkey)
                             返回 "登陆失败,获取机器码失败!|8|8"
                         结束
-                        如果(upd(retarr[1], nkey) != 204)
-                            如果(upd(retarr[1], nkey) != 204)
+                        如果(upd(okey, nkey) != 204)
+                            如果(upd(okey, nkey) != 204)
                                 返回 "登陆失败,网络连接中断!|8|8"
                             结束
                         结束
+                        如果(uendtime == "admin")
+                            如果(uregtime == "admin")
+                                返回 " 管理员永不过期! 当天解锁次数:" & uunum & "次|6|NBA2K顶级管理"
+                            否则
+                                返回 " 永不过期! 当天解锁次数:" & uunum & "次|6|NBA2K永久会员"
+                            结束
+                        结束
+                        如果(时间间隔("s", 当前时间(), uendtime) < 0)
+                            返回 "您的会员期限已到期,请充值!|8|8"
+                        结束	
+                        返回 " " & uendtime & " 当天解锁次数:" & uunum & "次|6|普通会员"
                     结束
                     返回 "您的机器码与常用机器码不符,请点击解绑!|8|8"
                 结束	
                 如果(uendtime == "admin")
                     如果(uregtime == "admin")
-                        返回 " 卡密到期时间: 管理员永不过期! 当天解锁次数:" & uunum & "次|6|NBA2K顶级管理"
+                        返回 " 管理员永不过期! 当天解锁次数:" & uunum & "次|6|NBA2K顶级管理"
                     否则
-                        返回 " 卡密到期时间: 永不过期! 当天解锁次数:" & uunum & "次|6|NBA2K永久会员"
+                        返回 " 永不过期! 当天解锁次数:" & uunum & "次|6|NBA2K永久会员"
                     结束
                 结束
                 如果(时间间隔("s", 当前时间(), uendtime) < 0)
                     返回 "您的会员期限已到期,请充值!|8|8"
                 结束	
-                返回 " 卡密到期时间: " & uendtime & " 当天解锁次数:" & uunum & "次|6|普通会员"
+                返回 " " & uendtime & " 当天解锁次数:" & uunum & "次|6|普通会员"
             结束
         否则
             返回 "服务器异常,请重新登录!|8|8"
@@ -119,7 +131,7 @@
 功能 注册_充值(musername, mpwd, mcode, mukey)
     变量 username = 字符串修剪(musername)
     变量 password = 字符串修剪(mpwd)
-    变量 mendtime
+    mukey = 字符串修剪(mukey)
     变量 day
     如果(username == "")
         返回 "会员号不能为空!|8|8"
@@ -129,22 +141,78 @@
     否则
         password = md5(password)
     结束
+    如果(mukey == "")
+        返回 "卡密不能为空!|8|8"
+    结束
     变量 retarr
+    字符串分割(get3cami(mukey), "_", retarr)
+    如果(retarr[0] == 403)
+        字符串分割(get3cami(mukey), "_", retarr)
+    结束
+    如果(retarr[0] == 403)
+        返回 "网络连接错误,请重试!|8|8"
+    结束
+    如果(retarr[1] == "")
+        返回 "对不起卡密不正确,请检查是否输入有误或卡密已经被使用!|8|8"
+    结束
+    变量 ucami
+    字符串分割(retarr[1], ",", ucami)
+    day = ucami[2]
     字符串分割(get8User(username), "_", retarr)
-    如果(retarr[0] == 403 || retarr[1] == "")
+    如果(retarr[0] == 403)
         字符串分割(get8User(username), "_", retarr)
     结束
     如果(retarr[0] == 403)
         返回 "网络连接错误,请重试!|8|8"
     否则
+        uid = username
         如果(retarr[0] == 200)
             如果(retarr[1] == "")
+                变量 userinfo = 数组(username, password, 字符串替换(当前时间(), "/", "-"), 字符串替换(指定时间("d", day, 当前时间()), "/", "-"), "", "0", "0", "")
+                如果(set8User(userinfo))
+                    cuser(1, ucami)
+                    返回 "已自动为您创建会员:" & username & ",并且充值成功!|6|8"
+                结束
+                如果(set8User(userinfo))
+                    cuser(1, ucami)
+                    返回 "已自动为您创建会员:" & username & ",并且充值成功!|6|8"
+                结束
+                返回 "网络连接失败,请重试!|8|8"
             否则
+                变量 userarr
+                字符串分割(retarr[1], ",", userarr)
+                如果(userarr[3] == "admin")
+                    返回 "您过期时间是永久,无需充值!|6|8"
+                结束
+                变量 okey = "user/(" & userarr[0] & "),(" & userarr[1] & "),(" & userarr[2] & "),(" & userarr[3] & "),(" & userarr[4] & "),(" & userarr[5] & "),(" & userarr[6] & "),(" & userarr[7] & ")"
+                如果(时间间隔("n", 当前时间(), userarr[3]) < 0)
+                    userarr[3] = 字符串替换(指定时间("d", day, 当前时间()), "/", "-") 
+                否则
+                    userarr[3] = 字符串替换(指定时间("d", day, userarr[3]), "/", "-")
+                结束
+                变量 nkey = "user/(" & userarr[0] & "),(" & userarr[1] & "),(" & userarr[2] & "),(" & userarr[3] & "),(" & userarr[4] & "),(" & userarr[5] & "),(" & userarr[6] & "),(" & userarr[7] & ")"
+                如果(upd(okey, nkey) == 204)
+                    cuser(1, ucami)
+                    返回 "恭喜您充值成功!|6|8"
+                否则
+                    如果(upd(okey, nkey) == 204)
+                        cuser(1, ucami)
+                        返回 "恭喜您充值成功!|6|8"
+                    否则
+                        返回 "网络错误,充值失败!"
+                    结束
+                结束
             结束
         否则
             返回 "网络连接错误,服务器错误!|8|8"
         结束
     结束
+结束
+功能 cuser(type, camiarr)
+    变量 key = "cami/(" & camiarr[0] & "),(" & camiarr[1] & "),(" & camiarr[2] & ")"
+    del(key)
+    del(key)
+    set5Log(数组(type, uid, 当前时间(), camiarr[2], camiarr[0] & "-" & camiarr[1]))
 结束
 功能 解绑(musername, mpwd, mcode)
     变量 username = 字符串修剪(musername)
@@ -206,14 +274,17 @@
         muser[6] = muser[6] + 1
         muser[7] = mcode
     否则
-        muser[3] = 字符串替换(指定时间("h", -4, muser[3]), "/", "-")
+        如果(muser[3] != "admin") 
+            muser[3] = 字符串替换(指定时间("h", -4, muser[3]), "/", "-")
+        结束
         muser[4] = ntime
         muser[5] = muser[5] + 1
         muser[6] = 1
         muser[7] = mcode
     结束
     变量 nkey = "user/(" & muser[0] & "),(" & muser[1] & "),(" & muser[2] & "),(" & muser[3] & "),(" & muser[4] & "),(" & muser[5] & "),(" & muser[6] & "),(" & muser[7] & ")"
-    如果(upd(mokey, nkey) == 204)
+    变量 ret = upd(mokey, nkey)
+    如果(ret == 204)
         返回 "解除绑定成功!|6|8"
     否则
         如果(upd(mokey, nkey) == 204)
@@ -295,6 +366,17 @@
     //    post_ret = httpsubmit(mode, post_url, senddata, "", head, post_response)
     //    //messagebox(post_response) //响应头
     //    返回 url解码(post_ret, "utf-8")
-    消息框(getConfig(uid))
+    变量 retarr
+    字符串分割(getConfig(uid), "_", retarr)
+    if(retarr[0] == 404)
+        返回  "下载失败,当前用户没有上传过配置！|0|0"
+    end
+    if(retarr[0] == 200)
+        返回  "下载成功!|" & retarr[1] & "|0"
+    end
+    if(retarr[0] == 200)
+        返回  "下载成功!|" & retarr[1] & "|0"
+    end
+    返回  "下载失败,网络连接错误|0|0"
 结束
 //服务器相关---------------------------------------------------------------------------------------------
