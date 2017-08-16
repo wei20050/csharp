@@ -152,8 +152,11 @@
     如果(retarr[0] == 403)
         返回 "网络连接错误,请重试!|8|8"
     结束
-    如果(retarr[1] == "")
+    如果(retarr[0] == 200 && retarr[1] == "")
         返回 "对不起卡密不正确,请检查是否输入有误或卡密已经被使用!|8|8"
+    结束
+    如果(retarr[0] != 200)
+        返回 "服务器异常,请联系管理!|8|8"
     结束
     变量 ucami
     字符串分割(retarr[1], ",", ucami)
@@ -169,6 +172,9 @@
         如果(retarr[0] == 200)
             如果(retarr[1] == "")
                 变量 userinfo = 数组(username, password, 字符串替换(当前时间(), "/", "-"), 字符串替换(指定时间("d", day, 当前时间()), "/", "-"), "", "0", "0", "")
+                如果(day == 3000)
+                    userinfo = 数组(username, password, 字符串替换(当前时间(), "/", "-"), "admin", "", "0", "0", "")
+                结束
                 如果(set8User(userinfo))
                     cuser(1, ucami)
                     返回 "已自动为您创建会员:" & username & ",并且充值成功!|6|8"
@@ -212,7 +218,7 @@
     变量 key = "cami/(" & camiarr[0] & "),(" & camiarr[1] & "),(" & camiarr[2] & ")"
     del(key)
     del(key)
-    set5Log(数组(type, uid, 当前时间(), camiarr[2], camiarr[0] & "-" & camiarr[1]))
+    set5Log(数组(type, uid, 字符串替换(当前时间(), "/", "-"), camiarr[2], camiarr[0] & "-" & camiarr[1]))
 结束
 功能 解绑(musername, mpwd, mcode)
     变量 username = 字符串修剪(musername)
