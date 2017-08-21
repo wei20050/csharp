@@ -187,6 +187,9 @@
             否则
                 变量 userarr
                 字符串分割(retarr[1], ",", userarr)
+                如果(userarr[1] != password)
+                    返回  "密码错误,请不要误充值给别人哦!|8|8"
+                结束
                 如果(userarr[3] == "admin")
                     返回 "您过期时间是永久,无需充值!|6|8"
                 结束
