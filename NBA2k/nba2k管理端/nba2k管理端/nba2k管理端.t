@@ -1,6 +1,20 @@
 ﻿变量 q_uid
 功能 nba2k管理端_初始化()
     控件模态窗口("登录")
+    变量 retarr 
+    字符串分割(list("log"),"_",retarr)
+    字符串分割(retarr[1],"~",retarr)
+    变量 userarr = 数组()
+    for(var i = 0; i <数组大小(retarr); i++)
+        变量 userinfo = retarr[i]
+        userinfo = 字符串替换(userinfo,"user/","")
+        userinfo = 字符串替换(userinfo,"(","")
+        userinfo = 字符串替换(userinfo,")","")
+        变量 retarrn
+        字符串分割(userinfo,",",retarrn)
+        userarr[i]=retarrn
+    end
+    表格填充数据集("表格0",userarr)
 结束
 //发卡按钮
 功能 按钮0_点击()
@@ -41,9 +55,4 @@
         默认
         返回 0
     结束
-结束
-
-功能 按钮0_点击()
-//这里添加你要执行的代码
-
 结束
