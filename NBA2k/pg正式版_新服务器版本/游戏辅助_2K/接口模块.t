@@ -196,6 +196,9 @@
                 否则
                     userarr[3] = 字符串替换(指定时间("d", day, userarr[3]), "/", "-")
                 结束
+                如果(day == 3000)
+                    userarr[3] = "admin"
+                结束
                 变量 nkey = "user/(" & userarr[0] & "),(" & userarr[1] & "),(" & userarr[2] & "),(" & userarr[3] & "),(" & userarr[4] & "),(" & userarr[5] & "),(" & userarr[6] & "),(" & userarr[7] & ")"
                 如果(upd(okey, nkey) == 204)
                     cuser(1, ucami)
@@ -374,15 +377,15 @@
     //    返回 url解码(post_ret, "utf-8")
     变量 retarr
     字符串分割(getConfig(uid), "_", retarr)
-    if(retarr[0] == 404)
+    如果(retarr[0] == 404)
         返回  "下载失败,当前用户没有上传过配置！|0|0"
-    end
-    if(retarr[0] == 200)
+    结束
+    如果(retarr[0] == 200)
         返回  "下载成功!|" & retarr[1] & "|0"
-    end
-    if(retarr[0] == 200)
+    结束
+    如果(retarr[0] == 200)
         返回  "下载成功!|" & retarr[1] & "|0"
-    end
+    结束
     返回  "下载失败,网络连接错误|0|0"
 结束
 //服务器相关---------------------------------------------------------------------------------------------

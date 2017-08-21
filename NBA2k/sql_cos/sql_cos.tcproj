@@ -8,6 +8,6 @@
 <Platform>pc</Platform>
 </ProjInfo>
 <DesignInfo>
-<LockedCtrl>窗口: sql_cos 按钮0|标签_提示|标签1|标签0|启动|终止|标签2| 窗口结束</LockedCtrl>
+<LockedCtrl>窗口: sql_cos 编辑框0|按钮0|标签_提示|标签1|标签0|启动|终止|标签2| 窗口结束</LockedCtrl>
 </DesignInfo>
 </Project>
