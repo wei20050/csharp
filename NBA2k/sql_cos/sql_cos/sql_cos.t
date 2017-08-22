@@ -25,13 +25,12 @@
     变量 index = 0
     变量 tmp
     遍历(变量 i = 0; i < 数组大小(user_arr); i++)
-        
         变量 value
         数组获取元素(user_arr, i, value)
         变量 userinfo = 数组(value["uid"], value["pwd"], sjcl(value["regtime"]), sjcl(value["endtime"]), value["utime"], value["sunum"], value["unum"], value["mcode"])
         如果(set8User(userinfo))
             cg = cg + 1
-            ret = sqlitesqlarray("d:\\yxdb.db", "update kam_user set endtime2 = 1 where uid = "&value["uid"], tmp)
+            ret = sqlitesqlarray("d:\\yxdb.db", "update kam_user set endtime2 = 1 where uid = " & value["uid"], tmp)
         否则
             sb = sb + 1
         结束
@@ -44,8 +43,7 @@
         数组获取元素(config_arr, i, value)
         如果(setConfig(value["uid"], value["txt"]))
             cg = cg + 1
-            
-            ret = sqlitesqlarray("d:\\yxdb.db", "update kam_config set txt2 = '1' where uid =  "&value["uid"], tmp)
+            ret = sqlitesqlarray("d:\\yxdb.db", "update kam_config set txt2 = '1' where uid =  " & value["uid"], tmp)
         否则
             sb = sb + 1
         结束
@@ -67,8 +65,46 @@
     线程关闭(线程ID)
 结束
 功能 按钮0_点击()
-    var retarr
-    var liststr = list(编辑框获取文本("编辑框0"))
-    delall(字符串截取右侧(liststr, 字符串长度(liststr) - 4))
+    变量 where = 编辑框获取文本("编辑框0")
+    如果(where == "")
+        消息框("条件不允许为空!")
+        返回
+    结束
+    变量 retarr
+    变量 liststr = list(where)
+    调试输出(liststr)
+    add("user/(888888),(21218cca77804d2ba1922c33e0151105),(2016-11-05 19:23:54),(2034-04-29 23:40:01),(20170821),(9),(1),(4894e36610b58f796962a011fd88d1bb)","")
+    //delall(字符串截取右侧(liststr, 字符串长度(liststr) - 4))
     消息框("清空完成!")
+结束
+功能 userEdit(euid)
+    变量 retarr
+    字符串分割(list(euid), "_", retarr)
+    if(retarr[0] == 200)
+        返回 userEdit2(retarr[1])
+    end
+    字符串分割(list(euid), "_", retarr)
+    if(retarr[0] == 200)
+        返回 userEdit2(retarr[1])
+    end
+    字符串分割(list(euid), "_", retarr)
+    if(retarr[0] == 200)
+        返回 userEdit2(retarr[1])
+    end
+    返回 -1
+结束
+功能 userEdit2(users)
+    if(users == "")
+        返回 0
+    end
+    变量 userarr
+    字符串分割(users, "~", userarr)
+    变量 arrl = 数组大小(userarr)
+    if(arrl > 1)
+        for(var i = 0; i < arrl - 1; i++)
+            del(userarr[i])
+            等待(100)
+            del(userarr[i])	
+        end
+    end
 结束

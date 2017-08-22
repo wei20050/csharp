@@ -63,6 +63,7 @@
         password = md5(password)
     结束
     变量 retarr
+    userEdit(username)
     字符串分割(get8User(username), "_", retarr)
     如果(retarr[0] == 403)
         字符串分割(get8User(username), "_", retarr)
@@ -158,6 +159,7 @@
     如果(retarr[0] != 200)
         返回 "服务器异常,请联系管理!|8|8"
     结束
+     userEdit(username)
     变量 ucami
     字符串分割(retarr[1], ",", ucami)
     day = ucami[2]
@@ -224,6 +226,9 @@
     变量 key = "cami/(" & camiarr[0] & "),(" & camiarr[1] & "),(" & camiarr[2] & ")"
     del(key)
     del(key)
+    del(key)
+    del(key)
+    del(key)
     set5Log(数组(type, uid, 字符串替换(当前时间(), "/", "-"), camiarr[2], camiarr[0] & "-" & camiarr[1]))
 结束
 功能 解绑(musername, mpwd, mcode)
@@ -250,6 +255,7 @@
             结束
         结束
     结束
+    userEdit(username)
     okey = retarr[1]
     变量 user = okey
     user = 字符串替换(user, "(", "")
@@ -303,6 +309,37 @@
             返回 "解除绑定成功!|6|8"
         否则
             返回 "网络错误,解绑失败请重试!"
+        结束
+    结束
+结束
+功能 userEdit(euid)
+    变量 retarr
+    字符串分割(list("user/(" & euid & ")"), "_", retarr)
+    如果(retarr[0] == 200)
+        返回 userEdit2(retarr[1])
+    结束
+    字符串分割(list(euid), "_", retarr)
+    如果(retarr[0] == 200)
+        返回 userEdit2(retarr[1])
+    结束
+    字符串分割(list(euid), "_", retarr)
+    如果(retarr[0] == 200)
+        返回 userEdit2(retarr[1])
+    结束
+    返回 -1
+结束
+功能 userEdit2(users)
+    如果(users == "")
+        返回 0
+    结束
+    变量 userarr
+    字符串分割(users, "~", userarr)
+    变量 arrl = 数组大小(userarr)
+    如果(arrl > 1)
+        遍历(变量 i = 0; i < arrl - 1; i++)
+            del(userarr[i])
+            等待(100)
+            del(userarr[i])	
         结束
     结束
 结束
