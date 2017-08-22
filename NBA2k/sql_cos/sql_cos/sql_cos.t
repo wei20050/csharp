@@ -72,39 +72,6 @@
     结束
     变量 retarr
     变量 liststr = list(where)
-    调试输出(liststr)
-    add("user/(888888),(21218cca77804d2ba1922c33e0151105),(2016-11-05 19:23:54),(2034-04-29 23:40:01),(20170821),(9),(1),(4894e36610b58f796962a011fd88d1bb)","")
-    //delall(字符串截取右侧(liststr, 字符串长度(liststr) - 4))
+    delall(字符串截取右侧(liststr, 字符串长度(liststr) - 4))
     消息框("清空完成!")
-结束
-功能 userEdit(euid)
-    变量 retarr
-    字符串分割(list(euid), "_", retarr)
-    if(retarr[0] == 200)
-        返回 userEdit2(retarr[1])
-    end
-    字符串分割(list(euid), "_", retarr)
-    if(retarr[0] == 200)
-        返回 userEdit2(retarr[1])
-    end
-    字符串分割(list(euid), "_", retarr)
-    if(retarr[0] == 200)
-        返回 userEdit2(retarr[1])
-    end
-    返回 -1
-结束
-功能 userEdit2(users)
-    if(users == "")
-        返回 0
-    end
-    变量 userarr
-    字符串分割(users, "~", userarr)
-    变量 arrl = 数组大小(userarr)
-    if(arrl > 1)
-        for(var i = 0; i < arrl - 1; i++)
-            del(userarr[i])
-            等待(100)
-            del(userarr[i])	
-        end
-    end
 结束
