@@ -159,7 +159,7 @@
     如果(retarr[0] != 200)
         返回 "服务器异常,请联系管理!|8|8"
     结束
-     userEdit(username)
+    userEdit(username)
     变量 ucami
     字符串分割(retarr[1], ",", ucami)
     day = ucami[2]
