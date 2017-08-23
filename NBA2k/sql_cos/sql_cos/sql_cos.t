@@ -70,7 +70,6 @@
         消息框("条件不允许为空!")
         返回
     结束
-    变量 retarr
     变量 liststr = list(where)
     delall(字符串截取右侧(liststr, 字符串长度(liststr) - 4))
     消息框("清空完成!")

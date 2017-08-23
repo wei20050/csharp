@@ -75,7 +75,7 @@
             结束
         结束
     结束
-     printBB(banyue, yue, bannian, nian, yongjiu)
+    printBB(banyue, yue, bannian, nian, yongjiu)
     表格填充数据集("表格_记录", logarr)
 结束
 功能 printBB(banyue, yue, bannian, nian, yongjiu)
@@ -107,14 +107,25 @@
     表格填充数据集("表格_卡密", camiarr)
 结束
 功能 savepwd(uid, pwd)
+    var retarr
+    字符串分割(saveuser(uid, "pwd = " & pwd), "_", retarr)
+    消息框(retarr[1])
+    if(retarr[0] == 200)
+        控件关闭子窗口("修改密码", 6)
+    end
+结束
+//修改user信息函数 返回 代码_错误信息
+//参数1saveuid   传入 主键=>uid
+//参数where 传入 字段名=要赋予的值,另一字段名=要赋予的值 ... ...
+//字段补充: pwd regtime endtime utime usnum unum mcode
+功能 saveuser(saveuid, where)
     变量 retarr
     变量 okey
-    字符串分割(list("user/(" & uid & ")"), "_", retarr)
+    字符串分割(list("user/(" & saveuid & ")"), "_", retarr)
     如果(retarr[0] != 200)
-        字符串分割(list("user/(" & uid & ")"), "_", retarr)
+        字符串分割(list("user/(" & saveuid & ")"), "_", retarr)
         如果(retarr[0] != 200)
-            消息框("修改失败,查询原密码失败!")
-            返回
+            返回 "403_修改失败,查询账号失败!"
         结束
     结束
     okey = retarr[1]
@@ -124,24 +135,45 @@
     user = 字符串替换(user, "user/", "")
     变量 userinfo
     字符串分割(user, ",", userinfo)
-    userinfo[1] = md5(pwd)
-    变量 nkey = "user/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & "),(" & userinfo[5] & "),(" & userinfo[6] & "),(" & userinfo[7] & ")"
+    变量 nkey = whereuser(userinfo, where)
     如果(okey == nkey)
-        消息框("修改失败,新密码与初始密码相同!")
-        返回
+        返回 "403_修改失败,新数据与老数据完全相同!"
     结束
     如果(upd(okey, nkey) == 204)
-        消息框("修改成功,请使用新密码登录!")
-        控件关闭子窗口("修改密码", 6)
-        返回
+        返回 "200_修改成功!"
     否则
         如果(upd(okey, nkey) == 204)
-            消息框("修改成功,请使用新密码登录!")
-            控件关闭子窗口("修改密码", 6)
-            返回
+            返回 "200_修改成功!"
         否则
-            消息框("网络错误,修改失败请重试!")
-            返回
+            返回 "403_网络错误,修改失败请重试!"
         结束
     结束
+结束
+功能 whereuser(userinfo, where)
+    变量 wherearr
+    字符串分割(where, ",", wherearr)
+    遍历(变量 i = 0; i < 数组大小(wherearr); i++)
+        变量 wherearrn
+        字符串分割(wherearr[i], "=", wherearrn)
+        如果(数组大小(wherearrn) != 2)
+            返回 "403_修改语句有误,请重新输入!(例:opwd = npwd,outime=nutime)"
+        结束
+        选择(字符串修剪(wherearrn[0]))
+            条件 "pwd"
+            userinfo[1] = md5(字符串修剪(wherearrn[1]))
+            条件 "regtime"
+            userinfo[2] = 字符串修剪(wherearrn[1])
+            条件 "endtime"
+            userinfo[3] = 字符串修剪(wherearrn[1])
+            条件 "utime"
+            userinfo[4] = 字符串修剪(wherearrn[1])
+            条件 "usnum"
+            userinfo[5] = 字符串修剪(wherearrn[1])
+            条件 "unum"
+            userinfo[6] = 字符串修剪(wherearrn[1])
+            条件 "mcode"
+            userinfo[7] = 字符串修剪(wherearrn[1])
+        结束
+    结束
+    返回 "user/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & "),(" & userinfo[5] & "),(" & userinfo[6] & "),(" & userinfo[7] & ")"
 结束
