@@ -14,6 +14,7 @@
         p("请输入会员密码")
         返回
     结束
+    uid = username
     变量 页码 = 登录(username, password, code)
     如果(页码 != "")
         变量 infos
@@ -23,7 +24,6 @@
                 IsOk = 假
                 endtime = infos[0]
                 usertype = infos[2]
-                uid = username
                 pwd = password
                 控件关闭子窗口("登录界面", 6)
             否则

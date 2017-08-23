@@ -107,7 +107,7 @@
     结束
 结束
 功能 getLog()
-    变量 struser = list("log")
+    变量 struser = list("log/")
     struser = 字符串替换(struser, "(", "")
     struser = 字符串替换(struser, ")", "")
     struser = 字符串替换(struser, "log/", "")

@@ -85,6 +85,10 @@
                 如果(upwd != password)
                     返回 "密码错误,请重新登录!|8|8"
                 结束
+                如果(upwd == md5("1"))
+                    p("系统检测到您的密码是初始密码:1,请点击确定跳到改密界面修改密码.")
+                    控件模态窗口("修改密码")
+                结束
                 如果(mcode != ucode)
                     如果(ucode == "")
                         变量 okey = "user/(" & user[0] & "),(" & user[1] & "),(" & user[2] & "),(" & user[3] & "),(" & user[4] & "),(" & user[5] & "),(" & user[6] & "),(" & user[7] & ")"
@@ -219,6 +223,45 @@
             结束
         否则
             返回 "网络连接错误,服务器错误!|8|8"
+        结束
+    结束
+结束
+功能 savepwd(xuid, xpwd)
+    变量 retarr
+    变量 okey
+    字符串分割(list("user/(" & xuid & ")"), "_", retarr)
+    如果(retarr[0] != 200)
+        字符串分割(list("user/(" & xuid & ")"), "_", retarr)
+        如果(retarr[0] != 200)
+            消息框("修改失败,查询原密码失败!")
+            返回
+        结束
+    结束
+    okey = retarr[1]
+    变量 user = okey
+    user = 字符串替换(user, "(", "")
+    user = 字符串替换(user, ")", "")
+    user = 字符串替换(user, "user/", "")
+    变量 userinfo
+    字符串分割(user, ",", userinfo)
+    userinfo[1] = md5(xpwd)
+    变量 nkey = "user/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & "),(" & userinfo[5] & "),(" & userinfo[6] & "),(" & userinfo[7] & ")"
+    如果(okey == nkey)
+        p("修改失败,新密码与初始密码相同!")
+        返回
+    结束
+    如果(upd(okey, nkey) == 204)
+        p("修改成功,请使用新密码登录!")
+        控件关闭子窗口("修改密码", 6)
+        返回
+    否则
+        如果(upd(okey, nkey) == 204)
+            p("修改成功,请使用新密码登录!")
+            控件关闭子窗口("修改密码", 6)
+            返回
+        否则
+            p("网络错误,修改失败请重试!")
+            返回
         结束
     结束
 结束
