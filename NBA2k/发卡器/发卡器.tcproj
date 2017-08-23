@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Project>
+<ProjInfo>
+<EnterFile>发卡器.t</EnterFile>
+<Language>0</Language>
+<Version>5.2</Version>
+<ExeIco/>
+<Platform>android</Platform>
+<PackageName>tc.fkq</PackageName>
+</ProjInfo>
+</Project>
