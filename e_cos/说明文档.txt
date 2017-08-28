@@ -17,8 +17,7 @@ TC封装示例:
 功能 list(key)
     返回 动态库调用("rc:t.dll", "char *", "list", "char *", key)
 结束
-
-易语言常量:
+域名中的数字就是APPID
 //尧
 host, tianyu2k-1252720271.cn-north.myqcloud.com
 SecretID, AKID79UeCcJnbaUGMjP1eKwY2vB7UEw4jfir
