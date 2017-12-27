@@ -23,11 +23,12 @@ TC封装示例:(基本方法)
 结束
 ----------------------------------------------------------------------------------------------------------
 域名中的数字就是APPID
-host, tianyu2k-1252720271.cos.ap-beijing-1.myqcloud.com
+host, yz-1252720271.cos.ap-chengdu.myqcloud.com
 SecretID, AKID79UeCcJnbaUGMjP1eKwY2vB7UEw4jfir
 SecretKey, RDGOhNudbkzehp8VldhCUD8GTo4nUbXH
 Key:
-0C00BB0950D40CA0000110340C20610990FD02D0C507A0AB05E04306A0DA0C00470E80C50500BE07205203006100806E0BA05801D04009C02D0A40A30CC0430CC0AF00303902303404D0C00F90EC0FF0C901D0430CE0DC0EC00D0AF01507E05E0A90090B50930EE0170ED08B08403604D07007105803C0F80F90D501503D0720330D60BE0D00020910930F808B0040DC01701307B0D70300EF0380EE07808004309802807F0E20570720890C20B10B501503402007606C0CB0DD0DA0790830D8
+0C800F07C0F50E404804808902603702F07E0EF0530500290140C60E10050EE04F0170700480AC0520990F40870EB0A30CC0430CC0AF00303902303404D0C00F90EC0FF0C901D0430CE0DC0EC00D0AF01507E05E0A90090B50930EE0170ED08B08403604D07007105803C0F80F90D501503D0720330D60BE0D00020910930F808B0040DC01701307B0D70300EF0380EE07808004309802807F0E20570720890C20B10B501503402007606C0CB0DD0DA0790830D8
+
 C#封装示例:(卡密验证相关)
 using System.Runtime.InteropServices;
 namespace t_Demo
@@ -45,9 +46,9 @@ namespace t_Demo
         [DllImport("t.dll")]
         public extern static string KeySC(string CosKey, string AppName, string Key);
         [DllImport("t.dll")]
-        public extern static string KeySetConfig(string CosKey, string AppName, string Key, string path);
+        public extern static string KeySet(string CosKey, string AppName, string Key, string path);
         [DllImport("t.dll")]
-        public extern static string KeyGetConfig(string CosKey, string AppName, string Key, string path);
+        public extern static string KeyGet(string CosKey, string AppName, string Key, string path);
         [DllImport("t.dll")]
         public extern static string KeyCX(string CosKey, string AppName, string Key);
         [DllImport("t.dll")]
