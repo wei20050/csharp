@@ -169,6 +169,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(150, 21);
             this.textBox3.TabIndex = 13;
+            this.textBox3.Text = "YX";
             // 
             // button7
             // 
@@ -258,6 +259,7 @@
             this.button13.TabIndex = 23;
             this.button13.Text = "选择文件";
             this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // Form1
             // 

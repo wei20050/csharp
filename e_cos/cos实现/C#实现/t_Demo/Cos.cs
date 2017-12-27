@@ -1,64 +1,31 @@
-·½·¨ËµÃ÷:
-//Ìí¼Ó ²ÎÊı:ÎÄ¼şÃû ,ÉÏ´«µÄÊı¾İ
-//É¾³ı ²ÎÊı:ÎÄ¼şÃû
-//ĞŞ¸Ä ²ÎÊı:ÎÄ¼şÃû,ĞŞ¸ÄºóµÄÎÄ¼şÃû
-//»ñÈ¡Êı¾İ ²ÎÊı:ÎÄ¼şÃû
-//»ñÈ¡ËùÓĞÎÄ¼şÃû ²ÎÊı:ÎÄ¼şÃûÇ°×º  Îª¿ÕÔò²éÑ¯ËùÓĞ
-
-TC·â×°Ê¾Àı:(»ù±¾·½·¨)
-¹¦ÄÜ Insert(TheSecretKey,key, value)
-    ·µ»Ø ¶¯Ì¬¿âµ÷ÓÃ("rc:t.dll", "char *", "char *", "Insert", "char *", TheSecretKey, "char *", key, "char *", value)
-½áÊø
-¹¦ÄÜ Delete(TheSecretKey,key)
-    ·µ»Ø ¶¯Ì¬¿âµ÷ÓÃ("rc:t.dll", "char *", "char *", "Delete", "char *", TheSecretKey, "char *", key)
-½áÊø
-¹¦ÄÜ Update(TheSecretKey,key,newkey)
-    ·µ»Ø ¶¯Ì¬¿âµ÷ÓÃ("rc:t.dll", "char *", "char *", "Update", "char *", TheSecretKey, "char *", key, "char *", newkey)
-½áÊø
-¹¦ÄÜ Download(TheSecretKey,key)
-    ·µ»Ø ¶¯Ì¬¿âµ÷ÓÃ("rc:t.dll", "char *", "char *", "Download", "char *", TheSecretKey, "char *", key)
-½áÊø
-¹¦ÄÜ Find(TheSecretKey,key)
-    ·µ»Ø ¶¯Ì¬¿âµ÷ÓÃ("rc:t.dll", "char *", "Find", "char *", TheSecretKey, "char *", key)
-½áÊø
-----------------------------------------------------------------------------------------------------------
-ÓòÃûÖĞµÄÊı×Ö¾ÍÊÇAPPID
-host, yz-1252720271.cos.ap-chengdu.myqcloud.com
-SecretID, AKID79UeCcJnbaUGMjP1eKwY2vB7UEw4jfir
-SecretKey, RDGOhNudbkzehp8VldhCUD8GTo4nUbXH
-Key:
-0C800F07C0F50E404804808902603702F07E0EF0530500290140C60E10050EE04F0170700480AC0520990F40870EB0A30CC0430CC0AF00303902303404D0C00F90EC0FF0C901D0430CE0DC0EC00D0AF01507E05E0A90090B50930EE0170ED08B08403604D07007105803C0F80F90D501503D0720330D60BE0D00020910930F808B0040DC01701307B0D70300EF0380EE07808004309802807F0E20570720890C20B10B501503402007606C0CB0DD0DA0790830D8
-
-C#·â×°Ê¾Àı:(¿¨ÃÜÑéÖ¤Ïà¹Ø)
-
-using System.Runtime.InteropServices;
+ï»¿using System.Runtime.InteropServices;
 namespace t_Demo
 {
     public static class Cos
     {
         /// <summary>
-        /// ¶¯Ì¬¿âÂ·¾¶
+        /// åŠ¨æ€åº“è·¯å¾„
         /// </summary>
         private const string DllPath = "cos.dll";
         /// <summary>
-        /// cosÁ¬½ÓÃØÔ¿
+        /// cosè¿æ¥ç§˜é’¥
         /// </summary>
         private const string CosKey = "0C800F07C0F50E404804808902603702F07E0EF0530500290140C60E10050EE04F0170700480AC0520990F40870EB0A30CC0430CC0AF00303902303404D0C00F90EC0FF0C901D0430CE0DC0EC00D0AF01507E05E0A90090B50930EE0170ED08B08403604D07007105803C0F80F90D501503D0720330D60BE0D00020910930F808B0040DC01701307B0D70300EF0380EE07808004309802807F0E20570720890C20B10B501503402007606C0CB0DD0DA0790830D8";
         /// <summary>
-        /// Ó¦ÓÃÃû³Æ
+        /// åº”ç”¨åç§°
         /// </summary>
-        private const string AppName = "²âÊÔÓ¦ÓÃ";
+        private const string AppName = "æµ‹è¯•åº”ç”¨";
         /// <summary>
-        /// ³É¹¦
+        /// æˆåŠŸ
         /// </summary>
         private const string Success = "1";
         [DllImport(DllPath)]
         private extern static string KeyXZ(string cosKey,string appName,string keyNum);
         /// <summary>
-        /// ĞÂÔöÃØÔ¿
+        /// æ–°å¢ç§˜é’¥
         /// </summary>
-        /// <param name="keyNum">ÃØÔ¿ÌìÊı</param>
-        /// <returns>ĞÂÔöµÄÃØÔ¿</returns>
+        /// <param name="keyNum">ç§˜é’¥å¤©æ•°</param>
+        /// <returns>æ–°å¢çš„ç§˜é’¥</returns>
         public static string KeyXz(string keyNum)
         {
             return KeyXZ(CosKey, AppName, keyNum);
@@ -66,11 +33,11 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string KeyYZ(string cosKey, string appName, string key,string dn);
         /// <summary>
-        /// ÑéÖ¤ÃØÔ¿
+        /// éªŒè¯ç§˜é’¥
         /// </summary>
-        /// <param name="key">ÃØÔ¿</param>
-        /// <param name="dn">µçÄÔ»úÆ÷Âë</param>
-        /// <returns>ÊÇ·ñ³É¹¦</returns>
+        /// <param name="key">ç§˜é’¥</param>
+        /// <param name="dn">ç”µè„‘æœºå™¨ç </param>
+        /// <returns>æ˜¯å¦æˆåŠŸ</returns>
         public static bool KeyYz(string key,string dn)
         {
             return KeyYZ(CosKey, AppName, key,dn) == Success;
@@ -78,10 +45,10 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string KeyJB(string cosKey, string appName, string key);
         /// <summary>
-        /// ½â°óÃØÔ¿
+        /// è§£ç»‘ç§˜é’¥
         /// </summary>
-        /// <param name="key">ÃØÔ¿</param>
-        /// <returns>ÊÇ·ñ³É¹¦</returns>
+        /// <param name="key">ç§˜é’¥</param>
+        /// <returns>æ˜¯å¦æˆåŠŸ</returns>
         public static bool KeyJb(string key)
         {
             return KeyJB(CosKey, AppName, key) == Success;
@@ -89,11 +56,11 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string KeyCZ(string cosKey, string appName, string key, string keyNum);
         /// <summary>
-        /// ¸øÃØÔ¿³äÖµ
+        /// ç»™ç§˜é’¥å……å€¼
         /// </summary>
-        /// <param name="key">ÃØÔ¿</param>
-        /// <param name="keyNum">³äÖµÌìÊı</param>
-        /// <returns>ÊÇ·ñ³É¹¦</returns>
+        /// <param name="key">ç§˜é’¥</param>
+        /// <param name="keyNum">å……å€¼å¤©æ•°</param>
+        /// <returns>æ˜¯å¦æˆåŠŸ</returns>
         public static bool KeyCz(string key, string keyNum)
         {
             return KeyCZ(CosKey, AppName, key, keyNum) == Success;
@@ -101,10 +68,10 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string KeySC(string cosKey, string appName, string key);
         /// <summary>
-        /// É¾³ıÃØÔ¿
+        /// åˆ é™¤ç§˜é’¥
         /// </summary>
-        /// <param name="key">ÃØÔ¿</param>
-        /// <returns>ÊÇ·ñ³É¹¦</returns>
+        /// <param name="key">ç§˜é’¥</param>
+        /// <returns>æ˜¯å¦æˆåŠŸ</returns>
         public static bool KeySc(string key)
         {
             return KeySC(CosKey, AppName, key) == Success;
@@ -112,11 +79,11 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string KeySet(string cosKey, string appName, string key, string path);
         /// <summary>
-        /// ¸ù¾İÃØÔ¿Ğ´ÎÄ±¾ÎÄ¼şµ½·şÎñÆ÷
+        /// æ ¹æ®ç§˜é’¥å†™æ–‡æœ¬æ–‡ä»¶åˆ°æœåŠ¡å™¨
         /// </summary>
-        /// <param name="key">ÃØÔ¿</param>
-        /// <param name="path">ÎÄ±¾ÎÄ¼şÂ·¾¶</param>
-        /// <returns>ÊÇ·ñ³É¹¦</returns>
+        /// <param name="key">ç§˜é’¥</param>
+        /// <param name="path">æ–‡æœ¬æ–‡ä»¶è·¯å¾„</param>
+        /// <returns>æ˜¯å¦æˆåŠŸ</returns>
         public static bool KeySet(string key, string path)
         {
             return KeySet(CosKey, AppName, key, path) == Success;
@@ -124,11 +91,11 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string KeyGet(string cosKey, string appName, string key, string path);
         /// <summary>
-        /// ¸ù¾İÃØÔ¿¶ÁÎÄ±¾ÎÄ¼şµ½±¾µØ
+        /// æ ¹æ®ç§˜é’¥è¯»æ–‡æœ¬æ–‡ä»¶åˆ°æœ¬åœ°
         /// </summary>
-        /// <param name="key">È¡ÎÄ¼şµÄÃØÔ¿</param>
-        /// <param name="path">´æµ½µÄÎÄ¼şÂ·¾¶</param>
-        /// <returns>ÊÇ·ñ³É¹¦</returns>
+        /// <param name="key">å–æ–‡ä»¶çš„ç§˜é’¥</param>
+        /// <param name="path">å­˜åˆ°çš„æ–‡ä»¶è·¯å¾„</param>
+        /// <returns>æ˜¯å¦æˆåŠŸ</returns>
         public static bool KeyGet(string key, string path)
         {
             return KeyGet(CosKey, AppName, key, path) == Success;
@@ -136,10 +103,10 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string KeyCX(string cosKey, string appName, string key);
         /// <summary>
-        /// ²éÑ¯key
+        /// æŸ¥è¯¢key
         /// </summary>
-        /// <param name="key">Îª¿ÕÔò²éÑ¯ËùÓĞ ·ñÔò²éÑ¯µ¥Ìõ</param>
-        /// <returns>²éÑ¯µ½µÄÊı¾İ Ã»ÓĞÆ¥ÅäÊı¾İ·µ»Ø¿Õ×Ö·û´®</returns>
+        /// <param name="key">ä¸ºç©ºåˆ™æŸ¥è¯¢æ‰€æœ‰ å¦åˆ™æŸ¥è¯¢å•æ¡</param>
+        /// <returns>æŸ¥è¯¢åˆ°çš„æ•°æ® æ²¡æœ‰åŒ¹é…æ•°æ®è¿”å›ç©ºå­—ç¬¦ä¸²</returns>
         public static string KeyCx(string key)
         {
             return KeyCX(CosKey, AppName, key);
@@ -147,10 +114,10 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static void KeyLOG(string content, bool isErr);
         /// <summary>
-        /// Ğ´ÈÕÖ¾
+        /// å†™æ—¥å¿—
         /// </summary>
-        /// <param name="content">ÈÕÖ¾ÀàÈİ</param>
-        /// <param name="isErr">ÊÇ·ñÊÇ´íÎóÈÕÖ¾Ä¬ÈÏ²»ÊÇ´íÎóÈÕÖ¾</param>
+        /// <param name="content">æ—¥å¿—ç±»å®¹</param>
+        /// <param name="isErr">æ˜¯å¦æ˜¯é”™è¯¯æ—¥å¿—é»˜è®¤ä¸æ˜¯é”™è¯¯æ—¥å¿—</param>
         public static void KeyLog(string content, bool isErr = false)
         {
             KeyLOG( content,  isErr);
@@ -158,11 +125,11 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string Encrypt(string content, string key);
         /// <summary>
-        /// ¼ÓÃÜÎÄ±¾
+        /// åŠ å¯†æ–‡æœ¬
         /// </summary>
-        /// <param name="content">´ı¼ÓÃÜµÄÎÄ±¾</param>
-        /// <param name="key">ÃØÔ¿</param>
-        /// <returns>¼ÓÃÜºóµÄÎÄ±¾</returns>
+        /// <param name="content">å¾…åŠ å¯†çš„æ–‡æœ¬</param>
+        /// <param name="key">ç§˜é’¥</param>
+        /// <returns>åŠ å¯†åçš„æ–‡æœ¬</returns>
         public static string KeyEncrypt(string content, string key)
         {
             return Encrypt( content, key);
@@ -170,11 +137,11 @@ namespace t_Demo
         [DllImport(DllPath)]
         private extern static string Decrypt(string content, string key);
         /// <summary>
-        /// ½âÃÜÎÄ±¾
+        /// è§£å¯†æ–‡æœ¬
         /// </summary>
-        /// <param name="content">ÃÜÎÄ</param>
-        /// <param name="key">ÃØÔ¿</param>
-        /// <returns>½âÃÜºóµÄÎÄ±¾</returns>
+        /// <param name="content">å¯†æ–‡</param>
+        /// <param name="key">ç§˜é’¥</param>
+        /// <returns>è§£å¯†åçš„æ–‡æœ¬</returns>
         public static string KeyDecrypt(string content, string key)
         {
             return Decrypt(content, key);
@@ -182,7 +149,3 @@ namespace t_Demo
 
     }
 }
-
-
-
-----------------------------------------------------------------------------------------------------------
