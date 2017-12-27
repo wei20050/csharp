@@ -13,14 +13,14 @@ namespace t_Demo
         private void P(string msg)
         {
             richTextBox1.Text = DateTime.Now.ToString("yyyyMMddHHmmss : ") + msg + Environment.NewLine +
-                                @"--------------------------------------------------------" + richTextBox1.Text;
+                                @"-----------------------------------------------------" + richTextBox1.Text;
         }
 
         //创建
         private void button2_Click(object sender, EventArgs e)
         {
             textBox1.Text = Cos.KeyXz(textBox2.Text);
-            P("新增key成功");
+            P(textBox1.Text == string.Empty ? "新增key失败" : "新增key成功");
         }
 
         //验证
