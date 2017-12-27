@@ -112,13 +112,13 @@ namespace t_Demo
             return KeyCX(CosKey, AppName, key);
         }
         [DllImport(DllPath)]
-        private extern static void KeyLOG(string content, bool isErr);
+        private extern static void KeyLOG(string content, string isErr);
         /// <summary>
         /// 写日志
         /// </summary>
         /// <param name="content">日志类容</param>
         /// <param name="isErr">是否是错误日志默认不是错误日志</param>
-        public static void KeyLog(string content, bool isErr = false)
+        public static void KeyLog(string content, string isErr = Success)
         {
             KeyLOG( content,  isErr);
         }

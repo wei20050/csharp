@@ -68,8 +68,8 @@ namespace t_Demo
         //写日志
         private void button9_Click(object sender, EventArgs e)
         {
-            Cos.KeyLog("测试错误日志", true);
-            Cos.KeyLog("测试信息日志");
+            Cos.KeyLog("测试错误日志");
+            Cos.KeyLog("测试信息日志","0");
             P("测试日志写入成功");
         }
 
