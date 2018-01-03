@@ -8,6 +8,7 @@ namespace c
     {
         private const string DmPath = @"C:\Windows\Temp\dm.dll";
         private const string DmcPath = @"C:\Windows\Temp\dmc.dll";
+
         #region import DLL 函数
 
         [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]

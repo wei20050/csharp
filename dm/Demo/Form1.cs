@@ -44,7 +44,6 @@ namespace Demo
         {
             var dm = new c.Dmsoft();
             dm.MoveTo(20, 20);
-            dm.LeftDoubleClick();
             dm.Delay(1000);
             dm.MoveTo(300, 600);
         }
