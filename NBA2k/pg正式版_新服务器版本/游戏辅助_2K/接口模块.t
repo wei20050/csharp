@@ -1,5 +1,5 @@
 ﻿功能 验证()
-    变量 ret = 是否注册("dm.dmsoft")
+变量 ret = 是否注册("dm.dmsoft")
     如果(!ret)
         变量 retdm = 注册插件("rc:dm.dll", 真)
         如果(retdm == 假)
@@ -8,6 +8,15 @@
         结束
     结束
     dmz = 插件("dm.dmsoft")
+    变量 dmver =  dmz.Ver()
+    if(dmver != "3.1233")
+         变量 retdm = 注册插件("rc:dm.dll", 真)
+        如果(retdm == 假)
+            p("对不起您的系统权限不足,无法使用本软件,请尝试右键管理员身份运行!")
+            退出()
+        结束
+    dmz = 插件("dm.dmsoft")
+    end
     控件模态窗口("登录界面")
 结束
 功能 按(key, dm)
