@@ -1,0 +1,25 @@
+使用方法: 
+1.引用yx.dll
+2.程序开头  using yx;
+3.注册钩子
+private void Form1_Load(object sender, EventArgs e)
+{
+    KeyHook key = new KeyHook();
+    key.SetHook();
+    key.OnKeyPressEvent += (o, args) =>
+    {
+        MessageBox.Show(args.KeyChar.ToString());
+    };
+}
+4.使用大漠
+private void button1_Click(object sender, EventArgs e)
+{
+    Dmsoft dm = new Dmsoft();
+    dm.Delay(3000);
+    dm.KeyPressStr(".aHHBsHkYRdfg21370hdUUBWiuqw210301", 100);
+}
+版本日志:
+初始版本=> 
+  大漠插件整合, 热键钩子注册
+1.0.0.1=>
+  大漠插件 Delay方法实现  KeyPressStr方法实现  RunApp方法实现 并改良成只要一个参数
