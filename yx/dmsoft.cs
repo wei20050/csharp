@@ -4,10 +4,12 @@ using System.Runtime.InteropServices;
 
 namespace yx
 {
-    public class Dmsoft : IDisposable
+    public class DmSoft : IDisposable
     {
+        #region 路径全局常量
         private const string DmPath = @"C:\Windows\Temp\dm.dll";
         private const string DmcPath = @"C:\Windows\Temp\dmc.dll";
+        #endregion
 
         #region import DLL 函数
 
@@ -959,18 +961,15 @@ namespace yx
         [DllImport(DmcPath, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern string GetDict(IntPtr dm, int index, int fontIndex);
 
-
         #endregion
 
         #region 大漠函数封装
+
         private IntPtr _dm;
+
         private bool _disposed;
-        //public IntPtr DM
-        //{
-        //    get { return _dm; }
-        //    set { _dm = value; }
-        //}
-        public Dmsoft()
+
+        public DmSoft()
         {
             if (!File.Exists(DmPath))
             {
@@ -982,11 +981,6 @@ namespace yx
             }
             _dm = CreateDM(DmPath);
         }
-        //版本固定为3.1233  不需要版本号查询了
-        /*public string Ver()
-        {
-            return Ver(_dm);
-        }*/
 
         public int SetPath(string path)
         {
@@ -2068,16 +2062,9 @@ namespace yx
             return 1;
             //return RunApp(_dm, path, mode);
         }
-        [DllImport("kernel32.dll")]
-        private static extern uint GetTickCount();//延迟函数方法
         public void Delay(int ms)
         {
-            var start = GetTickCount();
-            while (GetTickCount() - start < ms)
-            {
-                System.Windows.Forms.Application.DoEvents();
-                Console.WriteLine((GetTickCount() - start).ToString());
-            }
+            System.Threading.Thread.Sleep(ms);
         }
 
         public int FindWindowSuper(string spec1, int flag1, int type1, string spec2, int flag2, int type2)
@@ -2599,15 +2586,17 @@ namespace yx
         {
             return GetDict(_dm, index, fontIndex);
         }
+
         #endregion
 
         #region 继承释放接口方法
+
         public void Close()
         {
             Dispose();
         }
 
-        ~Dmsoft()
+        ~DmSoft()
         {
             Dispose();
         }
@@ -2627,6 +2616,7 @@ namespace yx
             _disposed = true;
             GC.SuppressFinalize(this);
         }
+
         #endregion
 
     }

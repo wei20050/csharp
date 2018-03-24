@@ -9,6 +9,7 @@ namespace yx
     public class KeyHook
     {
         #region 常数和结构
+
         public const int WmKeydown = 0x100;
         public const int WmKeyup = 0x101;
         public const int WmSyskeydown = 0x104;
@@ -24,11 +25,12 @@ namespace yx
             public int time;
             public int dwExtraInfo;
         }
+
         #endregion
 
         #region 钩子Api
 
-        public delegate int HookProc(int nCode, Int32 wParam, IntPtr lParam);
+        public delegate int HookProc(int nCode, int wParam, IntPtr lParam);
         //安装钩子的函数 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern int SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hInstance, int threadId);
@@ -37,27 +39,35 @@ namespace yx
         public static extern bool UnhookWindowsHookEx(int idHook);
         //下一个钩挂的函数 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern int CallNextHookEx(int idHook, int nCode, Int32 wParam, IntPtr lParam);
+        public static extern int CallNextHookEx(int idHook, int nCode, int wParam, IntPtr lParam);
         [DllImport("user32")]
         public static extern int ToAscii(int uVirtKey, int uScanCode, byte[] lpbKeyState, byte[] lpwTransKey, int fuState);
         [DllImport("user32")]
         public static extern int GetKeyboardState(byte[] pbKeyState);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
+
         #endregion
 
         #region 钩子方法定义
+
         int _hHook;
+
         HookProc _keyboardHookDelegate;
+
         //按下按键触发
         public event KeyEventHandler OnKeyDownEvent;
+
         //弹起按键触发
         public event KeyEventHandler OnKeyUpEvent;
+
         //按下并弹起按键触发
         public event KeyPressEventHandler OnKeyPressEvent;
+
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private List<Keys> _preKeysList = new List<Keys>();//存放被按下的控制键，用来生成具体的键
-        private int KeyboardHookProc(int nCode, Int32 wParam, IntPtr lParam)
+
+        private int KeyboardHookProc(int nCode, int wParam, IntPtr lParam)
         {
             //如果该消息被丢弃（nCode<0）或者没有事件绑定处理程序则不会触发事件
             if ((nCode >= 0) && (OnKeyDownEvent != null || OnKeyUpEvent != null || OnKeyPressEvent != null))
@@ -111,6 +121,7 @@ namespace yx
             }
             return CallNextHookEx(_hHook, nCode, wParam, lParam);
         }
+
         //根据已经按下的控制键生成key
         private Keys GetDownKeys(Keys key)
         {
@@ -123,11 +134,13 @@ namespace yx
             }
             return rtnKey | key;
         }
-        private Boolean IsCtrlAltShiftKeys(Keys key)
+
+        private bool IsCtrlAltShiftKeys(Keys key)
         {
             if (key == Keys.LControlKey || key == Keys.RControlKey || key == Keys.LMenu || key == Keys.RMenu || key == Keys.LShiftKey || key == Keys.RShiftKey) { return true; }
             return false;
         }
+
         /// <summary>
         /// 注册钩子
         /// </summary>
@@ -139,6 +152,7 @@ namespace yx
             var mh = GetModuleHandle(cModule.ModuleName);
             _hHook = SetWindowsHookEx(WhKeyboardLl, _keyboardHookDelegate, mh, 0);
         }
+
         /// <summary>
         /// 注销钩子
         /// </summary>
@@ -146,6 +160,7 @@ namespace yx
         {
             UnhookWindowsHookEx(_hHook);
         }
+
         #endregion
     }
 }
