@@ -2204,7 +2204,6 @@ namespace yx
             keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr) 0);
             keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr)0);
             return 1;
-            //return KeyPressStr(_dm, keyStr, delay);
         }
 
         public int EnableKeypadPatch(int en)
