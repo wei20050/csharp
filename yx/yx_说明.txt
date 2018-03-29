@@ -23,3 +23,5 @@ private void button1_Click(object sender, EventArgs e)
   大漠插件整合, 热键钩子注册
 1.0.0.1=>
   大漠插件 Delay方法实现  KeyPressStr方法实现  RunApp方法实现 并改良成只要一个参数
+1.0.0.2=>
+  大漠插件 ReadIniPwd方法实现 WriteIniPwd方法实现 DeleteIniPwd方法实现 添加AesDecrypt方法和 AesEncrypt方法

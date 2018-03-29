@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace yx
 {
@@ -2131,15 +2133,31 @@ namespace yx
         {
             return ForceUnBindWindow(_dm, hwnd);
         }
-
+        /// <summary>
+        /// 读取加密的ini文件
+        /// </summary>
+        /// <param name="section">小节名</param>
+        /// <param name="key">变量名</param>
+        /// <param name="file">文件路径(当前路径用./开头)</param>
+        /// <param name="pwd">加密密码</param>
+        /// <returns>变量值</returns>
         public string ReadIniPwd(string section, string key, string file, string pwd)
         {
-            return ReadIniPwd(_dm, section, key, file, pwd);
+            return AesDecrypt(AesDecrypt(ReadIni(AesEncrypt(AesEncrypt(section,pwd), "TYYXPWD"), AesEncrypt(AesEncrypt(key,pwd), "TYYXPWD").Replace("=",string.Empty), file), "TYYXPWD"),pwd);
         }
 
+        /// <summary>
+        /// 写入加密的ini文件
+        /// </summary>
+        /// <param name="section">小节名</param>
+        /// <param name="key">变量名</param>
+        /// <param name="v">变量值</param>
+        /// <param name="file">文件路径(当前路径用./开头)</param>
+        /// <param name="pwd">加密密码</param>
+        /// <returns>1 or 0</returns>
         public int WriteIniPwd(string section, string key, string v, string file, string pwd)
         {
-            return WriteIniPwd(_dm, section, key, v, file, pwd);
+            return WriteIni(AesEncrypt(AesEncrypt(section, pwd), "TYYXPWD"), AesEncrypt(AesEncrypt(key, pwd), "TYYXPWD").Replace("=", string.Empty), AesEncrypt(AesEncrypt(v, pwd), "TYYXPWD"), file);
         }
 
         public int DecodeFile(string file, string pwd)
@@ -2180,29 +2198,33 @@ namespace yx
         /// <param name="bScan"></param>
         /// <param name="dwFlags"></param>
         /// <param name="dwExtraInfo"></param>
-        [DllImport("user32.dll")]
-        public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+        [DllImport("user32.dll", EntryPoint = "keybd_event")]
+        public static extern void Keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
 
 
         #endregion
-
+        /// <summary>
+        /// 模拟按键输入字符串值(只支持大小写字母.特殊符号 和数字)
+        /// </summary>
+        /// <param name="keyStr">模拟输入的字符串</param>
+        /// <param name="delay">每个字之间的延迟</param>
+        /// <returns>返回1 or 0</returns>
         public int KeyPressStr(string keyStr, int delay)
         {
             var keystate = ((ushort) GetKey_State(VkCapital) & 0xffff) == 0;
-            for (var i = 0; i < keyStr.Length; i++)
+            foreach (var chr in keyStr)
             {
-                var chr = keyStr[i];
                 if (char.IsUpper(chr) == (((ushort)GetKey_State(VkCapital) & 0xffff) == 0))
                 {
-                    keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr)0);
-                    keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr)0);
+                    Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr)0);
+                    Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr)0);
                 }
                 KeyPressChar(chr.ToString());
                 Delay(delay);
             }
             if (keystate == (((ushort) GetKey_State(VkCapital) & 0xffff) == 0)) return 1;
-            keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr) 0);
-            keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr)0);
+            Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr) 0);
+            Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr)0);
             return 1;
         }
 
@@ -2500,10 +2522,17 @@ namespace yx
         {
             return DeleteIni(_dm, section, key, file);
         }
-
+        /// <summary>
+        /// 删除加密的ini文件小节
+        /// </summary>
+        /// <param name="section">小节名</param>
+        /// <param name="key">变量名(如果变量名为空删除整个小节)</param>
+        /// <param name="file">文件路径(当前路径用./开头)</param>
+        /// <param name="pwd">加密密码</param>
+        /// <returns>1 or 0</returns>
         public int DeleteIniPwd(string section, string key, string file, string pwd)
         {
-            return DeleteIniPwd(_dm, section, key, file, pwd);
+            return DeleteIni(AesEncrypt(AesEncrypt(section, pwd), "TYYXPWD"), AesEncrypt(AesEncrypt(key, pwd), "TYYXPWD").Replace("=", string.Empty), file);
         }
 
         public int EnableSpeedDx(int en)
@@ -2614,6 +2643,84 @@ namespace yx
             }
             _disposed = true;
             GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        #region 扩展功能
+
+        /// <summary>  
+        /// AES加密
+        /// </summary>  
+        /// <param name="data">要加密的明文</param>  
+        /// <param name="key">密钥</param>  
+        /// <returns>密文</returns>
+        public string AesEncrypt(string data, string key)
+        {
+            if (string.IsNullOrEmpty(data)) return string.Empty;
+            MemoryStream mStream = new MemoryStream();
+            RijndaelManaged aes = new RijndaelManaged();
+
+            var plainBytes = Encoding.UTF8.GetBytes(data);
+            var bKey = new byte[32];
+            Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
+
+            aes.Mode = CipherMode.ECB;
+            aes.Padding = PaddingMode.PKCS7;
+            aes.KeySize = 128;
+            aes.Key = bKey;
+            CryptoStream cryptoStream = new CryptoStream(mStream, aes.CreateEncryptor(), CryptoStreamMode.Write);
+            try
+            {
+                cryptoStream.Write(plainBytes, 0, plainBytes.Length);
+                cryptoStream.FlushFinalBlock();
+                return Convert.ToBase64String(mStream.ToArray());
+            }
+            finally
+            {
+                cryptoStream.Close();
+                mStream.Close();
+                aes.Clear();
+            }
+        }
+
+
+        /// <summary>  
+        /// AES解密
+        /// </summary>  
+        /// <param name="data">被加密的明文</param>  
+        /// <param name="key">密钥</param>  
+        /// <returns>明文</returns>  
+        public string AesDecrypt(string data, string key)
+        {
+            if (string.IsNullOrEmpty(data)) return string.Empty;
+            var encryptedBytes = Convert.FromBase64String(data);
+            var bKey = new byte[32];
+            Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
+
+            MemoryStream mStream = new MemoryStream(encryptedBytes);
+            RijndaelManaged aes = new RijndaelManaged
+            {
+                Mode = CipherMode.ECB,
+                Padding = PaddingMode.PKCS7,
+                KeySize = 128,
+                Key = bKey
+            };
+            CryptoStream cryptoStream = new CryptoStream(mStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
+            try
+            {
+                var tmp = new byte[encryptedBytes.Length + 32];
+                var len = cryptoStream.Read(tmp, 0, encryptedBytes.Length + 32);
+                var ret = new byte[len];
+                Array.Copy(tmp, 0, ret, 0, len);
+                return Encoding.UTF8.GetString(ret);
+            }
+            finally
+            {
+                cryptoStream.Close();
+                mStream.Close();
+                aes.Clear();
+            }
         }
 
         #endregion
