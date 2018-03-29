@@ -1,0 +1,8 @@
+This project demonstrates how to license an application without writing a single line of code. The IntelliLock SDK library IntelliLock.Licensing.dll is only used to display the current license status.
+
+To test this project:
+1.  Build the project
+2.  Open the IntelliLock project file test project.ilproj (located in the debug folder) with IntelliLock
+3.  Click "Finalize" to protect the application with an evaluation lock
+4.  Click "Create License" (tab "License Manager") to create a license file 
+5.  To unlock the protected you only need to copy the license file to the location of the protected application.

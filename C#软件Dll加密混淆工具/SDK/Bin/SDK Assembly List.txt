@@ -1,0 +1,26 @@
+IntelliLock.Licensing.dll & IntelliLock.Licensing.Silverlight.dll
+ - This Library enables you to:
+    * check the detailed license status
+    * deactivate and reactivate license files (via license server or reactivation code)
+    * direcly load license files
+    * generate Hardware IDs
+    * define your own dialog box using the IntelliLock.DialogBoxAttribute attribute
+    * prevent types and members from obfuscation using the IntelliLock.ObfuscationAttribute attribute
+ - The functionality of this library is only available AFTER IntelliLock processed your assembly. And after IntelliLock processed your assembly IntelliLock.Licensing.dll is not needed anymore. Therefore you can ship your software without this library. 
+
+IntelliLock.LicenseManager.dll & IntelliLock.LicenseManager.Mono.dll
+ - This Library enables you to:
+    * open IntelliLock project files
+    * create license files
+    * read license files
+    * easily encrypt and sign data using the master key stored in your project file (asymmetric encryption techniques are used here)
+    * easily decrypt data and verify its signature using the master key stored in your project file (asymmetric encryption techniques are used here)
+    * generate a reactivation code for invalidated license files
+ - You can freely use this library on a server or any other environment. 
+
+IntelliLockDB.dll & System.Data.SQLite.DLL
+ - This libraries are required to access IntelliLock databases (to use them in ASP.NET)
+ - You can freely use this libraries on a server or any other environment. 
+
+  
+  

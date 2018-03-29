@@ -1,0 +1,9 @@
+This project demonstrates how to license a Silverligh Application (XAP) using the IntelliLock SDK.
+
+To test this project:
+1.  Build the project
+2.  Open the IntelliLock project file project.ilproj (located in the debug folder) with IntelliLock
+3.  Click "Finalize" to protect the main assembly with an evaluation lock
+4.  Click "Create License" (tab "License Manager") to create a license file 
+5.  Copy the license file to the location of your XAP file
+6.  Run the protected Silverlight Application and click "Open License" to load the license file

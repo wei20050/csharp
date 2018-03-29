@@ -1,0 +1,9 @@
+This project demonstrates how to license an ASP.NET Web Application. The IntelliLock SDK library IntelliLock.Licensing.dll is used to display the current license status.  
+
+To test this project:
+1.  Build and deploy (folder 'Delpoyed') the Web Application
+2.  Open the file project.ilproj with IntelliLock
+3.  Click "Finalize" to protect the compiled assembly with an evaluation lock
+4.  Copy the protected assembly into the Bin directory (Delpoyed_Licensed')
+5.  Click "Create License" (tab "License Manager") to create a license file 
+6.  Copy the license file into the App_Data directory (folder 'Delpoyed_Licensed')

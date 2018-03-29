@@ -1,0 +1,8 @@
+﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="SDK_TestApp" EntryPointType="SDK_TestApp.App" RuntimeVersion="4.0.60310.0">
+  <Deployment.Parts>
+    <AssemblyPart x:Name="SDK_TestApp" Source="SDK_TestApp.dll" />
+    <AssemblyPart x:Name="IntelliLock.Licensing.Silverlight" Source="IntelliLock.Licensing.Silverlight.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Data.Input" Source="System.Windows.Controls.Data.Input.dll" />
+    <AssemblyPart x:Name="System.ComponentModel.DataAnnotations" Source="System.ComponentModel.DataAnnotations.dll" />
+  </Deployment.Parts>
+</Deployment>
