@@ -2185,46 +2185,49 @@ namespace yx
         private const int KeyeventfKeyup = 0x2;
         private const int VkCapital = 0x14;
         /// <summary>
-        /// 获取键状态
-        /// </summary>
-        /// <param name="keyCode"></param>
-        /// <returns></returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto,ExactSpelling = true,EntryPoint = "GetKeyState",CallingConvention = CallingConvention.Winapi)]
-        public static extern short GetKey_State(int keyCode);
-        /// <summary>
         /// 改变键状态
         /// </summary>
         /// <param name="bVk"></param>
         /// <param name="bScan"></param>
         /// <param name="dwFlags"></param>
         /// <param name="dwExtraInfo"></param>
-        [DllImport("user32.dll", EntryPoint = "keybd_event")]
-        public static extern void Keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
-
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, EntryPoint = "keybd_event", CallingConvention = CallingConvention.Winapi)]
+        private static extern void Keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
 
         #endregion
+
         /// <summary>
         /// 模拟按键输入字符串值(只支持大小写字母.特殊符号 和数字)
         /// </summary>
         /// <param name="keyStr">模拟输入的字符串</param>
         /// <param name="delay">每个字之间的延迟</param>
+        /// <param name="iszs">是否模拟真实输入</param>
         /// <returns>返回1 or 0</returns>
-        public int KeyPressStr(string keyStr, int delay)
+        public int KeyPressStr(string keyStr, int delay,int iszs = 0)
         {
-            var keystate = ((ushort) GetKey_State(VkCapital) & 0xffff) == 0;
-            foreach (var chr in keyStr)
+            try
             {
-                if (char.IsUpper(chr) == (((ushort)GetKey_State(VkCapital) & 0xffff) == 0))
+                foreach (var chr in keyStr)
                 {
-                    Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr)0);
-                    Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr)0);
+                    if (char.IsUpper(chr))
+                    {
+                        Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr) 0);
+                        Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr) 0);
+                        KeyPressChar(chr.ToString());
+                        Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr) 0);
+                        Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr) 0);
+                    }
+                    else
+                    {
+                        KeyPressChar(chr.ToString());
+                    }
+                    Delay(iszs == 0 ? delay : new Random().Next(1, 100));
                 }
-                KeyPressChar(chr.ToString());
-                Delay(delay);
             }
-            if (keystate == (((ushort) GetKey_State(VkCapital) & 0xffff) == 0)) return 1;
-            Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey, (UIntPtr) 0);
-            Keybd_event(VkCapital, 0x45, KeyeventfExtendedkey | KeyeventfKeyup, (UIntPtr)0);
+            catch (Exception)
+            {
+                return 0;
+            }
             return 1;
         }
 
