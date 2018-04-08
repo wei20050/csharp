@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -10,13 +11,65 @@ namespace yxz
 {
     public class Yx
     {
+        #region 常量
+
+        #region 设置窗口状态相关的常量
+
+        /// <summary>
+        /// 隐藏窗口并激活其他窗口
+        /// </summary>
+        public const int SwHide = 0;
+        /// <summary>
+        /// 激活并显示一个窗口。如果窗口被最小化或最大化，系统将其恢复到原来的尺寸和大小。应用程序在第一次显示窗口的时候应该指定此标志
+        /// </summary>
+        public const int SwNormal = 1;
+        /// <summary>
+        /// 激活窗口并将其最小化
+        /// </summary>
+        public const int SwShowminimized = 2;
+        /// <summary>
+        /// 最大化指定的窗口
+        /// </summary>
+        public const int SwMaximize = 3;
+        /// <summary>
+        /// 以窗口最近一次的大小和状态显示窗口。激活窗口仍然维持激活状态
+        /// </summary>
+        public const int SwShownoactivate = 4;
+        /// <summary>
+        /// 在窗口原来的位置以原来的尺寸激活和显示窗口
+        /// </summary>
+        public const int SwShow = 5;
+        /// <summary>
+        /// 最小化指定的窗口并且激活在Z序中的下一个顶层窗口
+        /// </summary>
+        public const int SwMinimize = 6;
+        /// <summary>
+        /// 窗口最小化，激活窗口仍然维持激活状态
+        /// </summary>
+        public const int SwShowminnoactive = 7;
+        /// <summary>
+        /// 以窗口原来的状态显示窗口。激活窗口仍然维持激活状态
+        /// </summary>
+        public const int SwShowna = 8;
+        /// <summary>
+        /// 激活并显示窗口。如果窗口最小化或最大化，则系统将窗口恢复到原来的尺寸和位置。在恢复最小化窗口时，应用程序应该指定这个标志。
+        /// </summary>
+        public const int SwRestore = 9;
+        /// <summary>
+        /// 依据在STARTUPINFO结构中指定的SW_FLAG标志设定显示状态，STARTUPINFO 结构是由启动应用程序的程序传递给CreateProcess函数的
+        /// </summary>
+        public const int SwShowdefault = 10;
+
+        #endregion
+
+        #endregion
+
         #region 系统API
-        
+
         [DllImport("user32.dll", EntryPoint = "keybd_event", SetLastError = true)]
         private static extern void Keybd_event(Keys bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
         [DllImport("User32.dll")]
         private static extern bool SetCursorPos(int x, int y);
-
         [DllImport("user32.dll", EntryPoint = "mouse_event", SetLastError = true)]
         private static extern int Mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
         [DllImport("kernel32")]
@@ -34,6 +87,21 @@ namespace yxz
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr processId);
         [DllImport("user32.dll")]
         private static extern bool GetGUIThreadInfo(uint idThread, ref Guithreadinfo lpgui);
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        private static extern IntPtr FWindow(string lpClassName, string lpWindowName);
+        private delegate bool CallBack(IntPtr hwnd, int lParam);
+        [DllImport("user32.dll", EntryPoint = "EnumWindows")]
+        private static extern int EWindows(CallBack lpEnumFunc, int lParam);
+        [DllImport("user32.dll")]
+        private static extern int GetWindowTextW(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)]StringBuilder lpString, int nMaxCount);
+        [DllImport("user32.dll")]
+        private static extern int GetClassNameW(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)]StringBuilder lpString, int nMaxCount);
+        [DllImport("user32.dll")]
+        private static extern int GetWindowRect(IntPtr hwnd, out Rect lpRect);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRePaint);
+        [DllImport("user32.dll")]
+        public static extern int ShowWindow(int hwnd, int nCmdShow);
 
         #endregion
 
@@ -84,7 +152,7 @@ namespace yxz
         {
             if (hwnd == IntPtr.Zero) return null;
             var threadId = GetWindowThreadProcessId(hwnd, IntPtr.Zero);
-            Guithreadinfo guiThreadInfo = new Guithreadinfo();
+            var guiThreadInfo = new Guithreadinfo();
             guiThreadInfo.cbSize = Marshal.SizeOf(guiThreadInfo);
             if (GetGUIThreadInfo(threadId, ref guiThreadInfo) == false)
                 return null;
@@ -109,8 +177,8 @@ namespace yxz
             var errorRange = Convert.ToByte(255 - 255 * simc);
             var parWidth = Screen.AllScreens[0].Bounds.Width;
             var parHeight = Screen.AllScreens[0].Bounds.Height;
-            Bitmap parBitmap = new Bitmap(parWidth, parHeight, PixelFormat.Format24bppRgb);
-            using (Graphics g = Graphics.FromImage(parBitmap))
+            var parBitmap = new Bitmap(parWidth, parHeight, PixelFormat.Format24bppRgb);
+            using (var g = Graphics.FromImage(parBitmap))
             {
                 g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(parWidth, parHeight));
             }
@@ -325,7 +393,7 @@ namespace yxz
         /// <param name="text">字符串文本</param>
         public static void SayString(string text)
         {
-            IntPtr hwnd = GetForegroundWindow();
+            var hwnd = GetForegroundWindow();
             if (string.IsNullOrEmpty(text))
                 return;
             var guiInfo = GetGuiThreadInfo(hwnd);
@@ -352,8 +420,8 @@ namespace yxz
             {
                 var sWidth = Screen.AllScreens[0].Bounds.Width;
                 var sHeight = Screen.AllScreens[0].Bounds.Height;
-                Bitmap parBitmap = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
-                using (Graphics g = Graphics.FromImage(parBitmap))
+                var parBitmap = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
+                using (var g = Graphics.FromImage(parBitmap))
                 {
                     g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(sWidth, sHeight));
                 }
@@ -385,8 +453,8 @@ namespace yxz
             {
                 var sWidth = Screen.AllScreens[0].Bounds.Width;
                 var sHeight = Screen.AllScreens[0].Bounds.Height;
-                Bitmap parBitmap = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
-                using (Graphics g = Graphics.FromImage(parBitmap))
+                var parBitmap = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
+                using (var g = Graphics.FromImage(parBitmap))
                 {
                     g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(sWidth, sHeight));
                 }
@@ -450,8 +518,8 @@ namespace yxz
                 var errorRange = Convert.ToByte(255 - 255 * sim);
                 var sWidth = Screen.AllScreens[0].Bounds.Width;
                 var sHeight = Screen.AllScreens[0].Bounds.Height;
-                Bitmap sBmp = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
-                using (Graphics g = Graphics.FromImage(sBmp))
+                var sBmp = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
+                using (var g = Graphics.FromImage(sBmp))
                 {
                     g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(sWidth, sHeight));
                 }
@@ -472,13 +540,13 @@ namespace yxz
                 {
                     rect = new Rectangle(0, 0, sWidth, sHeight);
                 }
-                BitmapData sData = sBmp.LockBits(new Rectangle(0, 0, sWidth, sHeight), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-                BitmapData pData = pBmp.LockBits(new Rectangle(0, 0, pWidth, pHeight), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                var sData = sBmp.LockBits(new Rectangle(0, 0, sWidth, sHeight), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                var pData = pBmp.LockBits(new Rectangle(0, 0, pWidth, pHeight), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
                 var sStride = sData.Stride;
                 var pStride = pData.Stride;
                 var pOffset = pStride - pData.Width * 3;
-                IntPtr sIptr = sData.Scan0;
-                IntPtr pIptr = pData.Scan0;
+                var sIptr = sData.Scan0;
+                var pIptr = pData.Scan0;
                 var isOk = false;
                 var breakW = sWidth - pWidth + 1;
                 var breakH = sHeight - pHeight + 1;
@@ -720,7 +788,7 @@ namespace yxz
         /// <param name="y">鼠标y</param>
         public static void GetCursorPos(out int x, out int y)
         {
-            Point screenPoint = Control.MousePosition;
+            var screenPoint = Control.MousePosition;
             x = screenPoint.X;
             y = screenPoint.Y;
         }
@@ -870,7 +938,7 @@ namespace yxz
         {
             try
             {
-                StringBuilder sb = new StringBuilder(255);
+                var sb = new StringBuilder(255);
                 GetPrivateProfileString(section, key, "", sb, 255, file);
                 return sb.ToString().Trim();
             }
@@ -888,7 +956,7 @@ namespace yxz
         {
             try
             {
-                FolderBrowserDialog fdlg = new FolderBrowserDialog();
+                var fdlg = new FolderBrowserDialog();
                 if (fdlg.ShowDialog() == DialogResult.OK)
                 {
                     return fdlg.SelectedPath;
@@ -909,7 +977,7 @@ namespace yxz
         {
             try
             {
-                OpenFileDialog fdlg = new OpenFileDialog();
+                var fdlg = new OpenFileDialog();
                 if (fdlg.ShowDialog() == DialogResult.OK)
                 {
                     return fdlg.FileName;
@@ -932,7 +1000,7 @@ namespace yxz
         {
             try
             {
-                StreamWriter sw = new StreamWriter(file, true);
+                var sw = new StreamWriter(file, true);
                 sw.WriteLine(content);
                 sw.Close();
             }
@@ -964,6 +1032,154 @@ namespace yxz
             }
             return 1;
         }
+
+        #endregion
+
+        #region 窗口操作
+
+        /// <summary>
+        /// 获取窗体的句柄函数
+        /// </summary>
+        /// <param name="lpClassName">窗口类名</param>
+        /// <param name="lpWindowName">窗口标题名</param>
+        /// <returns>返回第一个找到的句柄</returns>
+        public static int FindWindow(string lpClassName, string lpWindowName)
+        {
+            if (lpClassName == string.Empty) lpClassName = null;
+            if (lpWindowName == string.Empty) lpWindowName = null;
+            return (int) FWindow(lpClassName, lpWindowName);
+        }
+        /// <summary>
+        /// 获取窗体的句柄函数(模糊匹配)
+        /// </summary>
+        /// <param name="lpClassName">窗口类名</param>
+        /// <param name="lpWindowName">窗口标题名</param>
+        /// <returns>返回句柄集合</returns>
+        public static List<int> FindWindowEx(string lpClassName, string lpWindowName)
+        {
+            var wndList = new List<int>();
+            EWindows(delegate(IntPtr hWnd, int y)
+            {
+                var sb = new StringBuilder(256);
+                GetClassNameW(hWnd, sb, sb.Capacity);
+                var windowClass = sb.ToString();
+                GetWindowTextW(hWnd, sb, sb.Capacity);
+                var windowText = sb.ToString();
+                if (lpClassName == string.Empty && lpWindowName == string.Empty)
+                {
+                    if (windowText.Contains(lpWindowName) && windowClass.Contains(lpClassName))
+                    {
+                        wndList.Add((int) hWnd);
+                    }
+                }
+                else if (lpClassName == string.Empty)
+                {
+                    if (windowText.Contains(lpWindowName))
+                    {
+                        wndList.Add((int) hWnd);
+                    }
+                }
+                else if (lpWindowName == string.Empty)
+                {
+
+                    if (windowClass.Contains(lpClassName))
+                    {
+                        wndList.Add((int) hWnd);
+                    }
+                }
+                return true;
+            }, 0);
+            return wndList;
+        }
+        /// <summary>
+        /// 获取窗口位置
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="zx">返回窗口左x坐标</param>
+        /// <param name="zy">返回窗口左y坐标</param>
+        /// <param name="yx">返回窗口右x坐标</param>
+        /// <param name="yy">返回窗口右y坐标</param>
+        /// <returns>0:失败 1:成功</returns>
+        public static int GetWindowRect(int hwnd, out int zx,out int zy,out int yx,out int yy)
+        {
+            zx = zy = yx = yy = - 1;
+            try
+            {
+                GetWindowRect((IntPtr)hwnd,out var ipRect);
+                zx = ipRect.left;
+                zy = ipRect.top;
+                yx = ipRect.right;
+                yy = ipRect.bottom;
+            }
+            catch (Exception e)
+            {
+                _lastError = $"获取窗口位置: {e}";
+                return 0;
+            }
+            return 1;
+        }
+        /// <summary>
+        /// 设置窗口大小
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="w">宽</param>
+        /// <param name="h">高</param>
+        /// <returns>0:失败 1:成功</returns>
+        public static int SetWindowSize(int hwnd, int w, int h)
+        {
+            try
+            {
+                GetWindowRect(hwnd,out var zx,out var zy,out _,out _);
+                return MoveWindow((IntPtr) hwnd, zx, zy, w, h, true);
+            }
+            catch (Exception e)
+            {
+                _lastError = $"设置窗口大小: {e}";
+                return 0;
+            }
+        }
+        /// <summary>
+        /// 移动窗口
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        /// <returns>0:失败 1:成功</returns>
+        public static int MoveWindow(int hwnd, int x, int y)
+        {
+            try
+            {
+                GetWindowRect(hwnd, out var zx, out var zy, out var yx, out var yy);
+                return MoveWindow((IntPtr) hwnd, x-6, y, yx - zx, yy - zy, true);
+            }
+            catch (Exception e)
+            {
+                _lastError = $"移动窗口: {e}";
+                return 0;
+            }
+        }
+        /// <summary>
+        /// 设置窗口的状态
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="type">状态类型</param>
+        /// <returns>0:失败 1:成功</returns>
+        public static int SetWindowState(int hwnd, int type)
+        {
+            try
+            {
+
+                return ShowWindow(hwnd, type);
+            }
+            catch (Exception e)
+            {
+                _lastError = $"设置窗口的状态: {e}";
+                return 0;
+            }
+        }
+        #endregion
+
+        #region 后台操作
 
         #endregion
     }
