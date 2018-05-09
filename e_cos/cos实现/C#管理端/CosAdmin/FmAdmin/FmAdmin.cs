@@ -16,7 +16,7 @@ namespace CosAdmin.FmAdmin
 
         private void FmAdmin_Load(object sender, EventArgs e)
         {
-            Cos.CosKey = ConfigurationManager.AppSettings["CosKey"];
+            Cos.CosKey = Cos.GetCos().KeyDecrypt(ConfigurationManager.AppSettings["CosKey"],"tyyxadmin");
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 2;
             var login = new FmLogin();
