@@ -7,7 +7,7 @@ namespace CosAdmin
     {
         public Test(string appName)
         {
-            _cos = new Cos(appName);
+            _cos = Cos.GetCos(appName);
             InitializeComponent();
         }
 

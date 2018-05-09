@@ -13,7 +13,7 @@ namespace CosAdmin.FmAdmin
     {
         public FmReg()
         {
-            _cos = new Cos("Admin");
+            _cos = Cos.GetCos("Admin");
             InitializeComponent();
         }
         private readonly Cos _cos;

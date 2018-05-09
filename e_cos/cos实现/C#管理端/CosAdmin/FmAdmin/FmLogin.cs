@@ -6,7 +6,7 @@ namespace CosAdmin.FmAdmin
     {
         public FmLogin()
         {
-            _cos = new Cos("Admin");
+            _cos = Cos.GetCos("Admin");
             InitializeComponent();
         }
 

@@ -19,7 +19,7 @@ namespace CosAdmin
         /// <summary>
         /// cos连接秘钥
         /// </summary>
-        private const string CosKey = "0C800F07C0F50E404804808902603702F07E0EF0530500290140C60E10050EE04F0170700480AC0520990F40870EB0A30CC0430CC0AF00303902303404D0C00F90EC0FF0C901D0430CE0DC0EC00D0AF01507E05E0A90090B50930EE0170ED08B08403604D07007105803C0F80F90D501503D0720330D60BE0D00020910930F808B0040DC01701307B0D70300EF0380EE07808004309802807F0E20570720890C20B10B501503402007606C0CB0DD0DA0790830D8";
+        public static string CosKey = string.Empty;
 
         /// <summary>
         /// 成功
@@ -28,23 +28,27 @@ namespace CosAdmin
 
         #endregion
 
-        #region 构造不同的应用
-
+        #region 创建不同的应用
+        /// <summary>
+        /// 当前类对象
+        /// </summary>
+        private static Cos _c;
         /// <summary>
         /// 应用名称
         /// </summary>
-        private readonly string _appName;
-
-        public Cos()
+        private static string _appName;
+        private Cos()
         {
-            _appName = "默认应用";
         }
-
-        public Cos(string appName)
+        public static Cos GetCos(string appName = "默认应用")
         {
+            if (_c == null)
+            {
+                _c = new Cos();
+            }
             _appName = appName;
+            return _c;
         }
-
         #endregion
 
         #region dll引入
@@ -94,7 +98,7 @@ namespace CosAdmin
         /// <param name="key">数据名称</param>
         /// <param name="value">数据值</param>
         /// <returns>新增的秘钥</returns>
-        public bool Insert(string key,string value)
+        public bool Insert(string key, string value)
         {
             return Insert(CosKey, key, value) == Success;
         }
@@ -218,9 +222,9 @@ namespace CosAdmin
         /// <param name="skey">操作人的key</param>
         /// <param name="type">操作类型</param>
         /// <returns>查询到的数据 没有匹配数据返回空字符串</returns>
-        public string JlXz(string key,string skey,string type)
+        public string JlXz(string key, string skey, string type)
         {
-            return JlXZ(CosKey, _appName, key, skey,type);
+            return JlXZ(CosKey, _appName, key, skey, type);
         }
 
         /// <summary>
@@ -298,7 +302,7 @@ namespace CosAdmin
             {
                 return null;
             }
-            var arrStr = tmpStr.Split(new[]{"|,|"},StringSplitOptions.None);
+            var arrStr = tmpStr.Split(new[] { "|,|" }, StringSplitOptions.None);
             CKey key = new CKey
             {
                 Key = KeyKB(arrStr[0]),

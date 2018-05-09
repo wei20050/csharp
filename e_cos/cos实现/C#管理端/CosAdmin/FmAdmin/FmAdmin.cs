@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-
+using System.Configuration;
 namespace CosAdmin.FmAdmin
 {
     public partial class FmAdmin : Form
@@ -16,6 +16,7 @@ namespace CosAdmin.FmAdmin
 
         private void FmAdmin_Load(object sender, EventArgs e)
         {
+            Cos.CosKey = ConfigurationManager.AppSettings["CosKey"];
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 2;
             var login = new FmLogin();
@@ -23,7 +24,7 @@ namespace CosAdmin.FmAdmin
             AppName = login.AppName;
             UserName = login.UserName;
             Text = $@"当前应用为:{AppName}";
-            _cos = new Cos(AppName);
+            _cos = Cos.GetCos(AppName);
         }
 
         private void button1_Click(object sender, EventArgs e)
