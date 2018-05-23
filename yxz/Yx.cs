@@ -83,12 +83,16 @@ namespace yxz
         private static extern IntPtr GetForegroundWindow();
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr processId);
         [DllImport("user32.dll")]
         private static extern bool GetGUIThreadInfo(uint idThread, ref Guithreadinfo lpgui);
         [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
         private static extern IntPtr FWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll", EntryPoint = "FindWindowEx", SetLastError = true)]
+        private static extern IntPtr FWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpClassName, string lpWindowName);
         private delegate bool CallBack(IntPtr hwnd, int lParam);
         [DllImport("user32.dll", EntryPoint = "EnumWindows")]
         private static extern int EWindows(CallBack lpEnumFunc, int lParam);
@@ -101,7 +105,7 @@ namespace yxz
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRePaint);
         [DllImport("user32.dll")]
-        public static extern int ShowWindow(int hwnd, int nCmdShow);
+        public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
 
         #endregion
 
@@ -364,7 +368,7 @@ namespace yxz
         {
             try
             {
-                 return  Clipboard.GetData(format);
+                return Clipboard.GetData(format);
             }
             catch (Exception e)
             {
@@ -446,7 +450,7 @@ namespace yxz
         /// <param name="sim"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public static void FindColor(int zx,int zy,int yx,int yy,string searchColor, double sim ,out int x,out int y)
+        public static void FindColor(int zx, int zy, int yx, int yy, string searchColor, double sim, out int x, out int y)
         {
             x = y = -1;
             try
@@ -934,7 +938,7 @@ namespace yxz
         /// <param name="key">变量名</param>
         /// <param name="file">文件路径</param>
         /// <returns>内容</returns>
-        public static string ReadIni(string section,string key, string file)
+        public static string ReadIni(string section, string key, string file)
         {
             try
             {
@@ -996,7 +1000,7 @@ namespace yxz
         /// <param name="file">文件路径</param>
         /// <param name="content">内容</param>
         /// <returns>0:失败 1:成功</returns>
-        public static int WriteFile(string file,string content)
+        public static int WriteFile(string file, string content)
         {
             try
             {
@@ -1019,7 +1023,7 @@ namespace yxz
         /// <param name="value">变量值</param>
         /// <param name="file">文件路径</param>
         /// <returns>0:失败 1:成功</returns>
-        public static int WriteIni(string section,string  key,string  value,string  file)
+        public static int WriteIni(string section, string key, string value, string file)
         {
             try
             {
@@ -1047,18 +1051,33 @@ namespace yxz
         {
             if (lpClassName == string.Empty) lpClassName = null;
             if (lpWindowName == string.Empty) lpWindowName = null;
-            return (int) FWindow(lpClassName, lpWindowName);
+            return (int)FWindow(lpClassName, lpWindowName);
         }
+
+        /// <summary>
+        /// 获取窗体的句柄函数(高级)
+        /// </summary>
+        /// <param name="hwndParent">父窗体句柄(若父窗体值为0此方法同FindWindow)</param>
+        /// <param name="lpClassName">窗口类名</param>
+        /// <param name="lpWindowName">窗口标题名</param>
+        /// <returns>返回第一个找到的句柄</returns>
+        public static int FindWindowEx(int hwndParent, string lpClassName, string lpWindowName)
+        {
+            if (lpClassName == string.Empty) lpClassName = null;
+            if (lpWindowName == string.Empty) lpWindowName = null;
+            return (int)FWindowEx((IntPtr)hwndParent, IntPtr.Zero, lpClassName, lpWindowName);
+        }
+
         /// <summary>
         /// 获取窗体的句柄函数(模糊匹配)
         /// </summary>
         /// <param name="lpClassName">窗口类名</param>
         /// <param name="lpWindowName">窗口标题名</param>
         /// <returns>返回句柄集合</returns>
-        public static List<int> FindWindowEx(string lpClassName, string lpWindowName)
+        public static List<int> EnumWindows(string lpClassName, string lpWindowName)
         {
             var wndList = new List<int>();
-            EWindows(delegate(IntPtr hWnd, int y)
+            EWindows(delegate (IntPtr hWnd, int y)
             {
                 var sb = new StringBuilder(256);
                 GetClassNameW(hWnd, sb, sb.Capacity);
@@ -1069,14 +1088,14 @@ namespace yxz
                 {
                     if (windowText.Contains(lpWindowName) && windowClass.Contains(lpClassName))
                     {
-                        wndList.Add((int) hWnd);
+                        wndList.Add((int)hWnd);
                     }
                 }
                 else if (lpClassName == string.Empty)
                 {
                     if (windowText.Contains(lpWindowName))
                     {
-                        wndList.Add((int) hWnd);
+                        wndList.Add((int)hWnd);
                     }
                 }
                 else if (lpWindowName == string.Empty)
@@ -1084,7 +1103,7 @@ namespace yxz
 
                     if (windowClass.Contains(lpClassName))
                     {
-                        wndList.Add((int) hWnd);
+                        wndList.Add((int)hWnd);
                     }
                 }
                 return true;
@@ -1100,12 +1119,12 @@ namespace yxz
         /// <param name="yx">返回窗口右x坐标</param>
         /// <param name="yy">返回窗口右y坐标</param>
         /// <returns>0:失败 1:成功</returns>
-        public static int GetWindowRect(int hwnd, out int zx,out int zy,out int yx,out int yy)
+        public static int GetWindowRect(int hwnd, out int zx, out int zy, out int yx, out int yy)
         {
-            zx = zy = yx = yy = - 1;
+            zx = zy = yx = yy = -1;
             try
             {
-                GetWindowRect((IntPtr)hwnd,out var ipRect);
+                GetWindowRect((IntPtr)hwnd, out var ipRect);
                 zx = ipRect.left;
                 zy = ipRect.top;
                 yx = ipRect.right;
@@ -1129,8 +1148,8 @@ namespace yxz
         {
             try
             {
-                GetWindowRect(hwnd,out var zx,out var zy,out _,out _);
-                return MoveWindow((IntPtr) hwnd, zx, zy, w, h, true);
+                GetWindowRect(hwnd, out var zx, out var zy, out _, out _);
+                return MoveWindow((IntPtr)hwnd, zx, zy, w, h, true);
             }
             catch (Exception e)
             {
@@ -1150,7 +1169,7 @@ namespace yxz
             try
             {
                 GetWindowRect(hwnd, out var zx, out var zy, out var yx, out var yy);
-                return MoveWindow((IntPtr) hwnd, x-6, y, yx - zx, yy - zy, true);
+                return MoveWindow((IntPtr)hwnd, x - 6, y, yx - zx, yy - zy, true);
             }
             catch (Exception e)
             {
@@ -1169,7 +1188,7 @@ namespace yxz
             try
             {
 
-                return ShowWindow(hwnd, type);
+                return ShowWindow((IntPtr)hwnd, type);
             }
             catch (Exception e)
             {
@@ -1181,6 +1200,119 @@ namespace yxz
 
         #region 后台操作
 
+        /// <summary>
+        /// 根据句柄发送一个字符串
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="input">字符串</param>
+        public static void SendStr(int hwnd, string input)
+        {
+            if (string.IsNullOrEmpty(input)) return;
+            foreach (var t in input)
+            {
+                SendMessage((IntPtr)hwnd, 0x0102, (IntPtr)t, IntPtr.Zero);
+            }
+        }
+
+        /// <summary>
+        /// 根据句柄按下鼠标左键
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        public static void SendLeftDown(int hwnd, int x, int y)
+        {
+            PostMessage((IntPtr)hwnd, 0x201, (IntPtr)1, (IntPtr)(x + (y << 16)));
+        }
+
+        /// <summary>
+        /// 根据句柄弹起鼠标左键
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        public static void SendLeftUp(int hwnd, int x, int y)
+        {
+            PostMessage((IntPtr)hwnd, 0x202, (IntPtr)1, (IntPtr)(x + (y << 16)));
+        }
+
+        /// <summary>
+        /// 根据句柄点击鼠标左键
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        public static void SendLeftClick(int hwnd, int x,int y)
+        {
+            PostMessage((IntPtr)hwnd, 0x201, (IntPtr)1, (IntPtr)(x + (y << 16)));
+            PostMessage((IntPtr)hwnd, 0x202, (IntPtr)1, (IntPtr)(x + (y << 16)));
+        }
+
+        /// <summary>
+        /// 根据句柄按下鼠标右键
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        public static void SendRightDown(int hwnd, int x, int y)
+        {
+            PostMessage((IntPtr)hwnd, 0x204, (IntPtr)1, (IntPtr)(x + (y << 16)));
+        }
+
+        /// <summary>
+        /// 根据句柄弹起鼠标右键
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        public static void SendRightUp(int hwnd, int x, int y)
+        {
+            PostMessage((IntPtr)hwnd, 0x205, (IntPtr)1, (IntPtr)(x + (y << 16)));
+        }
+
+        /// <summary>
+        /// 根据句柄点击鼠标右键
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="x">x坐标</param>
+        /// <param name="y">y坐标</param>
+        public static void SendRightClick(int hwnd, int x, int y)
+        {
+            PostMessage((IntPtr)hwnd, 0x204, (IntPtr)1, (IntPtr)(x + (y << 16)));
+            PostMessage((IntPtr)hwnd, 0x205, (IntPtr)1, (IntPtr)(x + (y << 16)));
+        }
+
+        /// <summary>
+        /// 根据句柄键盘按下
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="bVk">键代码</param>
+        public static void SendKeyDown(int hwnd, Keys bVk)
+        {
+            SendMessage((IntPtr)hwnd, 0X104, (IntPtr)bVk, IntPtr.Zero);
+        }
+
+        /// <summary>
+        /// 根据句柄键盘弹起
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="bVk">键代码</param>
+        public static void SendKeyUp(int hwnd, Keys bVk)
+        {
+            SendMessage((IntPtr)hwnd, 0X101, (IntPtr)bVk, IntPtr.Zero);
+        }
+
+        /// <summary>
+        /// 根据句柄键盘按键
+        /// </summary>
+        /// <param name="hwnd">窗口句柄</param>
+        /// <param name="bVk">键代码</param>
+        public static void SendKeyPress(int hwnd, Keys bVk)
+        {
+            SendMessage((IntPtr)hwnd, 0X106, (IntPtr)bVk, IntPtr.Zero);
+            //SendMessage((IntPtr)hwnd, 0X105, (IntPtr)bVk, IntPtr.Zero);
+        }
+        
         #endregion
     }
 }
