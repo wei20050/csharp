@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using TYClientCore;
 using TYModel;
+using TYPublicCore;
 namespace TYClient
 {
     public partial class Form1 : Form
@@ -16,13 +17,17 @@ namespace TYClient
         {
             Ren r = new Ren
             {
-                id = 2,
-                name = "weiyaoxi",
-                age = 12,
-                sfzhm = "1122"
+                id = 2
             };
-            var json = Udp.Getudp().Fun("GetRen",TYPublicCore.Json.ObjToJson(r));
-            dataGridView1.DataSource = TYPublicCore.Json.JsonToObj<List<Ren>>(json);
+            TYUdp.Getudp().serviceIp = System.Net.IPAddress.Parse(textBox1.Text);
+            if (TYUdp.Getudp().Fun("GetRen", TYConvert.ObjToJson(r), out string json))
+            {
+                dataGridView1.DataSource = TYConvert.JsonToObj<List<Ren>>(json);
+            }
+            else
+            {
+                MessageBox.Show("服务器连接错误");
+            }
         }
     }
 }

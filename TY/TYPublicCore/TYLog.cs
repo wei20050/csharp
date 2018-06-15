@@ -3,7 +3,7 @@ using System.IO;
 
 namespace TYPublicCore
 {
-    public class Log
+    public class TYLog
     {
         /// <summary>
         /// 写日志

@@ -4,38 +4,51 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
+using System.IO;
 
 namespace TYServiceCore
 {
-    public class SQLite
+    public class TYSQLite
     {
-        public SQLite()
+        public static bool Init(out string errMessage)
         {
-            //解析程序集失败的时候调用加载资源文件中的dll, 这句必须写在构造里面 InitializeComponent之前.
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            if (!File.Exists("DBComfig.txt"))
+            {
+                File.WriteAllText("DBComfig.txt", "dataBasePath=D:\\mydb.db,dataBasePasssord=123456");
+                errMessage = "数据库配置不存在,已经自动创建,请配置好数据库后重启服务器 !";
+                return false;
+            }
+            else
+            {
+                var DBStr = File.ReadAllText("DBComfig.txt");
+                var db = DBStr.Split(',');
+                if (db.Length != 2)
+                {
+                    errMessage = "数据库配置配置异常,请配置好数据库后重启服务器 !";
+                    return false;
+                }
+                var dbPath = db[0].Split('=');
+                var dbPwd = db[1].Split('=');
+                if (dbPath.Length != 2 || dbPwd.Length != 2)
+                {
+                    errMessage = "数据库配置配置异常,请配置好数据库后重启服务器 !";
+                    return false;
+                }
+                dataBasePath = Path.GetFullPath(dbPath[1].Trim());
+                //暂时不用加密的SQLite数据库 加密方法 conn.ChangePassword(string.Empty); 密码为 string.Empty 时是删除密码
+                //dataBasePasssord = dbPwd[1].Trim();
+                errMessage = string.Empty;
+                return true;
+            }
         }
+
         /// <summary>
-        /// 读取资源中的dll
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string dllName = args.Name.Contains(",") ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name.Replace(".dll", "");
-            dllName = dllName.Replace(".", "_");
-            if (dllName.EndsWith("_resources")) return null;
-            System.Resources.ResourceManager rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", System.Reflection.Assembly.GetExecutingAssembly());
-            byte[] bytes = (byte[])rm.GetObject(dllName);
-            return System.Reflection.Assembly.Load(bytes);
-        }
-        /// <summary>
-        /// 数据库
+        /// 数据库地址
         /// </summary>
         public static string dataBasePath;
-
+        /// <summary>
+        /// 数据库密码
+        /// </summary>
         public static string dataBasePasssord;
 
         /// <summary>

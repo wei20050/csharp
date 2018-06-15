@@ -5,15 +5,16 @@ using System.Text;
 
 namespace TYClientCore
 {
-    public class Udp
+    public class TYUdp
     {
         #region 基本定义与系统方法
-        private static Udp udp = null;//本类对象
+        private static TYUdp udp = null;//本类对象
         private static readonly object locker = new object();//多线程锁
-        UdpClient client;//udp对象
-        IPAddress serviceIp = IPAddress.Broadcast;//服务器IP
+        private UdpClient client;//udp对象
+        public IPAddress serviceIp = IPAddress.Broadcast;//服务器IP
+        const string ServerAddressBroadcastMsg = "825C7B29-5B62-4242-AF76-EBDB489A6090";
         //私有构造实现单例模式
-        private Udp()
+        private TYUdp()
         {
             client = new UdpClient
             {
@@ -26,7 +27,7 @@ namespace TYClientCore
             }
         }
         //获取当前对象的公共方法
-        public static Udp Getudp()
+        public static TYUdp Getudp()
         {
             if (udp == null)
             {
@@ -34,7 +35,7 @@ namespace TYClientCore
                 {
                     if (udp == null)
                     {
-                        udp = new Udp();
+                        udp = new TYUdp();
                     }
                 }
             }
@@ -43,17 +44,18 @@ namespace TYClientCore
         //获取服务器地址(连接服务器)
         private string DetectServiceAddress()
         {
-            if (Send("825C7B29-5B62-4242-AF76-EBDB489A6090", out serviceIp) == string.Empty)
+            if (Send($"{ServerAddressBroadcastMsg}|GetServiceIp", out string refData, out serviceIp))
             {
-                return "没有获得主机返回,请确认主机是否在同一局域网内!";
+                if (refData == "true")
+                {
+                    client.Client.ReceiveTimeout = 60000;
+                    return "连接服务器成功!";
+                }
             }
-            else
-            {
-                return "连接服务器成功!";
-            }
+            return "没有获得主机返回,请确认主机是否在同一局域网内!";
         }
         //发送消息到服务器接收反馈
-        private string Send(string message, out IPAddress ip)
+        private bool Send(string message,out string RefData, out IPAddress ip)
         {
             try
             {
@@ -62,13 +64,15 @@ namespace TYClientCore
                 var serverEp = new IPEndPoint(IPAddress.Broadcast, 0);
                 var serverResponseData = client.Receive(ref serverEp);
                 ip = serverEp.Address;
-                return Encoding.UTF8.GetString(serverResponseData);
+                RefData = Encoding.UTF8.GetString(serverResponseData);
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 ip = IPAddress.Broadcast;
-                return string.Empty;
+                RefData = ex.ToString();
+                return false;
             }
         }
         //关闭客户端
@@ -85,9 +89,9 @@ namespace TYClientCore
         /// <param name="functionName">方法名</param>
         /// <param name="json">数据json</param>
         /// <returns>服务器返回的json</returns>
-        public string Fun(string functionName , string json)
+        public bool Fun(string functionName , string json,out string refData)
         {
-            return Send($"{functionName}|{json}", out _);
+            return Send($"{ServerAddressBroadcastMsg}|{functionName}|{json}", out refData, out _);
         }
 
         #endregion

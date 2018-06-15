@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TYPublicCore
 {
-    public class Core
+    public class TYCore
     {
         [DllImport("user32.dll")]
         private static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);//删除菜单中的按钮

@@ -41,10 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core.cs" />
-    <Compile Include="Json.cs" />
-    <Compile Include="Log.cs" />
+    <Compile Include="TYCore.cs" />
+    <Compile Include="TYLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TYConvert.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
