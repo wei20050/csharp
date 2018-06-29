@@ -10,7 +10,7 @@ using System.Text;
 
 namespace TYPublicCore
 {
-    public class TYConvert
+    public class TyConvert
     {  //将JSON数据转化为对应的类型  
         public static T JsonToObj<T>(string JSONStr)
         {
@@ -23,7 +23,7 @@ namespace TYPublicCore
             }
             catch (Exception ex)
             {
-                TYLog.Wlog(ex);
+                TyLog.Wlog(ex);
                 return default(T);
             }
         }
@@ -106,7 +106,7 @@ namespace TYPublicCore
                     }
                     catch(Exception ex)
                     {
-                        TYLog.Wlog($"{column.ColumnName}转换失败:{ex}");
+                        TyLog.Wlog($"{column.ColumnName}转换失败:{ex}");
                     }
                 }
             }

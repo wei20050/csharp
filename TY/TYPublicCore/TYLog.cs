@@ -3,7 +3,7 @@ using System.IO;
 
 namespace TYPublicCore
 {
-    public class TYLog
+    public class TyLog
     {
         /// <summary>
         /// 写日志
@@ -16,7 +16,7 @@ namespace TYPublicCore
             {
                 Directory.CreateDirectory("logs"); //新建文件夹   
             }
-            StreamWriter file = new StreamWriter($@"logs\{DateTime.Now:yyyy-MM-dd}.log", true);
+            var file = new StreamWriter($@"logs\{DateTime.Now:yyyy-MM-dd}.log", true);
             file.Write($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {(iserr ? "错误" : "信息")} {info}{Environment.NewLine}");
             file.Flush();
             file.Close();

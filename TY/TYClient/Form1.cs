@@ -15,19 +15,23 @@ namespace TYClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Ren r = new Ren
+            var r = new Ren
             {
-                id = 2
+                id = textBox1.TextLength == 0 ? 0 : Convert.ToInt32(textBox1.Text)
             };
-            TYUdp.Getudp().serviceIp = System.Net.IPAddress.Parse(textBox1.Text);
-            if (TYUdp.Getudp().Fun("GetRen", TYConvert.ObjToJson(r), out string json))
+            if (TyUdp.Getudp().Fun("GetRen", TyConvert.ObjToJson(r), out var json))
             {
-                dataGridView1.DataSource = TYConvert.JsonToObj<List<Ren>>(json);
+                dataGridView1.DataSource = TyConvert.JsonToObj<List<Ren>>(json);
             }
             else
             {
-                MessageBox.Show("服务器连接错误");
+                MessageBox.Show(json);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(TyUdp.Getudp().OpenService() ? @"服务器连接成功!" : @"服务器连接失败!");
         }
     }
 }

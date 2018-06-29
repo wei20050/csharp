@@ -40,8 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TYUdp.cs" />
+    <Compile Include="TyUdp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TYPublicCore\TYPublicCore.csproj">
+      <Project>{085779a7-1a49-437d-abb7-b5c1aed8fb50}</Project>
+      <Name>TYPublicCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
