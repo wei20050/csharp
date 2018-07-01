@@ -2,6 +2,7 @@
 using TYModel;
 using TYDB;
 using TYPublicCore;
+using System.Collections.Generic;
 
 namespace TYService
 {
@@ -15,11 +16,16 @@ namespace TYService
         public static string GetRen(string json)
         {
             var r = TyConvert.JsonToObj<Ren>(json);
-            var where = r.id == 0 ? "" : " and id = " + r.id;
-            var ds = TySqLite.Query("select * from ren where 1 = 1 " + where);
-            var a = ds.Tables[0];
-            var b = a.Rows[0][1];
-
+            Dictionary<string, object> values = new Dictionary<string, object>
+            {
+                { "@id", r.id }
+            };
+            var sql = "select * from ren where id = @id";
+            if (r.id == 0)
+            {
+                sql = "select * from ren";
+            }
+            var ds = TySqLite.Query(sql, values);
             var lr = TyConvert.DataTableTo<Ren>(ds.Tables[0]);
             return TyConvert.ObjToJson(lr);
         }

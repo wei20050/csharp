@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYDB", "TYDB\TYDB.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYService", "TYService\TYService.csproj", "{3E2C2F78-5CF6-4796-893E-27C874AAD181}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYChangePwd", "TYChangePwd\TYChangePwd.csproj", "{2EAC50E1-5C6B-40FF-8CC5-6287AA39C67D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{3E2C2F78-5CF6-4796-893E-27C874AAD181}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E2C2F78-5CF6-4796-893E-27C874AAD181}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E2C2F78-5CF6-4796-893E-27C874AAD181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EAC50E1-5C6B-40FF-8CC5-6287AA39C67D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EAC50E1-5C6B-40FF-8CC5-6287AA39C67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EAC50E1-5C6B-40FF-8CC5-6287AA39C67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EAC50E1-5C6B-40FF-8CC5-6287AA39C67D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

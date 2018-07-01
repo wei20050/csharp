@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.IO;
+using TYPublicCore;
 
 namespace TYDB
 {
@@ -18,7 +18,11 @@ namespace TYDB
         /// 数据库密码
         /// </summary>
         public static string DataBasePasssord;
-
+        /// <summary>
+        /// 数据库初始化
+        /// </summary>
+        /// <param name="errMessage">初始化异常提示</param>
+        /// <returns></returns>
         public static bool Init(out string errMessage)
         {
             if (!File.Exists("DBComfig.txt"))
@@ -42,12 +46,63 @@ namespace TYDB
                 return false;
             }
             DataBasePath = Path.GetFullPath(dbPath[1].Trim());
-            //暂时不用加密的SQLite数据库 加密方法 conn.ChangePassword(string.Empty); 密码为 string.Empty 时是删除密码
-            //dataBasePasssord = dbPwd[1].Trim();
+            DataBasePasssord = dbPwd[1].Trim();
             errMessage = string.Empty;
+            return Test();
+        }
+        /// <summary>
+        /// 测试数据库连接情况
+        /// </summary>
+        private static bool Test() {
+            try
+            {
+                Query("select name from sqlite_master");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                TyLog.Wlog(ex);
+                throw new Exception("连接数据库异常:" + ex.Message);
+            }
+        } 
+        /// <summary>
+        /// 修改数据库密码
+        /// </summary>
+        /// <param name="pwd">不给此参数是删除密码</param>
+        /// <returns></returns>
+        public static bool ChangePwd(string pwd = "")
+        {
+            using (SQLiteConnection conn = GetSqLiteConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    conn.ChangePassword(pwd);
+                }
+                catch (Exception ex)
+                {
+                    TyLog.Wlog(ex);
+                    throw new Exception("连接数据库异常:" + ex.Message);
+                }
+            }            
             return true;
         }
-
+        /// <summary>
+        /// Dictionary 转 SQLiteParameter
+        /// </summary>
+        /// <param name="dic">Dictionary</param>
+        /// <returns></returns>
+        private static SQLiteParameter[] D2P(Dictionary<string,object> dic)
+        {
+            SQLiteParameter[] sqlParams = new SQLiteParameter[dic.Count];
+            int i = 0;
+            foreach (var item in dic)
+            {
+                sqlParams[i] = new SQLiteParameter(item.Key, item.Value);
+                i++;
+            }
+            return sqlParams;
+        }
         /// <summary>
         /// 获取连接
         /// </summary>
@@ -115,7 +170,7 @@ namespace TYDB
                 {
                     try
                     {
-                        var parameter = new SqlParameter("@content", SqlDbType.NText)
+                        var parameter = new SQLiteParameter("@content", SqlDbType.NText)
                         {
                             Value = content
                         };
@@ -138,8 +193,9 @@ namespace TYDB
         /// <param name="sql"></param>
         /// <param name="sqlParams"></param>
         /// <returns></returns>
-        public static int ExecuteSql(string sql, params SqlParameter[] sqlParams)
+        public static int ExecuteSql(string sql,Dictionary<string, object> dic)
         {
+            var sqlParams = D2P(dic);
             int iResult;
             using (var conn = GetSqLiteConnection())
             {
@@ -193,8 +249,9 @@ namespace TYDB
         /// <param name="sql"></param>
         /// <param name="sqlParams"></param>
         /// <returns></returns>
-        public static DataSet Query(string sql, params SqlParameter[] sqlParams)
+        public static DataSet Query(string sql, Dictionary<string, object> dic)
         {
+            var sqlParams = D2P(dic);
             DataSet dsResult;
             using (var conn = GetSqLiteConnection())
             {
@@ -252,8 +309,9 @@ namespace TYDB
         /// <param name="sql"></param>
         /// <param name="sqlParams"></param>
         /// <returns></returns>
-        public static object GetSingle(string sql, params SqlParameter[] sqlParams)
+        public static object GetSingle(string sql, Dictionary<string, object> dic)
         {
+            var sqlParams = D2P(dic);
             object oResult;
             using (var conn = GetSqLiteConnection())
             {
@@ -370,7 +428,7 @@ namespace TYDB
                             foreach (DictionaryEntry de in sqlHashTable)
                             {
                                 string cmdSql = de.Key.ToString();
-                                SqlParameter[] cmdParams = (SqlParameter[])de.Value;
+                                SQLiteParameter[] cmdParams = (SQLiteParameter[])de.Value;
                                 PrepareCommand(conn, cmd, tran, cmdSql, cmdParams);
                                 iResult = cmd.ExecuteNonQuery();
                                 cmd.Parameters.Clear();
@@ -405,7 +463,7 @@ namespace TYDB
                 {
                     try
                     {
-                        var sqlParam = new SqlParameter("@fs", SqlDbType.Image)
+                        var sqlParam = new SQLiteParameter("@fs", SqlDbType.Image)
                         {
                             Value = fs
                         };
@@ -426,7 +484,7 @@ namespace TYDB
 
         #region 私有公共方法
 
-        private static void PrepareCommand(SQLiteConnection conn, SQLiteCommand cmd, SQLiteTransaction tran, string sql, SqlParameter[] sqlParams)
+        private static void PrepareCommand(SQLiteConnection conn, SQLiteCommand cmd, SQLiteTransaction tran, string sql, SQLiteParameter[] sqlParams)
         {
             if (conn.State != ConnectionState.Open)
             {
@@ -443,7 +501,7 @@ namespace TYDB
 
             if (sqlParams != null)
             {
-                foreach (SqlParameter param in sqlParams)
+                foreach (SQLiteParameter param in sqlParams)
                 {
                     cmd.Parameters.Add(param);
                 }
@@ -546,7 +604,7 @@ namespace TYDB
         private static SQLiteCommand BuildIntCommand(SQLiteConnection conn, string storedProcName, IDataParameter[] dataParams)
         {
             var cmd = BuildQueryCommand(conn, storedProcName, dataParams);
-            cmd.Parameters.Add(new SqlParameter("ReturnValue", SqlDbType.Int, 4, ParameterDirection.ReturnValue, false, 0, 0, string.Empty, DataRowVersion.Default, null));
+            cmd.Parameters.Add(new SQLiteParameter("ReturnValue", DbType.Int32, 4, ParameterDirection.ReturnValue, false, 0, 0, string.Empty, DataRowVersion.Default, null));
             return cmd;
         }
 
