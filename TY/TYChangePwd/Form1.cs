@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using TYPublicCore;
 
@@ -22,13 +16,12 @@ namespace TYChangePwd
             if (err != string.Empty)
             {
                 MessageBox.Show(err);
-                return;
             }
             else
             {
                 if (TYDB.TySqLite.ChangePwd())
                 {
-                    MessageBox.Show("密码删除成功!");
+                    MessageBox.Show(@"密码删除成功!");
                 }
             }
         }
@@ -43,13 +36,12 @@ namespace TYChangePwd
             if (err != string.Empty)
             {
                 MessageBox.Show(err);
-                return;
             }
             else
             {
                 if (TYDB.TySqLite.ChangePwd(textBox1.Text))
                 {
-                    MessageBox.Show("密码修改成功!");
+                    MessageBox.Show(@"密码修改成功!");
                 }
                 TyLog.Wlog($@"修改数据库密码为:{textBox1.Text}",false);
             }

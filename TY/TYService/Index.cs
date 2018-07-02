@@ -16,7 +16,7 @@ namespace TYService
         public static string GetRen(string json)
         {
             var r = TyConvert.JsonToObj<Ren>(json);
-            Dictionary<string, object> values = new Dictionary<string, object>
+            var values = new Dictionary<string, object>
             {
                 { "@id", r.id }
             };

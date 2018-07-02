@@ -191,7 +191,7 @@ namespace TYDB
         /// 执行SQL语句，返回影响的记录数
         /// </summary>
         /// <param name="sql"></param>
-        /// <param name="sqlParams"></param>
+        /// <param name="dic"></param>
         /// <returns></returns>
         public static int ExecuteSql(string sql,Dictionary<string, object> dic)
         {
@@ -247,7 +247,7 @@ namespace TYDB
         /// 执行查询语句，参数化查询
         /// </summary>
         /// <param name="sql"></param>
-        /// <param name="sqlParams"></param>
+        /// <param name="dic"></param>
         /// <returns></returns>
         public static DataSet Query(string sql, Dictionary<string, object> dic)
         {
@@ -307,7 +307,7 @@ namespace TYDB
         /// 执行一条计算查询结果语句，返回查询结果（object）
         /// </summary>
         /// <param name="sql"></param>
-        /// <param name="sqlParams"></param>
+        /// <param name="dic"></param>
         /// <returns></returns>
         public static object GetSingle(string sql, Dictionary<string, object> dic)
         {
