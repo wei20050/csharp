@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYExServiceCore", "TYExServiceCore\TYExServiceCore.csproj", "{1C8E2730-60C9-4420-979C-E3612BD8A253}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYClient", "TYClient\TYClient.csproj", "{9F420394-F913-4053-AACD-3B783C8AF1EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYDB", "TYDB\TYDB.csproj", "{08535C08-E1D5-43C9-B5CC-4F7F5958E00F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYModel", "TYModel\TYModel.csproj", "{D8E69FAC-F59B-4755-964A-9DA9DFCA9B4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYPublicCore", "TYPublicCore\TYPublicCore.csproj", "{085779A7-1A49-437D-ABB7-B5C1AED8FB50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYService", "TYService\TYService.csproj", "{3E2C2F78-5CF6-4796-893E-27C874AAD181}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C8E2730-60C9-4420-979C-E3612BD8A253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C8E2730-60C9-4420-979C-E3612BD8A253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C8E2730-60C9-4420-979C-E3612BD8A253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C8E2730-60C9-4420-979C-E3612BD8A253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F420394-F913-4053-AACD-3B783C8AF1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F420394-F913-4053-AACD-3B783C8AF1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F420394-F913-4053-AACD-3B783C8AF1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F420394-F913-4053-AACD-3B783C8AF1EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08535C08-E1D5-43C9-B5CC-4F7F5958E00F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08535C08-E1D5-43C9-B5CC-4F7F5958E00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08535C08-E1D5-43C9-B5CC-4F7F5958E00F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08535C08-E1D5-43C9-B5CC-4F7F5958E00F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E69FAC-F59B-4755-964A-9DA9DFCA9B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E69FAC-F59B-4755-964A-9DA9DFCA9B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E69FAC-F59B-4755-964A-9DA9DFCA9B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E69FAC-F59B-4755-964A-9DA9DFCA9B4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{085779A7-1A49-437D-ABB7-B5C1AED8FB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{085779A7-1A49-437D-ABB7-B5C1AED8FB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{085779A7-1A49-437D-ABB7-B5C1AED8FB50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{085779A7-1A49-437D-ABB7-B5C1AED8FB50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2C2F78-5CF6-4796-893E-27C874AAD181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2C2F78-5CF6-4796-893E-27C874AAD181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2C2F78-5CF6-4796-893E-27C874AAD181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2C2F78-5CF6-4796-893E-27C874AAD181}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
