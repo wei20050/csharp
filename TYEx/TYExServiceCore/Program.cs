@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
+using System.Threading;
 using TYDB;
 using TYPublicCore;
 
@@ -11,6 +12,7 @@ namespace TYExServiceCore
         {
             try
             {
+                Console.WriteLine($@"正在连接数据库 ... ... {Environment.NewLine}时间:{DateTime.Now}");
                 if (!TySqLite.Init(out var err))
                 {
                     Console.WriteLine(err);
@@ -29,16 +31,18 @@ namespace TYExServiceCore
             var host  =  new ServiceHost(typeof(TyService));
             host.Opened += delegate
             {
-                Console.WriteLine(@"服务已开启 ... ... 时间:{0}", DateTime.Now);
+                Console.WriteLine($@"服务已开启 ... ... {Environment.NewLine}时间:{DateTime.Now}");
             };
             host.Closed += delegate
             {
-                Console.WriteLine(@"服务已关闭 ... ... 时间:{0}", DateTime.Now);
+                Console.WriteLine($@"服务已关闭 ... ...{Environment.NewLine}时间:{DateTime.Now}");
             };
             try
             {
                 host.Open();
                 TyCore.DeleteExit();
+                TyCore.ShowConsole(0);
+                TyCore.AutoStart(@"TYExServiceCore");
             }
             catch (Exception e)
             {

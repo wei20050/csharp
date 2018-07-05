@@ -18,6 +18,7 @@ namespace TYDB
         /// 数据库密码
         /// </summary>
         public static string DataBasePasssord;
+
         /// <summary>
         /// 数据库初始化
         /// </summary>
@@ -25,24 +26,30 @@ namespace TYDB
         /// <returns></returns>
         public static bool Init(out string errMessage)
         {
-            if (!File.Exists("DBComfig.txt"))
+            if (!File.Exists($@"{AppDomain.CurrentDomain.BaseDirectory}\DBComfig.txt"))
             {
                 File.WriteAllText("DBComfig.txt", "dataBasePath=D:\\mydb.db,dataBasePasssord=123456");
                 errMessage = "数据库配置不存在,已经自动创建,请配置好数据库后重启服务器 !";
                 return false;
             }
-            var dbStr = File.ReadAllText("DBComfig.txt");
+            var dbStr = File.ReadAllText($@"{AppDomain.CurrentDomain.BaseDirectory}\DBComfig.txt");
             var db = dbStr.Split(',');
             if (db.Length != 2)
             {
-                errMessage = "数据库配置配置异常,请配置好数据库后重启服务器 !";
+                errMessage =
+                    $@"数据库配置配置异常,请配置好数据库后重启服务器 ! {Environment.NewLine}配置路径:{
+                            AppDomain.CurrentDomain.BaseDirectory
+                        }\DBComfig.txt";
                 return false;
             }
             var dbPath = db[0].Split('=');
             var dbPwd = db[1].Split('=');
             if (dbPath.Length != 2 || dbPwd.Length != 2)
             {
-                errMessage = "数据库配置配置异常,请配置好数据库后重启服务器 !";
+                errMessage =
+                    $@"数据库配置配置异常,请配置好数据库后重启服务器 ! {Environment.NewLine}配置路径:{
+                            AppDomain.CurrentDomain.BaseDirectory
+                        }\DBComfig.txt";
                 return false;
             }
             DataBasePath = Path.GetFullPath(dbPath[1].Trim());
@@ -50,6 +57,7 @@ namespace TYDB
             errMessage = string.Empty;
             return Test();
         }
+
         /// <summary>
         /// 测试数据库连接情况
         /// </summary>
