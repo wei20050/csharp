@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TyEncrypt.cs" />
     <Compile Include="TyCore.cs" />
     <Compile Include="TyLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

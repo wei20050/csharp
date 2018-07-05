@@ -75,7 +75,7 @@
             // 
             this.button2.Location = new System.Drawing.Point(457, 12);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(167, 53);
+            this.button2.Size = new System.Drawing.Size(212, 105);
             this.button2.TabIndex = 4;
             this.button2.Text = "测试";
             this.button2.UseVisualStyleBackColor = true;
@@ -85,7 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(705, 450);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);

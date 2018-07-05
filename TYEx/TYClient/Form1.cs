@@ -27,11 +27,12 @@ namespace TYClient
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FileDialog fd = new OpenFileDialog();
-            fd.ShowDialog();
-            var fileInfo = new FileInfo(fd.FileName);
-            var c = ts.UpLoadFile(Path.GetFileName(fd.FileName),"756090666", fileInfo.Length, fileInfo.OpenRead(),out var err);
-            MessageBox.Show(c + Environment.NewLine + err);
+            MessageBox.Show(TyEncrypt.TyEnc("123456"));
+            //FileDialog fd = new OpenFileDialog();
+            //fd.ShowDialog();
+            //var fileInfo = new FileInfo(fd.FileName);
+            //var c = ts.UpLoadFile(Path.GetFileName(fd.FileName),"756090666", fileInfo.Length, fileInfo.OpenRead(),out var err);
+            //MessageBox.Show(c + Environment.NewLine + err);
         }
     }
 }
