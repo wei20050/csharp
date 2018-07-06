@@ -12,7 +12,7 @@ namespace TYExServiceCore
             string responseStr;
             try
             {
-                var dll = Environment.CurrentDirectory + @"\TYService.dll";
+                var dll = AppDomain.CurrentDomain.BaseDirectory + @"TYService.dll";
                 const string className = @"TYService.Index";
                 var assembly = Assembly.LoadFile(dll);
                 var type = assembly.GetType(className);
@@ -28,7 +28,7 @@ namespace TYExServiceCore
         public UpFileResult UpLoadFile(UpFile filedata)
         {
             var result = new UpFileResult();
-            var path = $@"{AppDomain.CurrentDomain.BaseDirectory}\Files\{filedata.FilePath}\";
+            var path = $@"{AppDomain.CurrentDomain.BaseDirectory}Files\{filedata.FilePath}\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -52,7 +52,7 @@ namespace TYExServiceCore
         public DownFileResult DownLoadFile(DownFile filedata)
         {
             var result = new DownFileResult();
-            var path = $@"{AppDomain.CurrentDomain.BaseDirectory}\Files\{filedata.FilePath}\{filedata.FileName}";
+            var path = $@"{AppDomain.CurrentDomain.BaseDirectory}Files\{filedata.FilePath}\{filedata.FileName}";
             if (!File.Exists(path))
             {
                 result.IsSuccess = false;

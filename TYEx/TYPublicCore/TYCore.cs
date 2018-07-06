@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
@@ -36,7 +37,37 @@ namespace TYPublicCore
         public static void AutoStart(string appName)
         {
             var rKey = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
-            rKey?.SetValue(appName, $@"""{Environment.CurrentDirectory}\{appName}.exe""");
+            rKey?.SetValue(appName, $@"""{AppDomain.CurrentDomain.BaseDirectory}{appName}.exe""");
+        }
+        /// <summary>
+        /// 删除注册表实现 解除开机自动启动
+        /// </summary>
+        /// <param name="appName">日志内容</param>
+        public static void UnAutoStart(string appName)
+        {
+            try
+            {
+                var rKey = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
+                rKey?.DeleteValue(appName, true);
+            }
+            catch (Exception e)
+            {
+                TyLog.Wlog(e);
+            }
+        }
+        /// <summary>
+        /// 结束进程
+        /// </summary>
+        public static void KillProcess(string pcTask)
+        {
+            var pro = Process.GetProcesses();//获取已开启的所有进程
+            foreach (var t in pro)
+            {
+                if (string.Equals(t.ProcessName, pcTask, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    t.Kill();//结束进程
+                }
+            }
         }
     }
 }
