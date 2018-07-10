@@ -20,7 +20,7 @@ namespace TYExServiceCore
             }
             catch (Exception e)
             {
-                TyLog.Wlog(e);
+                TyLog.WriteError(e);
                 responseStr = string.Empty;
             }
             return responseStr;

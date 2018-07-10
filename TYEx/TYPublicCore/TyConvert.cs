@@ -22,7 +22,7 @@ namespace TYPublicCore
             }
             catch (Exception ex)
             {
-                TyLog.Wlog(ex);
+                TyLog.WriteError(ex);
                 return default(T);
             }
         }
@@ -104,7 +104,7 @@ namespace TYPublicCore
                 }
                 catch(Exception ex)
                 {
-                    TyLog.Wlog($"{column.ColumnName}转换失败:{ex}");
+                    TyLog.WriteError($"{column.ColumnName}转换失败:{ex}");
                 }
             }
             return obj;

@@ -27,7 +27,16 @@ namespace TYClient
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(TyEncrypt.TyEnc("123456"));
+            
+            //MessageBox.Show(TyEncrypt.TyEnc("123456"));
+            for (int i = 0; i < 100000; i++)
+            {
+                TyLog.WriteError(i);
+            }
+            for (int j = 0; j < 5555; j++)
+            {
+                TyLog.WriteInfo(j);
+            }
             //FileDialog fd = new OpenFileDialog();
             //fd.ShowDialog();
             //var fileInfo = new FileInfo(fd.FileName);

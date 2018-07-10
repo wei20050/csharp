@@ -69,7 +69,7 @@ namespace TYDB
             }
             catch (Exception ex)
             {
-                TyLog.Wlog(ex);
+                TyLog.WriteError(ex);
                 throw new Exception("连接数据库异常:" + ex.Message);
             }
         } 
@@ -89,7 +89,7 @@ namespace TYDB
                 }
                 catch (Exception ex)
                 {
-                    TyLog.Wlog(ex);
+                    TyLog.WriteError(ex);
                     throw new Exception("连接数据库异常:" + ex.Message);
                 }
             }            

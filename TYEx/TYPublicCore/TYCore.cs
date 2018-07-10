@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
 namespace TYPublicCore
@@ -52,7 +54,7 @@ namespace TYPublicCore
             }
             catch (Exception e)
             {
-                TyLog.Wlog(e);
+                TyLog.WriteError(e);
             }
         }
         /// <summary>
@@ -67,6 +69,37 @@ namespace TYPublicCore
                 {
                     t.Kill();//结束进程
                 }
+            }
+        }
+        /// <summary>
+        /// 杀死进程
+        /// </summary>
+        public static void KillProcess(string startupPath, string killFilePath)
+        {
+            const string handlePath = @"C:\Windows\system32\handle.exe";
+            if (!File.Exists(handlePath))
+            {
+                var path = Path.Combine(startupPath, "handle.exe");
+                File.Copy(path, handlePath);
+            }
+
+            var tool = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "handle.exe",
+                    Arguments = killFilePath + " /accepteula",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true
+                }
+            };
+            tool.Start();
+            tool.WaitForExit();
+            var outputTool = tool.StandardOutput.ReadToEnd();
+            const string matchPattern = @"(?<=\s+pid:\s+)\b(\d+)\b(?=\s+)";
+            foreach (Match match in Regex.Matches(outputTool, matchPattern))
+            {
+                Process.GetProcessById(int.Parse(match.Value)).Kill();
             }
         }
     }
