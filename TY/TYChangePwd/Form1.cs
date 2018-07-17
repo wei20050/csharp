@@ -12,17 +12,23 @@ namespace TYChangePwd
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            TYDB.TySqLite.Init(out var err);
-            if (err != string.Empty)
+            try
             {
-                MessageBox.Show(err);
-            }
-            else
-            {
-                if (TYDB.TySqLite.ChangePwd())
+                TYDB.TySqLite.Init(out var err); if (err != string.Empty)
                 {
-                    MessageBox.Show(@"密码删除成功!");
+                    MessageBox.Show(err);
                 }
+                else
+                {
+                    if (!TYDB.TySqLite.ChangePwd()) return;
+                    MessageBox.Show(@"密码删除成功!");
+                    TyLog.Wlog(@"数据库密码删除成功", false);
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+                TyLog.Wlog(exception);
             }
         }
 
@@ -31,19 +37,28 @@ namespace TYChangePwd
             if (textBox1.Text == string.Empty)
             {
                 MessageBox.Show(@"新密码不能为空!");
+                return;
             }
-            TYDB.TySqLite.Init(out var err);
-            if (err != string.Empty)
+            try
             {
-                MessageBox.Show(err);
-            }
-            else
-            {
-                if (TYDB.TySqLite.ChangePwd(textBox1.Text))
+                TYDB.TySqLite.Init(out var err);
+                if (err != string.Empty)
                 {
-                    MessageBox.Show(@"密码修改成功!");
+                    MessageBox.Show(err);
                 }
-                TyLog.Wlog($@"修改数据库密码为:{textBox1.Text}",false);
+                else
+                {
+                    if (TYDB.TySqLite.ChangePwd(textBox1.Text))
+                    {
+                        MessageBox.Show(@"密码修改成功!");
+                    }
+                    TyLog.Wlog($@"修改数据库密码为:{textBox1.Text}", false);
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+                TyLog.Wlog(exception);
             }
         }
     }

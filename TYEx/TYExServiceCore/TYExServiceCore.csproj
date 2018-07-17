@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -48,19 +49,28 @@
     <Compile Include="ITyService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TyService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="TYExServiceCore.exe.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TYDB\TYDB.csproj">
-      <Project>{08535c08-e1d5-43c9-b5cc-4f7f5958e00f}</Project>
-      <Name>TYDB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TYPublicCore\TYPublicCore.csproj">
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TYExPublicCore\TYExPublicCore.csproj">
       <Project>{085779a7-1a49-437d-abb7-b5c1aed8fb50}</Project>
-      <Name>TYPublicCore</Name>
+      <Name>TYExPublicCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

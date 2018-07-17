@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08535C08-E1D5-43C9-B5CC-4F7F5958E00F}</ProjectGuid>
+    <ProjectGuid>{3E2C2F78-5CF6-4796-893E-27C874AAD181}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TYDB</RootNamespace>
-    <AssemblyName>TYDB</AssemblyName>
+    <RootNamespace>TYExService</RootNamespace>
+    <AssemblyName>TYExService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,34 +31,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Compile Include="Dal\TemplateDal.cs" />
+    <Compile Include="Dal\TestDal.cs" />
+    <Compile Include="GlobalVar.cs" />
+    <Compile Include="Index.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TySqLite.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TYPublicCore\TYPublicCore.csproj">
+    <ProjectReference Include="..\TYExPublicCore\TYExPublicCore.csproj">
       <Project>{085779a7-1a49-437d-abb7-b5c1aed8fb50}</Project>
-      <Name>TYPublicCore</Name>
+      <Name>TYExPublicCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TYModel\TYModel.csproj">
+      <Project>{d8e69fac-f59b-4755-964a-9da9dfca9b4d}</Project>
+      <Name>TYModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="System.Data.SQLite.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

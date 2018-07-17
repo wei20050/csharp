@@ -1,19 +1,21 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using TYPublicCore;
+using TYExPublicCore;
 
 namespace TYExServiceCore
 {
     public class TyService : ITyService
     {
+        //执行方法 json形式
         public string Fun(string functionName, string jsonData)
         {
             string responseStr;
+            var serviceName = System.Configuration.ConfigurationManager.AppSettings["ServiceName"];
             try
             {
-                var dll = AppDomain.CurrentDomain.BaseDirectory + @"TYService.dll";
-                const string className = @"TYService.Index";
+                var dll = AppDomain.CurrentDomain.BaseDirectory + $@"{serviceName}.dll";
+                var className = $@"{serviceName}.Index";
                 var assembly = Assembly.LoadFile(dll);
                 var type = assembly.GetType(className);
                 responseStr = $@"{(string)type.InvokeMember(functionName, BindingFlags.Default | BindingFlags.InvokeMethod, null, null, new object[] { jsonData })}";
@@ -25,6 +27,8 @@ namespace TYExServiceCore
             }
             return responseStr;
         }
+       
+        //上传文件
         public UpFileResult UpLoadFile(UpFile filedata)
         {
             var result = new UpFileResult();

@@ -1,33 +1,20 @@
 ﻿using System;
+using System.Configuration;
+using System.IO;
 using System.ServiceModel;
-using System.Threading;
-using TYDB;
-using TYPublicCore;
+using TYExPublicCore;
 
 namespace TYExServiceCore
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
-            try
+            TyCore.DeleteExit();//禁用关闭按钮
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "TYExServiceCore.exe.config"))
             {
-                Console.WriteLine($@"正在连接数据库 ... ... {Environment.NewLine}时间:{DateTime.Now}");
-                if (!TySqLite.Init(out var err))
-                {
-                    Console.WriteLine(err);
-                    Console.Read();
-                    return;
-                }
+                File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "TYExServiceCore.exe.config", Properties.Resources.TYExServiceCore_exe);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(@"数据库初始化异常,请检查数据库配置!");
-                TyLog.WriteError(e);
-                Console.Read();
-                return;
-            }
-           
             var host  =  new ServiceHost(typeof(TyService));
             host.Opened += delegate
             {
@@ -40,9 +27,11 @@ namespace TYExServiceCore
             try
             {
                 host.Open();
-                TyCore.DeleteExit();
-                TyCore.ShowConsole(0);
-                TyCore.AutoStart(@"TYExServiceCore");
+                if (ConfigurationManager.AppSettings["ServiceDeBug"] == "false")
+                {
+                    TyCore.ShowConsole(0);
+                    TyCore.AutoStart(@"TYExServiceCore");
+                }
             }
             catch (Exception e)
             {

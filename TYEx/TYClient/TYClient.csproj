@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\TYService\Reference.cs">
+    <Compile Include="Connected Services\TYExService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -58,6 +58,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\PagerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\PagerControl.Designer.cs">
+      <DependentUpon>PagerControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -70,17 +76,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\PagerControl.resx">
+      <DependentUpon>PagerControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Connected Services\TYService\item.xsd">
+    <None Include="Connected Services\TYExService\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TYService\item1.xsd">
+    <None Include="Connected Services\TYExService\item1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TYService\item2.xsd">
+    <None Include="Connected Services\TYExService\item2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TYService\TyService.wsdl" />
+    <None Include="Connected Services\TYExService\TyService.wsdl" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -92,32 +101,32 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TYExPublicCore\TYExPublicCore.csproj">
+      <Project>{085779a7-1a49-437d-abb7-b5c1aed8fb50}</Project>
+      <Name>TYExPublicCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TYModel\TYModel.csproj">
       <Project>{d8e69fac-f59b-4755-964a-9da9dfca9b4d}</Project>
       <Name>TYModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TYPublicCore\TYPublicCore.csproj">
-      <Project>{085779a7-1a49-437d-abb7-b5c1aed8fb50}</Project>
-      <Name>TYPublicCore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\TYService\" />
+    <WCFMetadataStorage Include="Connected Services\TYExService\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TYService\item.disco" />
+    <None Include="Connected Services\TYExService\item.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TYService\configuration91.svcinfo" />
+    <None Include="Connected Services\TYExService\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TYService\configuration.svcinfo" />
+    <None Include="Connected Services\TYExService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TYService\Reference.svcmap">
+    <None Include="Connected Services\TYExService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
