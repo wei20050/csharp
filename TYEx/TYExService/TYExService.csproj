@@ -32,12 +32,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Dal\TemplateDal.cs" />
-    <Compile Include="Dal\TestDal.cs" />
     <Compile Include="GlobalVar.cs" />
     <Compile Include="Index.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TYExDB\TYExDB.csproj">
+      <Project>{08535c08-e1d5-43c9-b5cc-4f7f5958e00f}</Project>
+      <Name>TYExDB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TYExPublicCore\TYExPublicCore.csproj">
       <Project>{085779a7-1a49-437d-abb7-b5c1aed8fb50}</Project>
       <Name>TYExPublicCore</Name>

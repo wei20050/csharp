@@ -119,10 +119,9 @@
             // 
             this.pagerControl1.Location = new System.Drawing.Point(12, 449);
             this.pagerControl1.Name = "pagerControl1";
-            this.pagerControl1.Page = 0;
+            this.pagerControl1.Page = 1;
             this.pagerControl1.PageSize = 20;
-            this.pagerControl1.Rows = 0;
-            this.pagerControl1.Size = new System.Drawing.Size(302, 25);
+            this.pagerControl1.Size = new System.Drawing.Size(312, 25);
             this.pagerControl1.TabIndex = 8;
             this.pagerControl1.TotalRows = 0;
             this.pagerControl1.PageChanged += new TYClient.UI.PageChangedHandler(this.pagerControl1_PageChanged);

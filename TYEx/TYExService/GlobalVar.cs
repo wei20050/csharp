@@ -1,4 +1,6 @@
-﻿namespace TYExService
+﻿using TYExDB;
+
+namespace TYExService
 {
     public static class GlobalVar
     {

@@ -8,19 +8,36 @@ namespace TYClient.UI
     {
         #region PageSize
         private int _pageSize = 20;
+        private int _page = 1;
         /// <summary>
         /// 当前页数
         /// </summary>
-        public int Page { get; set; }
-        /// <summary>
-        /// 每页记录数
-        /// </summary>
-        public int Rows { get; set; }
+        public int Page
+        {
+            get => _page == 0 ? 1 : _page;
+            set
+            {
+                _page = value;
+                txtCurrentPage.Text = Page.ToString();
+                lblTotalPage.Text = @" / " + PageCount;
+            }
+        }
 
+        private int _totalRows;
         /// <summary>
         /// 记录数
         /// </summary>
-        public int TotalRows { get; set; }
+        public int TotalRows
+        {
+            get => _totalRows;
+            set
+            {
+                _totalRows = value;
+                txtCurrentPage.Text = Page.ToString();
+                lblTotalPage.Text = @" / " + PageCount;
+            }
+            
+        }
         /// <summary>
         /// 总页数
         /// </summary>
@@ -28,9 +45,9 @@ namespace TYClient.UI
         {
             get
             {
-                if (Rows != 0)
+                if (_pageSize != 0)
                 {
-                    return (TotalRows - 1) / Rows + 1;
+                    return (TotalRows - 1) / _pageSize + 1;
                 }
                 return 0;
             }
@@ -68,20 +85,8 @@ namespace TYClient.UI
         /// </summary>
         public int PageSize
         {
-            get => _pageSize;
-            set
-            {
-                if (value == 0)
-                {
-                    _pageSize = 1;
-                    Rows = 1;
-                }
-                else
-                {
-                    _pageSize = value;
-                    Rows = value;
-                }
-            }
+            get => _pageSize == 0 ? 1 : _pageSize;
+            set => _pageSize = value == 0 ? 1 : value;
         }
         #endregion
 

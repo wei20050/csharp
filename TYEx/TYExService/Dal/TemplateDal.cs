@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using TYExPublicCore;
 using TYModel;
 
 namespace TYExService.Dal
@@ -13,7 +16,7 @@ namespace TYExService.Dal
         /// <summary>
         /// 分页获取模板集合
         /// </summary>
-        public List<BS_Template> GetList(BS_Template b,string size, string page ,out string rows)
+        public List<BS_Template> GetList(BS_Template b,int size, int page ,out int rows)
         {
             var sql = new StringBuilder(@"
                 select *
@@ -28,62 +31,78 @@ namespace TYExService.Dal
             return list;
         }
         #endregion
-
-        #region 获取字段关联模板集合
-        /// <summary>
-        /// 获取字段关联模板集合
-        /// </summary>
-        public List<BS_Template> GetList(string fieldId)
-        {
-            var sql = new StringBuilder($@"
-                select *
-                from BS_Template t
-                left join BS_TplFieldRelation r on r.templateId=t.id
-                left join BS_TplField f on f.id=r.fieldId  
-                where f.id='{fieldId}'");
-            return GlobalVar.DbHelper.FindListBySql<BS_Template>(sql.ToString());
-        }
-        #endregion
-
-        #region 获取
-        public BS_Template Get(string typeCode)
-        {
-            var sql = new StringBuilder($@"
-                select *
-                from BS_Template 
-                where typeCode='{typeCode}' 
-                and type='0'");
-            return GlobalVar.DbHelper.FindBySql<BS_Template>(sql.ToString());
-        }
-        public BS_Template Get2(string templateId)
-        {
-            var sql = new StringBuilder($@"
-                select *
-                from BS_Template 
-                where id='{templateId}' 
-                and type='0'");
-            return GlobalVar.DbHelper.FindBySql<BS_Template>(sql.ToString());
-        }
-        #endregion
         
 
         #region 添加
         /// <summary>
         /// 添加
         /// </summary>
-        public void Insert(object obj)
+        public void Insert(BS_Template obj)
         {
             GlobalVar.DbHelper.Insert(obj);
         }
         #endregion
+        public void TestInsert( )
+        {
+            var k = 0;
+            for (var i = 0; i < 100; i++)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        GlobalVar.DbHelper.BeginTransaction();
 
+                        var model = new BS_Template
+                        {
+                            id = Guid.NewGuid().ToString(),
+                            code = k.ToString(),
+                            name = "测试" + k,
+                            remarks = "测试" + k,
+                            type = "1"
+                        };
+                        Insert(model);
+
+                        GlobalVar.DbHelper.CommitTransaction();
+
+                        k++;
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalVar.DbHelper.RollbackTransaction();
+                        TyLog.WriteError(ex.Message);
+                    }
+                });
+            }
+        }
         #region 修改
         /// <summary>
         /// 修改
         /// </summary>
-        public void Update(object obj)
+        public void Update(BS_Template obj)
         {
-            GlobalVar.DbHelper.Update(obj,$"id = '{((BS_Template)obj).id}'");
+            GlobalVar.DbHelper.Update(obj,$"id = '{obj.id}'");
+        }
+        //测试修改
+        public void TestUpdate(List<BS_Template> lb)
+        {
+            var rnd = new Random();
+
+            try
+            {
+                //GlobalVar.DbHelper.BeginTransaction();
+                foreach (var t in lb)
+                {
+                    t.remarks = "测试" + rnd.Next(1, 9999).ToString("0000");
+                    Update(t);
+                }
+                //GlobalVar.DbHelper.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                GlobalVar.DbHelper.RollbackTransaction();
+                TyLog.WriteError(ex.Message);
+            }
         }
         #endregion
 
@@ -94,6 +113,24 @@ namespace TYExService.Dal
         public void Del(string id)
         {
             GlobalVar.DbHelper.Delete<BS_Template>($"id = '{id}'");
+        }
+        //测试删除
+        public void TestDelete(List<BS_Template> lb)
+        {
+            try
+            {
+                GlobalVar.DbHelper.BeginTransaction();
+                foreach (var t in lb)
+                {
+                    Del(t.id);
+                }
+                GlobalVar.DbHelper.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                GlobalVar.DbHelper.RollbackTransaction();
+                TyLog.WriteError(ex.Message);
+            }
         }
         /// <summary>
         /// 删除

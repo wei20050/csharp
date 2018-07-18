@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TYClient.TYExService;
 using TYExPublicCore;
@@ -48,14 +47,24 @@ namespace TYClient
         //修改测试
         private void button4_Click(object sender, EventArgs e)
         {
-            var lb = TyConvert.ObjToJson((from object item in dataGridView1.SelectedRows select item as BS_Template).ToList());
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(@"没有选中任何行!");
+                return;
+            }
+            var lb = TyConvert.ObjToJson((from DataGridViewRow item in dataGridView1.SelectedRows select item.DataBoundItem as BS_Template).ToList());
             var data = _ts.Fun("TestUpdate", lb);
             MessageBox.Show(data);
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            var lb = TyConvert.ObjToJson((from object item in dataGridView1.SelectedRows select item as BS_Template).ToList());
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(@"没有选中任何行!");
+                return;
+            }
+            var lb = TyConvert.ObjToJson((from DataGridViewRow item in dataGridView1.SelectedRows select item.DataBoundItem as BS_Template).ToList());
             var data = _ts.Fun("TestDelete", lb);
             MessageBox.Show(data);
         }
@@ -89,22 +98,31 @@ namespace TYClient
                 dataGridView1.ClearSelection();
                 dataGridView1.Columns.Clear();
                 dataGridView1.AutoGenerateColumns = false;
-                DataGridViewTextBoxColumn dc = new DataGridViewTextBoxColumn();
-                dc.HeaderText = "ID";
-                dc.DataPropertyName = "id";
+                var dc = new DataGridViewTextBoxColumn
+                {
+                    HeaderText = @"ID",
+                    Width = 240,
+                    DataPropertyName = "id"
+                };
                 dataGridView1.Columns.Add(dc);
-                dc = new DataGridViewTextBoxColumn();
-                dc.HeaderText = "编码";
-                dc.DataPropertyName = "code";
+                dc = new DataGridViewTextBoxColumn
+                {
+                    HeaderText = @"编码",
+                    DataPropertyName = "code"
+                };
                 dataGridView1.Columns.Add(dc);
-                dc = new DataGridViewTextBoxColumn();
-                dc.HeaderText = @"名称";
-                dc.DataPropertyName = "name";
-                dc.Width = 170;
+                dc = new DataGridViewTextBoxColumn
+                {
+                    HeaderText = @"名称",
+                    DataPropertyName = "name",
+                    Width = 170
+                };
                 dataGridView1.Columns.Add(dc);
-                dc = new DataGridViewTextBoxColumn();
-                dc.HeaderText = "备注";
-                dc.DataPropertyName = "remarks";
+                dc = new DataGridViewTextBoxColumn
+                {
+                    HeaderText = @"备注",
+                    DataPropertyName = "remarks"
+                };
                 dataGridView1.Columns.Add(dc);
                 dataGridView1.ReadOnly = true;
                 dataGridView1.DataSource = TyConvert.JsonToObj<List<BS_Template>>(ress[1]);
