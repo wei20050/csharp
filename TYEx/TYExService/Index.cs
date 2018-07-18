@@ -10,17 +10,18 @@ namespace TYExService
     {
         public static string Test(string json)
         {
-            Console.WriteLine(json);
-            return $"Test:{json}";
+            var objs = TyConvert.JsonToObj<object[]>(json);
+            Console.WriteLine(objs[0] + objs[1].ToString());
+            return $"Test:{objs[0]}:{objs[1]}";
         }
 
         public static string GetTemplateList(string json)
         {
-            var jsons = json.Split('|');
-            var bsTemplate = TyConvert.JsonToObj<BS_Template>(jsons[0]);
+            var objs = TyConvert.JsonToObj<object[]>(json);
+            var t = TyConvert.JsonToObj<BS_Template>(objs[0].ToString());
             var td = new TemplateDal();
-            var bsTemplateList = td.GetList(bsTemplate, Convert.ToInt32(jsons[1]), Convert.ToInt32(jsons[2]), out var rows);
-            return rows + "|" + TyConvert.ObjToJson(bsTemplateList);
+            var bsTemplateList = td.GetList(t, (int) objs[1], (int) objs[2], out var rows);
+            return TyConvert.ObjToJson(new[] {rows.ToString(), TyConvert.ObjToJson(bsTemplateList)});
         }
         public static string TestInsert(string json)
         {
@@ -37,7 +38,7 @@ namespace TYExService
         }
         public static string TestDelete(string json)
         {
-            var lb = TyConvert.JsonToObj<List<BS_Template>>(json);
+            var lb = TyConvert.JsonToObj<string[]>(json);
             var td = new TemplateDal();
             td.TestDelete(lb);
             return "true";

@@ -584,7 +584,7 @@ namespace TYExDB
         /// <summary>
         /// 添加
         /// </summary>
-        public void Insert(object obj)
+        public int Insert(object obj)
         {
             var strSql = new StringBuilder();
             var type = obj.GetType();
@@ -611,7 +611,7 @@ namespace TYExDB
                 var param = GetDbParameter(_mParameterMark + propertyInfo.Name, val ?? DBNull.Value);
                 parameters[k++] = param;
             }
-            ExecuteSql(strSql.ToString(), parameters);
+            return ExecuteSql(strSql.ToString(), parameters);
         }
         #endregion
 
@@ -619,7 +619,7 @@ namespace TYExDB
         /// <summary>
         /// 修改
         /// </summary>
-        public void Update(object obj, string conditions)
+        public int Update(object obj, string conditions)
         {
             var strSql = new StringBuilder();
             var type = obj.GetType();
@@ -654,10 +654,7 @@ namespace TYExDB
             }
             strSql.Append($" where {conditions}");
 
-            if (savedCount > 0)
-            {
-                ExecuteSql(strSql.ToString(), parameters);
-            }
+            return savedCount > 0 ? ExecuteSql(strSql.ToString(), parameters) : 0;
         }
         #endregion
 
@@ -665,16 +662,16 @@ namespace TYExDB
         /// <summary>
         /// 根据条件删除
         /// </summary>
-        public void Delete<T>(string conditions)
+        public int Delete<T>(string conditions)
         {
-            if (string.IsNullOrWhiteSpace(conditions)) return;
+            if (string.IsNullOrWhiteSpace(conditions)) return 0;
 
             var type = typeof(T);
             var sbSql = new StringBuilder();
             SqlFilter(ref conditions);
             sbSql.Append($"delete from {type.Name} where {conditions}");
 
-            ExecuteSql(sbSql.ToString());
+            return ExecuteSql(sbSql.ToString());
         }
         #endregion
 

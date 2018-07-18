@@ -18,8 +18,8 @@ namespace TYClient.UI
             set
             {
                 _page = value;
-                txtCurrentPage.Text = Page.ToString();
                 lblTotalPage.Text = @" / " + PageCount;
+                txtCurrentPage.Text = Page.ToString();
             }
         }
 
@@ -33,8 +33,8 @@ namespace TYClient.UI
             set
             {
                 _totalRows = value;
-                txtCurrentPage.Text = Page.ToString();
                 lblTotalPage.Text = @" / " + PageCount;
+                txtCurrentPage.Text = Page.ToString();
             }
             
         }

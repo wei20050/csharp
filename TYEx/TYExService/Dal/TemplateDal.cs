@@ -115,14 +115,14 @@ namespace TYExService.Dal
             GlobalVar.DbHelper.Delete<BS_Template>($"id = '{id}'");
         }
         //测试删除
-        public void TestDelete(List<BS_Template> lb)
+        public void TestDelete(string[] ids)
         {
             try
             {
                 GlobalVar.DbHelper.BeginTransaction();
-                foreach (var t in lb)
+                foreach (var t in ids)
                 {
-                    Del(t.id);
+                    Del(t);
                 }
                 GlobalVar.DbHelper.CommitTransaction();
             }

@@ -55,9 +55,11 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 168);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(681, 270);
+            this.dataGridView1.Size = new System.Drawing.Size(774, 270);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.dataGridView1_RowStateChanged);
             // 
             // textBox1
             // 
@@ -77,11 +79,11 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(617, 12);
+            this.button2.Location = new System.Drawing.Point(659, 12);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(76, 43);
+            this.button2.Size = new System.Drawing.Size(127, 43);
             this.button2.TabIndex = 4;
-            this.button2.Text = "测试";
+            this.button2.Text = "测试服务器方法";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -131,7 +133,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(705, 486);
+            this.ClientSize = new System.Drawing.Size(798, 486);
             this.Controls.Add(this.pagerControl1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
