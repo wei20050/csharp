@@ -2200,10 +2200,10 @@ namespace yx
         /// 模拟按键输入字符串值(只支持大小写字母.特殊符号 和数字)
         /// </summary>
         /// <param name="keyStr">模拟输入的字符串</param>
-        /// <param name="delay">每个字之间的延迟</param>
         /// <param name="iszs">是否模拟真实输入</param>
+        /// <param name="delay">每个字之间的延迟</param>
         /// <returns>返回1 or 0</returns>
-        public int KeyPressStr(string keyStr, int delay,int iszs = 0)
+        public int KeyPressStr(string keyStr, int iszs = 0, int delay = 66)
         {
             try
             {

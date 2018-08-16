@@ -68,6 +68,8 @@ namespace yxz
 
         [DllImport("user32.dll", EntryPoint = "keybd_event", SetLastError = true)]
         private static extern void Keybd_event(Keys bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, EntryPoint = "keybd_event", CallingConvention = CallingConvention.Winapi)]
+        private static extern void Keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
         [DllImport("User32.dll")]
         private static extern bool SetCursorPos(int x, int y);
         [DllImport("user32.dll", EntryPoint = "mouse_event", SetLastError = true)]
@@ -106,6 +108,23 @@ namespace yxz
         public static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRePaint);
         [DllImport("user32.dll")]
         public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
+        [DllImport("User32")]
+        private static extern bool OpenClipboard(IntPtr hWndNewOwner);
+
+        [DllImport("User32")]
+        private static extern bool CloseClipboard();
+
+        [DllImport("User32")]
+        private static extern bool EmptyClipboard();
+
+        [DllImport("User32")]
+        private static extern bool IsClipboardFormatAvailable(int format);
+
+        [DllImport("User32")]
+        private static extern IntPtr GetClipboardData(int uFormat);
+
+        [DllImport("User32", CharSet = CharSet.Unicode)]
+        private static extern IntPtr SetClipboardData(int uFormat, IntPtr hMem);
 
         #endregion
 
@@ -291,6 +310,89 @@ namespace yxz
                    colorA.B <= colorB.B + errorRange && colorA.B >= colorB.B - errorRange;
         }
 
+        private static Keys GetKeys(char c)
+        {
+            switch (c)
+            {
+                case '.':
+                    return Keys.Decimal;
+                case '0':
+                    return Keys.D0;
+                case '1':
+                    return Keys.D1;
+                case '2':
+                    return Keys.D2;
+                case '3':
+                    return Keys.D3;
+                case '4':
+                    return Keys.D4;
+                case '5':
+                    return Keys.D5;
+                case '6':
+                    return Keys.D6;
+                case '7':
+                    return Keys.D7;
+                case '8':
+                    return Keys.D8;
+                case '9':
+                    return Keys.D9;
+                case 'a':
+                    return Keys.A;
+                case 'b':
+                    return Keys.B;
+                case 'c':
+                    return Keys.C;
+                case 'd':
+                    return Keys.D;
+                case 'e':
+                    return Keys.E;
+                case 'f':
+                    return Keys.F;
+                case 'g':
+                    return Keys.G;
+                case 'h':
+                    return Keys.H;
+                case 'i':
+                    return Keys.I;
+                case 'j':
+                    return Keys.J;
+                case 'k':
+                    return Keys.K;
+                case 'l':
+                    return Keys.L;
+                case 'm':
+                    return Keys.M;
+                case 'n':
+                    return Keys.N;
+                case 'o':
+                    return Keys.O;
+                case 'p':
+                    return Keys.P;
+                case 'q':
+                    return Keys.Q;
+                case 'r':
+                    return Keys.R;
+                case 's':
+                    return Keys.S;
+                case 't':
+                    return Keys.T;
+                case 'u':
+                    return Keys.U;
+                case 'v':
+                    return Keys.V;
+                case 'w':
+                    return Keys.W;
+                case 'x':
+                    return Keys.X;
+                case 'y':
+                    return Keys.Y;
+                case 'z':
+                    return Keys.Z;
+                default:
+                    return Keys.Space;
+            }
+        }
+
         #endregion
 
         #region 系统
@@ -335,56 +437,54 @@ namespace yxz
                 _lastError = $"打开应用文件或网站: {e}";
             }
         }
+       
         /// <summary>
         /// 获取剪切板内容
         /// </summary>
-        /// <param name="format">数据类型</param>
-        /**参数以类DataFormats 指定 说明如下
-        DataFormats      名称	                说明
-        公共字段静态成员 Bitmap                 指定 Windows 位图格式。 此 static 字段是只读的。
-        公共字段静态成员 CommaSeparatedValue    指定以逗号分隔值(CSV) 的格式，这是电子表格常用的交换格式。 Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 Dib                    指定 Windows     与设备无关的位图(DIB) 格式。 此 static 字段是只读的。
-        公共字段静态成员 Dif                    指定 Windows 数据交换格式(DIF)，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 EnhancedMetafile       指定 Windows 增强型图元文件格式。 此 static 字段是只读的。
-        公共字段静态成员 FileDrop               指定 Windows 文件放置格式，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 Html                   指定 HTML 剪贴板格式中的文本。 此 static 字段是只读的。
-        公共字段静态成员 Locale                 指定 Windows 区域性格式，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 MetafilePict           指定 Windows 图元文件格式，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 OemText                指定标准 Windows 原始设备制造商(OEM) 文本格式。 此 static 字段是只读的。
-        公共字段静态成员 Palette                指定 Windows 调色板格式。 此 static 字段是只读的。
-        公共字段静态成员 PenData                指定 Windows 钢笔数据格式，它由书写软件所使用的笔画组成，Windows 窗体不使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 Riff                   指定资源交换文件格式(RIFF) 音频格式，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 Rtf                    指定由 RTF 数据组成的文本。 此 static 字段是只读的。
-        公共字段静态成员 Serializable           指定封装任何类型的 Windows 窗体对象的格式。 此 static 字段是只读的。
-        公共字段静态成员 StringFormat           指定 Windows 窗体字符串类格式，Windows 窗体使用此格式存储字符串对象。 此 static 字段是只读的。
-        公共字段静态成员 SymbolicLink           指定 Windows 符号链接格式，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 Text                   指定标准 ANSI 文本格式。 此 static 字段是只读的。
-        公共字段静态成员 Tiff                   指定标记图像文件格式(TIFF)，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        公共字段静态成员 UnicodeText            指定标准 Windows Unicode 文本格式。 此 static 字段是只读的。
-        公共字段静态成员 WaveAudio              指定 wave 音频格式，Windows 窗体不直接使用此格式。 此 static 字段是只读的。
-        */
         /// <returns>剪切板内容</returns>
-        public static object GetClipboard(string format)
+        public static object GetClipboard()
         {
             try
             {
-                return Clipboard.GetData(format);
+                var value = string.Empty;
+                OpenClipboard(IntPtr.Zero);
+                if (IsClipboardFormatAvailable(13))
+                {
+                    var ptr = GetClipboardData(13);
+                    if (ptr != IntPtr.Zero)
+                    {
+                        value = Marshal.PtrToStringUni(ptr);
+                    }
+                }
+                CloseClipboard();
+                return value;
             }
             catch (Exception e)
             {
                 _lastError = $"获取剪切板内容: {e}";
+                return string.Empty;
             }
-            return null;
+           
         }
         /// <summary>
         /// 设置剪切板内容
         /// </summary>
-        /// <returns></returns>
-        public static void SetClipboard(object content)
+        /// <returns>内容</returns>
+        public static void SetClipboard(string content)
         {
             try
             {
-                Clipboard.SetDataObject(content, true);
+                while (true)
+                {
+                    if (!OpenClipboard(IntPtr.Zero))
+                    {
+                        continue;
+                    }
+                    EmptyClipboard();
+                    SetClipboardData(13, Marshal.StringToHGlobalUni(content));
+                    CloseClipboard();
+                    break;
+                }
             }
             catch (Exception e)
             {
@@ -635,6 +735,41 @@ namespace yxz
             Keybd_event(bVk, 0, 0, 0);
             Keybd_event(bVk, 0, 2, 0);
         }
+        /// <summary>
+        /// 键盘按键
+        /// </summary>
+        /// <param name="c">键字符</param>
+        public static void KeyPressChar(string c)
+        {
+            if (c.Length != 1) return;
+            KeyPress(GetKeys(c.ToLower()[0]));
+        }
+
+        /// <summary>
+        /// 键盘根据文本按键
+        /// </summary>
+        /// <param name="keyStr">键文本(只支持0-9 a-z 与.)</param>
+        /// <param name="iszs">是否模拟真实输入</param>
+        /// <param name="delay">每个字之间的延迟</param>
+        public static void KeyPressStr(string keyStr, int iszs = 0, int delay = 66)
+        {
+            foreach (var chr in keyStr)
+            {
+                if (char.IsUpper(chr))
+                {
+                    Keybd_event(0x14, 0x45, 0x1, (UIntPtr) 0);
+                    Keybd_event(0x14, 0x45, 0x1 | 0x2, (UIntPtr) 0);
+                    KeyPressChar(chr.ToString());
+                    Keybd_event(0x14, 0x45, 0x1, (UIntPtr) 0);
+                    Keybd_event(0x14, 0x45, 0x1 | 0x2, (UIntPtr) 0);
+                }
+                else
+                {
+                    KeyPressChar(chr.ToString());
+                }
+                Delay(iszs == 0 ? delay : new Random().Next(1, 100));
+            }
+        }
 
         /// <summary>
         /// ctrl+c 复制
@@ -797,6 +932,68 @@ namespace yxz
             y = screenPoint.Y;
         }
 
+        #endregion
+
+        #region 键鼠综合操作
+
+
+        /// <summary>
+        /// 移动并点击(左键)
+        /// </summary>
+        /// <param name="x">鼠标x</param>
+        /// <param name="y">鼠标y</param>
+        public static void MoveClickL(int x, int y)
+        {
+            MoveTo(x, y);
+            Delay(66);
+            LeftClick();
+        }
+
+        /// <summary>
+        /// 移动并点击(右键)
+        /// </summary>
+        /// <param name="x">鼠标x</param>
+        /// <param name="y">鼠标y</param>
+        public static void MoveClickR(int x, int y)
+        {
+            MoveTo(x, y);
+            Delay(66);
+            RightClick();
+        }
+
+        /// <summary>
+        /// 移动并点击且输入
+        /// </summary>
+        /// <param name="x">鼠标x</param>
+        /// <param name="y">鼠标y</param>
+        /// <param name="s">输入的文本</param>
+        public static void MoveClickSend(int x, int y,string s)
+        {
+            MoveClickL(x, y);
+            Delay(66);
+            for (var i = 0; i < 18; i++)
+            {
+                KeyPress(Keys.Back);
+            }
+            SetClipboard(s);
+            Delay(66);
+            KeyCtrlV();
+        }
+        /// <summary>
+        /// 移动并点击且键入
+        /// </summary>
+        /// <param name="x">鼠标x</param>
+        /// <param name="y">鼠标y</param>
+        /// <param name="s">键入的按键字符串</param>
+        public static void MoveClickKsy(int x, int y, string s)
+        {
+            MoveClickL(x, y);
+            for (var i = 0; i < 18; i++)
+            {
+                KeyPress(Keys.Back);
+            }
+            KeyPressStr(s,1);
+        }
         #endregion
 
         #region 文件操作
@@ -1310,7 +1507,6 @@ namespace yxz
         public static void SendKeyPress(int hwnd, Keys bVk)
         {
             SendMessage((IntPtr)hwnd, 0X106, (IntPtr)bVk, IntPtr.Zero);
-            //SendMessage((IntPtr)hwnd, 0X105, (IntPtr)bVk, IntPtr.Zero);
         }
         
         #endregion
