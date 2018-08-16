@@ -1,0 +1,564 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>yxz</name>
+    </assembly>
+    <members>
+        <member name="M:yxz.KeyHook.SetHook">
+            <summary>
+            注册钩子
+            </summary>
+        </member>
+        <member name="M:yxz.KeyHook.UnHook">
+            <summary>
+            注销钩子
+            </summary>
+        </member>
+        <member name="T:yxz.Yx">
+            <summary>
+            系统操作类
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwHide">
+            <summary>
+            隐藏窗口并激活其他窗口
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwNormal">
+            <summary>
+            激活并显示一个窗口。如果窗口被最小化或最大化，系统将其恢复到原来的尺寸和大小。应用程序在第一次显示窗口的时候应该指定此标志
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwShowminimized">
+            <summary>
+            激活窗口并将其最小化
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwMaximize">
+            <summary>
+            最大化指定的窗口
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwShownoactivate">
+            <summary>
+            以窗口最近一次的大小和状态显示窗口。激活窗口仍然维持激活状态
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwShow">
+            <summary>
+            在窗口原来的位置以原来的尺寸激活和显示窗口
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwMinimize">
+            <summary>
+            最小化指定的窗口并且激活在Z序中的下一个顶层窗口
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwShowminnoactive">
+            <summary>
+            窗口最小化，激活窗口仍然维持激活状态
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwShowna">
+            <summary>
+            以窗口原来的状态显示窗口。激活窗口仍然维持激活状态
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwRestore">
+            <summary>
+            激活并显示窗口。如果窗口最小化或最大化，则系统将窗口恢复到原来的尺寸和位置。在恢复最小化窗口时，应用程序应该指定这个标志。
+            </summary>
+        </member>
+        <member name="F:yxz.Yx.SwShowdefault">
+            <summary>
+            依据在STARTUPINFO结构中指定的SW_FLAG标志设定显示状态，STARTUPINFO 结构是由启动应用程序的程序传递给CreateProcess函数的
+            </summary>
+        </member>
+        <member name="F:yxz.Yx._lastError">
+            <summary>
+            最后一次错误信息
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.GetGuiThreadInfo(System.IntPtr)">
+            <summary>
+            获取焦点句柄
+            </summary>
+            <param name="hwnd">窗体句柄</param>
+            <returns></returns>
+        </member>
+        <member name="M:yxz.Yx.FindPicE(System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Double,System.Double,System.Int32@,System.Int32@)">
+            <summary>
+            找透明图
+            </summary>
+            <param name="zx">左上角x</param>
+            <param name="zy">左上角y</param>
+            <param name="yx">右下角x</param>
+            <param name="yy">右下角y</param>
+            <param name="pic">要查找的图片</param>
+            <param name="simc">颜色相似度</param>
+            <param name="sim">匹配相似度</param>
+            <param name="intX">返回的x坐标</param>
+            <param name="intY">返回的y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.ColorAEqualColorB(System.Drawing.Color,System.Drawing.Color,System.Byte)">
+            <summary>
+            对比两个颜色的误差
+            </summary>
+            <param name="colorA">颜色a</param>
+            <param name="colorB">颜色b</param>
+            <param name="errorRange">误差值</param>
+            <returns></returns>
+        </member>
+        <member name="M:yxz.Yx.GetLastError">
+            <summary>
+            获取最后一次错误信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:yxz.Yx.Delay(System.Int32)">
+            <summary>
+            延迟
+            </summary>
+            <param name="ms">毫秒</param>
+        </member>
+        <member name="M:yxz.Yx.RunApp(System.String)">
+            <summary>
+            打开应用文件或网站
+            </summary>
+            <param name="path">文件或应用路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:yxz.Yx.GetClipboard">
+            <summary>
+            获取剪切板内容
+            </summary>
+            <returns>剪切板内容</returns>
+        </member>
+        <member name="M:yxz.Yx.SetClipboard(System.String)">
+            <summary>
+            设置剪切板内容
+            </summary>
+            <returns>内容</returns>
+        </member>
+        <member name="M:yxz.Yx.SayString(System.String)">
+            <summary>
+            输入字符串
+            </summary>
+            <param name="text">字符串文本</param>
+        </member>
+        <member name="M:yxz.Yx.GetColor(System.Int32,System.Int32)">
+            <summary>
+            取坐标点颜色
+            </summary>
+            <param name="x">坐标x</param>
+            <param name="y">坐标y</param>
+            <returns>颜色字符串</returns>
+        </member>
+        <member name="M:yxz.Yx.FindColor(System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Double,System.Int32@,System.Int32@)">
+            <summary>
+            找色
+            </summary>
+            <param name="zx">左上角x</param>
+            <param name="zy">左上角y</param>
+            <param name="yx">右下角x</param>
+            <param name="yy">右下角y</param>
+            <param name="searchColor"></param>
+            <param name="sim"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+        </member>
+        <member name="M:yxz.Yx.FindPic(System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Double,System.Int32@,System.Int32@)">
+            <summary>
+            找图
+            </summary>
+            <param name="zx">左上角x</param>
+            <param name="zy">左上角y</param>
+            <param name="yx">右下角x</param>
+            <param name="yy">右下角y</param>
+            <param name="pic">要查找的图片</param>
+            <param name="sim">相似度</param>
+            <param name="intX">返回的x坐标</param>
+            <param name="intY">返回的y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.KeyDown(System.Windows.Forms.Keys)">
+            <summary>
+            键盘按下
+            </summary>
+            <param name="bVk">键代码</param>
+        </member>
+        <member name="M:yxz.Yx.KeyUp(System.Windows.Forms.Keys)">
+            <summary>
+            键盘弹起
+            </summary>
+            <param name="bVk">键代码</param>
+        </member>
+        <member name="M:yxz.Yx.KeyPress(System.Windows.Forms.Keys)">
+            <summary>
+            键盘按键
+            </summary>
+            <param name="bVk">键代码</param>
+        </member>
+        <member name="M:yxz.Yx.KeyPressChar(System.String)">
+            <summary>
+            键盘按键
+            </summary>
+            <param name="c">键字符</param>
+        </member>
+        <member name="M:yxz.Yx.KeyPressStr(System.String,System.Int32,System.Int32)">
+            <summary>
+            键盘根据文本按键
+            </summary>
+            <param name="keyStr">键文本(只支持0-9 a-z 与.)</param>
+            <param name="iszs">是否模拟真实输入</param>
+            <param name="delay">每个字之间的延迟</param>
+        </member>
+        <member name="M:yxz.Yx.KeyCtrlC">
+            <summary>
+            ctrl+c 复制
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.KeyCtrlX">
+            <summary>
+            ctrl+x 剪切
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.KeyCtrlV">
+            <summary>
+            ctrl+v 粘贴
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.KeyCtrlA">
+            <summary>
+            ctrl+a 全选
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.LeftDown">
+            <summary>
+            鼠标左键按下
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.LeftUp">
+            <summary>
+            鼠标左键弹起
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.LeftClick">
+            <summary>
+            鼠标左键点击
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.RightDown">
+            <summary>
+            鼠标右键按下
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.RightUp">
+            <summary>
+            鼠标右键弹起
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.RightClick">
+            <summary>
+            鼠标右键点击
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.MiddleDown">
+            <summary>
+            鼠标中键按下
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.MiddleUp">
+            <summary>
+            鼠标中键弹起
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.MiddleClick">
+            <summary>
+            鼠标中键点击
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.WheelDown(System.Int32)">
+            <summary>
+            鼠标滚轮向下滚动
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.WheelUp(System.Int32)">
+            <summary>
+            鼠标滚轮向上滚动
+            </summary>
+        </member>
+        <member name="M:yxz.Yx.MoveTo(System.Int32,System.Int32)">
+            <summary>
+            鼠标移动
+            </summary>
+            <param name="x">屏幕x坐标</param>
+            <param name="y">屏幕y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.GetCursorPos(System.Int32@,System.Int32@)">
+            <summary>
+            获取当前鼠标坐标
+            </summary>
+            <param name="x">鼠标x</param>
+            <param name="y">鼠标y</param>
+        </member>
+        <member name="M:yxz.Yx.MoveClickL(System.Int32,System.Int32)">
+            <summary>
+            移动并点击(左键)
+            </summary>
+            <param name="x">鼠标x</param>
+            <param name="y">鼠标y</param>
+        </member>
+        <member name="M:yxz.Yx.MoveClickR(System.Int32,System.Int32)">
+            <summary>
+            移动并点击(右键)
+            </summary>
+            <param name="x">鼠标x</param>
+            <param name="y">鼠标y</param>
+        </member>
+        <member name="M:yxz.Yx.MoveClickSend(System.Int32,System.Int32,System.String)">
+            <summary>
+            移动并点击且输入
+            </summary>
+            <param name="x">鼠标x</param>
+            <param name="y">鼠标y</param>
+            <param name="s">输入的文本</param>
+        </member>
+        <member name="M:yxz.Yx.MoveClickKsy(System.Int32,System.Int32,System.String)">
+            <summary>
+            移动并点击且键入
+            </summary>
+            <param name="x">鼠标x</param>
+            <param name="y">鼠标y</param>
+            <param name="s">键入的按键字符串</param>
+        </member>
+        <member name="M:yxz.Yx.CopyFile(System.String,System.String,System.Boolean)">
+            <summary>
+            复制文件
+            </summary>
+            <param name="srcFile">源文件路径</param>
+            <param name="dstFile">目标文件路径</param>
+            <param name="over">是否覆盖</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.CreateFolder(System.String)">
+            <summary>
+            创建目录
+            </summary>
+            <param name="folder">目录路径</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.DeleteFile(System.String)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="file">文件路径</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.DeleteFolder(System.String)">
+            <summary>
+            删除目录
+            </summary>
+            <param name="folder">目录路径</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.IsFileExist(System.String)">
+            <summary>
+            确定文件是否存在
+            </summary>
+            <param name="file">文件路径</param>
+            <returns>0:不存在 1:存在</returns>
+        </member>
+        <member name="M:yxz.Yx.MoveFile(System.String,System.String)">
+            <summary>
+            移动文件
+            </summary>
+            <param name="srcFile">源文件路径</param>
+            <param name="dstFile">目标文件路径</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.ReadFile(System.String)">
+            <summary>
+            读取文件内容
+            </summary>
+            <param name="file">文件路径</param>
+            <returns>内容</returns>
+        </member>
+        <member name="M:yxz.Yx.ReadIni(System.String,System.String,System.String)">
+            <summary>
+            读取INI文件内容
+            </summary>
+            <param name="section">小节名</param>
+            <param name="key">变量名</param>
+            <param name="file">文件路径</param>
+            <returns>内容</returns>
+        </member>
+        <member name="M:yxz.Yx.SelectDirectory">
+            <summary>
+            弹出选择文件夹对话框，并返回选择的文件夹路径.
+            </summary>
+            <returns>文件夹路径</returns>
+        </member>
+        <member name="M:yxz.Yx.SelectFile">
+            <summary>
+            弹出选择文件对话框，并返回选择的文件路径.
+            </summary>
+            <returns>文件路径</returns>
+        </member>
+        <member name="M:yxz.Yx.WriteFile(System.String,System.String)">
+            <summary>
+            向指定文件追加字符串
+            </summary>
+            <param name="file">文件路径</param>
+            <param name="content">内容</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.WriteIni(System.String,System.String,System.String,System.String)">
+            <summary>
+            向指定的Ini写入信息
+            </summary>
+            <param name="section">节点</param>
+            <param name="key">变量名</param>
+            <param name="value">变量值</param>
+            <param name="file">文件路径</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.FindWindow(System.String,System.String)">
+            <summary>
+            获取窗体的句柄函数
+            </summary>
+            <param name="lpClassName">窗口类名</param>
+            <param name="lpWindowName">窗口标题名</param>
+            <returns>返回第一个找到的句柄</returns>
+        </member>
+        <member name="M:yxz.Yx.FindWindowEx(System.Int32,System.String,System.String)">
+            <summary>
+            获取窗体的句柄函数(高级)
+            </summary>
+            <param name="hwndParent">父窗体句柄(若父窗体值为0此方法同FindWindow)</param>
+            <param name="lpClassName">窗口类名</param>
+            <param name="lpWindowName">窗口标题名</param>
+            <returns>返回第一个找到的句柄</returns>
+        </member>
+        <member name="M:yxz.Yx.EnumWindows(System.String,System.String)">
+            <summary>
+            获取窗体的句柄函数(模糊匹配)
+            </summary>
+            <param name="lpClassName">窗口类名</param>
+            <param name="lpWindowName">窗口标题名</param>
+            <returns>返回句柄集合</returns>
+        </member>
+        <member name="M:yxz.Yx.GetWindowRect(System.Int32,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            获取窗口位置
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="zx">返回窗口左x坐标</param>
+            <param name="zy">返回窗口左y坐标</param>
+            <param name="yx">返回窗口右x坐标</param>
+            <param name="yy">返回窗口右y坐标</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.SetWindowSize(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            设置窗口大小
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="w">宽</param>
+            <param name="h">高</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.MoveWindow(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            移动窗口
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="x">x坐标</param>
+            <param name="y">y坐标</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.SetWindowState(System.Int32,System.Int32)">
+            <summary>
+            设置窗口的状态
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="type">状态类型</param>
+            <returns>0:失败 1:成功</returns>
+        </member>
+        <member name="M:yxz.Yx.SendStr(System.Int32,System.String)">
+            <summary>
+            根据句柄发送一个字符串
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="input">字符串</param>
+        </member>
+        <member name="M:yxz.Yx.SendLeftDown(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            根据句柄按下鼠标左键
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="x">x坐标</param>
+            <param name="y">y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.SendLeftUp(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            根据句柄弹起鼠标左键
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="x">x坐标</param>
+            <param name="y">y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.SendLeftClick(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            根据句柄点击鼠标左键
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="x">x坐标</param>
+            <param name="y">y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.SendRightDown(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            根据句柄按下鼠标右键
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="x">x坐标</param>
+            <param name="y">y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.SendRightUp(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            根据句柄弹起鼠标右键
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="x">x坐标</param>
+            <param name="y">y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.SendRightClick(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            根据句柄点击鼠标右键
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="x">x坐标</param>
+            <param name="y">y坐标</param>
+        </member>
+        <member name="M:yxz.Yx.SendKeyDown(System.Int32,System.Windows.Forms.Keys)">
+            <summary>
+            根据句柄键盘按下
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="bVk">键代码</param>
+        </member>
+        <member name="M:yxz.Yx.SendKeyUp(System.Int32,System.Windows.Forms.Keys)">
+            <summary>
+            根据句柄键盘弹起
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="bVk">键代码</param>
+        </member>
+        <member name="M:yxz.Yx.SendKeyPress(System.Int32,System.Windows.Forms.Keys)">
+            <summary>
+            根据句柄键盘按键
+            </summary>
+            <param name="hwnd">窗口句柄</param>
+            <param name="bVk">键代码</param>
+        </member>
+    </members>
+</doc>

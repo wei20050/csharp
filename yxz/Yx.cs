@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 namespace yxz
 {
+    /// <summary>
+    /// 系统操作类
+    /// </summary>
     public class Yx
     {
         #region 常量
