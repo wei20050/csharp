@@ -655,8 +655,8 @@ namespace yxz
                 var sIptr = sData.Scan0;
                 var pIptr = pData.Scan0;
                 var isOk = false;
-                var breakW = sWidth - pWidth + 1;
-                var breakH = sHeight - pHeight + 1;
+                var breakW = yx + 1;
+                var breakH = yy + 1;
                 for (var h = rect.Y; h < breakH; h++)
                 {
                     for (var w = rect.X; w < breakW; w++)
