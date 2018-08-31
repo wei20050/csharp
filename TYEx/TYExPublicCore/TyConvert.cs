@@ -10,14 +10,21 @@ using System.Text;
 namespace TYExPublicCore
 {
     public class TyConvert
-    {  //将JSON数据转化为对应的类型  
+    {
+
+        /// <summary>
+        /// 将JSON数据转化为对应的类型  
+        /// </summary>
+        /// <typeparam name="T">要转换的类型</typeparam>
+        /// <param name="jsonStr">json字符串</param>
+        /// <returns>转换后的对象</returns>
         public static T JsonToObj<T>(string jsonStr)
         {
             try
             {
                 using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(jsonStr)))
                 {
-                    return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(ms);
+                    return (T) new DataContractJsonSerializer(typeof(T)).ReadObject(ms);
                 }
             }
             catch (Exception ex)
@@ -26,7 +33,12 @@ namespace TYExPublicCore
                 return default(T);
             }
         }
-        //将对应的类型转化为JSON字符串  
+
+        /// <summary>
+        /// 将对应的类型转化为JSON字符串
+        /// </summary>
+        /// <param name="jsonObject">要转换的类型</param>
+        /// <returns>json字符串</returns>
         public static string ObjToJson(object jsonObject)
         {
             using (var ms = new MemoryStream())
@@ -35,7 +47,13 @@ namespace TYExPublicCore
                 return Encoding.UTF8.GetString(ms.ToArray());
             }
         }
-        //实体集合转DataTable
+
+        /// <summary>
+        /// 实体集合转DataTable
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="collection">实体对象</param>
+        /// <returns></returns>
         public static DataTable ToDataTable<T>(IEnumerable<T> collection)
         {
             var props = typeof(T).GetProperties();
@@ -57,7 +75,13 @@ namespace TYExPublicCore
             }
             return dt;
         }
-        //DataTable转实体集合
+
+        /// <summary>
+        /// DataTable转实体集合
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="table">datatable对象</param>
+        /// <returns></returns>
         public static List<T> DataTableTo<T>(DataTable table)
         {
             if (table == null)
@@ -71,6 +95,7 @@ namespace TYExPublicCore
             }
             return ConvertTo<T>(rows);
         }
+
         //DataRow集合转实体集合
         private static List<T> ConvertTo<T>(IList<DataRow> rows)
         {
@@ -108,6 +133,34 @@ namespace TYExPublicCore
                 }
             }
             return obj;
+        }
+
+        /// <summary>
+        /// 文件转Base64字符串
+        /// </summary>
+        /// <param name="fileName">文件路径</param>
+        /// <returns>Base64字符串</returns>
+        public static string FileToBase64(string fileName)
+        {
+            var fs = File.OpenRead(fileName);
+            var br = new BinaryReader(fs);
+            var bt = br.ReadBytes(Convert.ToInt32(fs.Length));
+            return Convert.ToBase64String(bt);
+        }
+
+        /// <summary>
+        /// Base64字符串转文件
+        /// </summary>
+        /// <param name="base64Str">Base64字符串</param>
+        /// <param name="fileName">文件路径</param>
+        public static void Base64ToFile(string base64Str, string fileName)
+        {
+            var contents = Convert.FromBase64String(base64Str);
+            using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            {
+                fs.Write(contents, 0, contents.Length);
+                fs.Flush();
+            }
         }
     }
 }

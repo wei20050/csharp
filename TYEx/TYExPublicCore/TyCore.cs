@@ -17,6 +17,7 @@ namespace TYExPublicCore
         private static extern IntPtr GetConsoleWindow();//获取控制台窗口句柄
         [DllImport("User32.dll", EntryPoint = "ShowWindow")]
         private static extern bool ShowWindow(IntPtr hWnd, int type);
+
         /// <summary>
         /// 删除控制台应用程序的关闭按钮
         /// </summary>
@@ -24,6 +25,7 @@ namespace TYExPublicCore
         {
             DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), 0xF060, 0);//删除关闭按钮
         }
+
         /// <summary>
         /// 显示控制台应用程序
         /// </summary>
@@ -32,6 +34,7 @@ namespace TYExPublicCore
         {
             ShowWindow(GetConsoleWindow(), i);
         }
+
         /// <summary>
         /// 设置注册表实现 开机自动启动
         /// </summary>
@@ -41,6 +44,7 @@ namespace TYExPublicCore
             var rKey = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
             rKey?.SetValue(appName, $@"""{AppDomain.CurrentDomain.BaseDirectory}{appName}.exe""");
         }
+
         /// <summary>
         /// 删除注册表实现 解除开机自动启动
         /// </summary>
@@ -57,6 +61,7 @@ namespace TYExPublicCore
                 TyLog.WriteError(e);
             }
         }
+
         /// <summary>
         /// 结束进程
         /// </summary>
@@ -71,6 +76,7 @@ namespace TYExPublicCore
                 }
             }
         }
+
         /// <summary>
         /// 杀死进程
         /// </summary>

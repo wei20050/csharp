@@ -9,6 +9,7 @@ namespace TYExPublicCore
         private static readonly object Lock = new object();//多线程锁防止写文件或者创建目录与文件冲突
         private static readonly string FilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}logs\";//日志文件夹默认根目录logs文件夹
         private const int FileSize = 6 * 1024 * 1024; //日志分隔文件大小 6M
+
         /// <summary>
         /// 写错误日志
         /// </summary>
@@ -22,6 +23,7 @@ namespace TYExPublicCore
                 }
             });
         }
+
         /// <summary>
         /// 写操作日志
         /// </summary>
@@ -35,6 +37,7 @@ namespace TYExPublicCore
                 }
             });
         }
+
         /// <summary>
         /// 生成日志文件路径
         /// </summary>
@@ -62,6 +65,7 @@ namespace TYExPublicCore
             } while (bl);
             return logPath;
         }
+
         /// <summary>
         /// 写文件
         /// </summary>
