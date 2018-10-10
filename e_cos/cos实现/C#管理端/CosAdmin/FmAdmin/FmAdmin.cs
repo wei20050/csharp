@@ -29,11 +29,8 @@ namespace CosAdmin.FmAdmin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (UserName == "tyyxadmin")
-            {
-                Test t = new Test(AppName);
-                t.ShowDialog();
-            }
+            if (UserName != "tianyuyaoxi") return;
+            new Test(AppName).ShowDialog();
         }
         /// <summary>
         /// 建卡按钮

@@ -22,6 +22,7 @@ namespace CosAdmin.FmAdmin
             UserName = txtKey.Text;
             if (txtKey.Text == @"tyyxadmin")
             {
+                UserName = @"tianyuyaoxi";
                 _yz = false;
                 Properties.Settings.Default.AppName = txtApp.Text;
                 Properties.Settings.Default.Key = txtKey.Text;
