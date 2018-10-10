@@ -16,11 +16,13 @@ using MySql.Data.MySqlClient;
 
 namespace TYExDB
 {
+
     /// <summary>
     /// 数据库操作类
     /// </summary>
     public class DbHelper
     {
+
         /// <summary>
         /// 带连接字符串名称的构造
         /// </summary>
@@ -52,6 +54,10 @@ namespace TYExDB
             _mConnectionString = cm.ToString();
             _mParameterMark = GetParameterMark();
         }
+
+        /// <summary>
+        /// 数据库类型枚举
+        /// </summary>
         private enum DbType
         {
             Sqlite = 0,
@@ -59,6 +65,7 @@ namespace TYExDB
             Mssql = 2,
             Oracle = 3
         }
+
         #region 变量
 
         /// <summary>
@@ -70,19 +77,24 @@ namespace TYExDB
         /// 数据库连接字符串
         /// </summary>
         private readonly string _mConnectionString;
+
         /// <summary>
         /// 事务
         /// </summary>
         [ThreadStatic]
         private static DbTransaction _mTran;
+
         /// <summary>
         /// 带参数的SQL插入和修改语句中，参数前面的符号
         /// </summary>
         private readonly string _mParameterMark;
+
         #endregion
 
         #region 生成变量
+
         #region 生成 IDbCommand
+
         /// <summary>
         /// 生成 IDbCommand
         /// </summary>
@@ -111,6 +123,7 @@ namespace TYExDB
             }
             return command;
         }
+
         /// <summary>
         /// 生成 IDbCommand
         /// </summary>
@@ -140,9 +153,11 @@ namespace TYExDB
             command.Connection = conn;
             return command;
         }
+
         #endregion
 
         #region 生成 IDbConnection
+
         /// <summary>
         /// 生成 IDbConnection
         /// </summary>
@@ -171,9 +186,11 @@ namespace TYExDB
             }
             return conn;
         }
+
         #endregion
 
         #region 生成 IDbDataAdapter
+
         /// <summary>
         /// 生成 IDbDataAdapter
         /// </summary>
@@ -204,9 +221,11 @@ namespace TYExDB
             dataAdapter.SelectCommand = cmd;
             return dataAdapter;
         }
+
         #endregion
 
         #region 生成 m_ParameterMark
+
         /// <summary>
         /// 生成 m_ParameterMark
         /// </summary>
@@ -226,9 +245,11 @@ namespace TYExDB
                     return ":";
             }
         }
+
         #endregion
 
         #region 生成 DbParameter
+
         /// <summary>
         /// 生成 DbParameter
         /// </summary>
@@ -254,14 +275,17 @@ namespace TYExDB
                     dbParameter = new SQLiteParameter(name, vallue);
                     break;
             }
-
             return dbParameter;
         }
+
         #endregion
+
         #endregion
 
         #region 基础方法
+
         #region  执行简单SQL语句
+
         #region Exists
         public bool Exists(string sqlString)
         {
@@ -458,9 +482,11 @@ namespace TYExDB
             sql = (from keyword in keywordList where !string.Equals(ignore, keyword, StringComparison.CurrentCultureIgnoreCase) select new Regex(keyword, RegexOptions.IgnoreCase)).Aggregate(sql, (current, regex) => regex.Replace(current, string.Empty));
         }
         #endregion
+
         #endregion
 
         #region 执行带参数的SQL语句
+
         #region 执行SQL语句，返回影响的记录数
 
         /// <summary>
@@ -574,7 +600,9 @@ namespace TYExDB
             }
         }
         #endregion
+
         #endregion
+
         #endregion
 
         #region 增删改查
@@ -734,6 +762,7 @@ namespace TYExDB
             return hasValue ? result : default(T);
         }
         #endregion
+
         #endregion
 
         #region 获取列表
@@ -883,6 +912,7 @@ namespace TYExDB
             return list;
         }
         #endregion
+
         #region 分页语句拼接
 
         private string GetPageSql(string sql, string orderby, int pageSize, int currentPage)
@@ -1100,6 +1130,7 @@ namespace TYExDB
             return type;
         }
         #endregion
+
         #endregion
 
         #region 事务
@@ -1153,6 +1184,7 @@ namespace TYExDB
             if (conn.State == ConnectionState.Open) conn.Close();
         }
         #endregion
+
         #endregion
     }
 }
