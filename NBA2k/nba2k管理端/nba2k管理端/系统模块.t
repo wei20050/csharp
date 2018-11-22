@@ -1,5 +1,5 @@
 ﻿功能 user_bind(uid)
-    变量 userstr = getUser()
+    变量 userstr = get8User(uid)
     变量 retarr
     变量 userarr = 数组()
     字符串分割(userstr, "_", retarr)
