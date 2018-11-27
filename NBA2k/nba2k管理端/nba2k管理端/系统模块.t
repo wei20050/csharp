@@ -1,5 +1,10 @@
-﻿功能 user_bind(uid)
-    变量 userstr = get8User(uid)
+﻿功能 user_bind(uid,isdk = 假)
+    变量 userstr 
+    如果(isdk)
+        userstr = get8User(uid)
+    否则
+        userstr = getUser()
+    结束
     变量 retarr
     变量 userarr = 数组()
     字符串分割(userstr, "_", retarr)
@@ -24,17 +29,27 @@
             x = x + 1
         结束
     结束
-    表格填充数据集("表格_会员", userarr)
+    如果(isdk)
+        表格填充数据集("bghycxdr", userarr)
+    否则
+        表格填充数据集("表格_会员", userarr)
+    结束
 结束
-功能 log_bind(uid, ukey, time0, time1)
-    变量 logstr = getLog()
+功能 log_bind(uid, ukey, time0, time1,isdk = 假)
+    变量 logstr
+    如果(isdk)
+        logstr = getLog(uid)
+    否则
+        logstr = getLog()
+    结束
     变量 retarr
     变量 logarr = 数组()
     字符串分割(logstr, "_", retarr)
     如果(retarr[0] == 200)
         字符串分割(retarr[1], "~", retarr)
     否则
-        返回 null
+        消息框("没有查到数据!")
+        返回
     结束
     变量 x = 0
     变量 banyue = 0, yue = 0, bannian = 0, nian = 0, yongjiu = 0
@@ -53,7 +68,7 @@
         如果(单选框获取状态("单选框0") && (logarrn[3] == 15 || logarrn[3] == 30 || logarrn[3] == 180 || logarrn[3] == 366 || logarrn[3] == 3000))
             isshow = 0
         结束
-        如果(isshow > -1)
+        如果(isshow > -1 || isdk)
             如果((字符串查找(logarrn[1], uid) != -1 || uid == "") && (字符串查找(msgarr[0], ukey) != -1 || ukey == "") && 时间间隔("h", time0 & " 00:00:00", logarrn[2]) > 0 && 时间间隔("h", time1 & " 23:59:59", logarrn[2]) < 0)
                 变量 arrn = 数组("序号" = x + 1, "会员ID" = logarrn[1], "充值时间" = logarrn[2], "卡密天数" = logarrn[3], "卡密" = msgarr[0], "发卡人ID" = msgarr[1])
                 logarr[x] = arrn
@@ -76,7 +91,11 @@
         结束
     结束
     printBB(banyue, yue, bannian, nian, yongjiu)
-    表格填充数据集("表格_记录", logarr)
+    如果(isdk)
+        表格填充数据集("bgjlcxdr", logarr)
+    否则
+        表格填充数据集("表格_记录", logarr)
+    结束
 结束
 功能 printBB(banyue, yue, bannian, nian, yongjiu)
     变量 strs = "充值数量=> 半月卡: " & banyue & " 张  月卡: " & yue & " 张  半年卡: " & bannian & " 张  年卡: " & nian & " 张  永久卡: " & yongjiu & " 张"
@@ -107,12 +126,12 @@
     表格填充数据集("表格_卡密", camiarr)
 结束
 功能 savepwd(uid, pwd)
-    var retarr
+    变量 retarr
     字符串分割(saveuser(uid, "pwd = " & pwd), "_", retarr)
     消息框(retarr[1])
-    if(retarr[0] == 200)
+    如果(retarr[0] == 200)
         控件关闭子窗口("修改密码", 6)
-    end
+    结束
 结束
 //修改user信息函数 返回 代码_错误信息
 //参数1saveuid   传入 主键=>uid

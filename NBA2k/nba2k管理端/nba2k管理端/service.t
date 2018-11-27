@@ -17,13 +17,13 @@
     返回 动态库调用("rc:t.dll", "char *", "list", "char *", key)
 结束
 功能 delall(keys)
-    var keyarr
+    变量 keyarr
     字符串分割(keys, "~", keyarr)
     遍历(变量 i = 0; i < 数组大小(keyarr); i++)
-        var ret = del(keyarr[i])
-        if(ret != 204)
+        变量 ret = del(keyarr[i])
+        如果(ret != 204)
             del(keyarr[i])
-        end
+        结束
     结束
 结束
 功能 set8User(userinfo)
@@ -106,8 +106,13 @@
         返回 真
     结束
 结束
-功能 getLog()
-    变量 struser = list("log/")
+功能 getLog(uid = "")
+    变量 struser
+    如果(uid == "")
+        struser = list("log/")
+    否则
+        struser = list("log/(1),("& uid &")")
+    结束
     struser = 字符串替换(struser, "(", "")
     struser = 字符串替换(struser, ")", "")
     struser = 字符串替换(struser, "log/", "")

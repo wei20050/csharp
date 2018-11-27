@@ -68,3 +68,12 @@
     变量 x_uid = 编辑框获取文本("编辑框_user_uid")
     savepwd(x_uid, "1")
 结束
+
+功能 anhycxdr_点击()
+	user_bind(编辑框获取文本("bjkhyiddr"),真)
+结束
+
+
+功能 anjlcxdr_点击()
+    log_bind(编辑框获取文本("bjkhyidjldr"), "","2010-01-01" , "2200-01-01",真)
+结束

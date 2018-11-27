@@ -8,6 +8,6 @@
 <Platform>pc</Platform>
 </ProjInfo>
 <DesignInfo>
-<LockedCtrl>窗口: nba2k管理端 选项卡0|标签4|编辑框2|按钮0|下拉框1|标签1|标签0|下拉框0|按钮5|标签8|编辑框_user_uid|表格_会员|表格_卡密|按钮7|编辑框_ukey|标签12|标签_财务报表钱|标签_财务报表数|标签14|编辑框_log_ukey|日期框1|标签11|标签10|日期框0|编辑框_log_uid|标签9|按钮6|表格_记录| 窗口结束窗口: 顶级管理界面 编辑框_where|标签16|按钮_saveuser|编辑框_saveuid|标签15|分组框2|编辑框_key|标签7|按钮_delall|按钮_deluser|按钮_addadmin|标签5|编辑_uid|分组框0|分组框1| 窗口结束</LockedCtrl>
+<LockedCtrl>窗口: nba2k管理端 标签4|编辑框2|按钮0|下拉框1|标签1|标签0|下拉框0|按钮5|标签8|编辑框_user_uid|表格_会员|表格_卡密|按钮7|编辑框_ukey|标签12|标签_财务报表钱|标签_财务报表数|标签14|编辑框_log_ukey|日期框1|标签11|标签10|日期框0|编辑框_log_uid|标签9|按钮6|表格_记录| 窗口结束窗口: 顶级管理界面 编辑框_where|标签16|按钮_saveuser|编辑框_saveuid|标签15|分组框2|编辑框_key|标签7|按钮_delall|按钮_deluser|按钮_addadmin|标签5|编辑_uid|分组框0|分组框1| 窗口结束</LockedCtrl>
 </DesignInfo>
 </Project>
