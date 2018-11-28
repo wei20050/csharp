@@ -70,10 +70,25 @@
 结束
 
 功能 anhycxdr_点击()
-	user_bind(编辑框获取文本("bjkhyiddr"),真)
+    user_bind(编辑框获取文本("bjkhyiddr"),真)
 结束
 
 
 功能 anjlcxdr_点击()
     log_bind(编辑框获取文本("bjkhyidjldr"), "","2010-01-01" , "2200-01-01",真)
+结束
+
+
+功能 按钮_卡密清理_点击()
+    cami_ql()
+结束
+
+
+功能 按钮_记录清理_点击()
+    log_ql()
+结束
+
+
+功能 按钮_会员清理_点击()
+    user_ql()
 结束

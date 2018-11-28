@@ -196,3 +196,72 @@
     结束
     返回 "user/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & "),(" & userinfo[5] & "),(" & userinfo[6] & "),(" & userinfo[7] & ")"
 结束
+功能 cami_ql()
+    变量 camistr = getcamiql()
+    变量 retarr
+    变量 retarrn
+    字符串分割(camistr, "_", retarr)
+    如果(retarr[0] == 200)
+        字符串分割(retarr[1], "~", retarrn)
+    否则
+        返回 null
+    结束
+    如果(retarrn[0] != "")
+        delall(retarr[1])
+        消息框("清理完成,本次共删除卡密数:" & 数组大小(retarrn))
+    否则
+        消息框("没有卡密数据需要清理")
+    结束
+结束
+功能 log_ql()
+    变量 logstr = getLogQl()
+    变量 retarr
+    变量 retarrn
+    字符串分割(logstr, "_", retarr)
+    如果(retarr[0] == 200)
+        字符串分割(retarr[1], "~", retarrn)
+    否则
+        返回 null
+    结束
+    如果(retarrn[0] != "")
+        变量 x = 0
+        遍历(变量 i = 0; i < 数组大小(retarrn); i++)
+            变量 logarr
+            变量 rets = retarrn[i]
+            rets = 字符串替换(rets, "(", "")
+            rets = 字符串替换(rets, ")", "")
+            rets = 字符串替换(rets, "log/", "")
+            字符串分割(rets, ",", logarr)
+            if(时间间隔("h", 指定时间("d",-66,当前时间()), logarr[2]) < 0)
+                变量 tmp = retarrn[i]
+                var retd = del(tmp)
+                如果(retd != 204)
+                    del(retarrn[i])
+                结束
+                x ++
+            end
+        结束
+        消息框("清理完成,本次共删除记录数:" & x)
+    否则
+        消息框("没有记录数据需要清理")
+    结束
+结束
+功能 user_ql()
+    变量 camistr = getUserQl()
+    变量 retarr
+    变量 retarrn
+    变量 camiarr = 数组()
+    字符串分割(camistr, "_", retarr)
+    如果(retarr[0] == 200)
+        字符串分割(retarr[1], "~", retarrn)
+    否则
+        返回 null
+    结束
+    如果(retarrn[0] != "")
+        消息框("用户数据暂时不支持清理!")
+        //del(retarr[1])
+        //消息框("清理完成,本次共删除用户数:" & 数组大小(retarrn))
+    否则
+        消息框("没有卡密数据需要清理")
+    结束
+结束

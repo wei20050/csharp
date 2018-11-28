@@ -57,6 +57,10 @@
     struser = 字符串替换(struser, "user/", "")
     返回 struser
 结束
+功能 getUserQl()
+    变量 struser = list("user")
+    返回 struser
+结束
 功能 set3cami(userinfo)
     变量 userstr = "cami/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & ")"
     变量 retarr
@@ -89,6 +93,10 @@
     struser = 字符串替换(struser, "cami/", "")
     返回 struser
 结束
+功能 getcamiql()
+    变量 struser = list("cami")
+    返回 struser
+结束
 功能 set5Log(userinfo)
     变量 userstr = "log/(" & userinfo[0] & "),(" & userinfo[1] & "),(" & userinfo[2] & "),(" & userinfo[3] & "),(" & userinfo[4] & ")"
     变量 retarr
@@ -116,6 +124,10 @@
     struser = 字符串替换(struser, "(", "")
     struser = 字符串替换(struser, ")", "")
     struser = 字符串替换(struser, "log/", "")
+    返回 struser
+结束
+功能 getLogQl()
+    变量 struser = list("log/")
     返回 struser
 结束
 功能 setConfig(uid, txt)
