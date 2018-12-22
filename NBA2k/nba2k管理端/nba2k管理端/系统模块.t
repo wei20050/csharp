@@ -8,6 +8,8 @@
     变量 retarr
     变量 userarr = 数组()
     字符串分割(userstr, "_", retarr)
+    var a = retarr[2]
+    var b = 数组大小(retarr)
     如果(retarr[0] == 200)
         字符串分割(retarr[1], "~", retarr)
     否则
