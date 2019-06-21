@@ -1,0 +1,9 @@
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\bin\Debug\dmDemo.exe
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\bin\Debug\dmDemo.pdb
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\bin\Debug\yx.dll
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\obj\Debug\dmDemo.MainForm.resources
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\obj\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\obj\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\obj\Debug\dmDemo.exe
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\dmDemo\dmDemo\obj\Debug\dmDemo.pdb
