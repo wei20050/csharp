@@ -12,8 +12,9 @@ using System.Windows.Forms;
 // ReSharper disable CommentTypo
 // ReSharper disable InconsistentNaming
 
-namespace 扫码枪模拟器
+namespace yxz
 {
+
 
     /// <summary>
     /// 系统操作类
@@ -325,6 +326,143 @@ namespace 扫码枪模拟器
         #region 键盘操作
 
         /// <summary>
+        /// 获得键码
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="isUpper"></param>
+        /// <returns></returns>
+        public static byte GetKey(string c, out bool isUpper)
+        {
+            isUpper = false;
+            for (var i = 1; i < 13; i++)
+            {
+                if (c == $"F{i}")
+                {
+                    return (byte)(111 + i);
+                }
+            }
+            switch (c)
+            {
+                case "!":
+                    isUpper = true;
+                    return 49;
+                case "@":
+                    isUpper = true;
+                    return 50;
+                case "#":
+                    isUpper = true;
+                    return 51;
+                case "$":
+                    isUpper = true;
+                    return 52;
+                case "%":
+                    isUpper = true;
+                    return 53;
+                case "^":
+                    isUpper = true;
+                    return 54;
+                case "&":
+                    isUpper = true;
+                    return 55;
+                case "*":
+                    isUpper = true;
+                    return 56;
+                case "(":
+                    isUpper = true;
+                    return 57;
+                case ")":
+                    isUpper = true;
+                    return 48;
+                case "-":
+                    return 189;
+                case "_":
+                    isUpper = true;
+                    return 189;
+                case "=":
+                    return 187;
+                case "+":
+                    isUpper = true;
+                    return 187;
+                case ";":
+                    return 186;
+                case ":":
+                    isUpper = true;
+                    return 186;
+                case "/":
+                    return 191;
+                case "?":
+                    isUpper = true;
+                    return 191;
+                case "`":
+                    return 192;
+                case "~":
+                    isUpper = true;
+                    return 192;
+                case "[":
+                    return 219;
+                case "{":
+                    isUpper = true;
+                    return 219;
+                case "]":
+                    return 221;
+                case "}":
+                    isUpper = true;
+                    return 221;
+                case "\\":
+                    return 220;
+                case "|":
+                    isUpper = true;
+                    return 220;
+                case "'":
+                    return 222;
+                case "\"":
+                    isUpper = true;
+                    return 222;
+                case ",":
+                    return 188;
+                case "<":
+                    isUpper = true;
+                    return 188;
+                case ".":
+                    return 190;
+                case ">":
+                    isUpper = true;
+                    return 190;
+                case "Back":
+                    return 8;
+                case "Tab":
+                    return 9;
+                case "Enter":
+                    return 13;
+                case "Shift":
+                    return 16;
+                case "Ctrl":
+                    return 17;
+                case "Alt":
+                    return 18;
+                case "Esc":
+                    return 27;
+                case "Insert":
+                    return 45;
+                case "Delete":
+                    return 46;
+                case "PageUp":
+                    return 33;
+                case "PageDown":
+                    return 34;
+                case "End":
+                    return 35;
+                case "Home":
+                    return 36;
+                case " ":
+                case "Space":
+                    return 32;
+                default:
+                    return c.Length != 1 ? (byte)0 : Convert.ToByte(c.ToUpper()[0]);
+            }
+        }
+
+        /// <summary>
         /// 键盘按下
         /// </summary>
         /// <param name="bVk">键代码</param>
@@ -353,26 +491,68 @@ namespace 扫码枪模拟器
         }
 
         /// <summary>
-        /// 键盘按键大写
+        /// <para>键盘按键</para>
+        /// <para>"!"</para>
+        /// <para>"@"</para>
+        /// <para>"#"</para>
+        /// <para>"$"</para>
+        /// <para>"%"</para>
+        /// <para>"^"</para>
+        /// <para>"&"</para>
+        /// <para>"*"</para>
+        /// <para>"("</para>
+        /// <para>")"</para>
+        /// <para>"-"</para>
+        /// <para>"_"</para>
+        /// <para>"="</para>
+        /// <para>"+"</para>
+        /// <para>";"</para>
+        /// <para>"" </para>
+        /// <para>"/"</para>
+        /// <para>"?"</para>
+        /// <para>"`"</para>
+        /// <para>"~"</para>
+        /// <para>"["</para>
+        /// <para>"{"</para>
+        /// <para>"]"</para>
+        /// <para>"}"</para>
+        /// <para>"\\"</para>
+        /// <para>"|"</para>
+        /// <para>"'"</para>
+        /// <para>"\""</para>
+        /// <para>","</para>
+        /// <para>"＜"</para>
+        /// <para>"."</para>
+        /// <para>">"</para>
+        /// <para>"Back"</para>
+        /// <para>"Tab"</para>
+        /// <para>"Enter"</para>
+        /// <para>"Shift"</para>
+        /// <para>"Ctrl"</para>
+        /// <para>"Alt"</para>
+        /// <para>"Esc"</para>
+        /// <para>"Insert"</para>
+        /// <para>"Delete"</para>
+        /// <para>"PageUp"</para>
+        /// <para>"PageDown"</para>
+        /// <para>"End"</para>
+        /// <para>"Home"</para>
+        /// <para>" "</para>
+        /// <para>"Space"</para>
         /// </summary>
-        /// <param name="bVk">键代码</param>
-        public static void KeyPressUpper(byte bVk)
+        /// <param name="s">键字符</param>
+        public static void KeyPressChar(string s)
         {
-            KeyDown(16);
-            KeyPress(bVk);
-            KeyUp(16);
-        }
-
-        /// <summary>
-        /// 键盘按键
-        /// </summary>
-        /// <param name="chr">键字符</param>
-        public static void KeyPressChar(char chr)
-        {
-            var key = Convert.ToByte(chr.ToString().ToUpper()[0]);
-            if (char.IsUpper(chr))
+            if (string.IsNullOrEmpty(s))
             {
-                KeyPressUpper(key);
+                return;
+            }
+            var key = GetKey(s, out var isUpper);
+            if (isUpper)
+            {
+                KeyDown(16);
+                KeyPress(key);
+                KeyUp(16);
             }
             else
             {
@@ -390,108 +570,7 @@ namespace 扫码枪模拟器
         {
             foreach (var chr in keyStr)
             {
-                switch (chr)
-                {
-                    case '!':
-                        KeyPressUpper(49);
-                        break;
-                    case '@':
-                        KeyPressUpper(50);
-                        break;
-                    case '#':
-                        KeyPressUpper(51);
-                        break;
-                    case '$':
-                        KeyPressUpper(52);
-                        break;
-                    case '%':
-                        KeyPressUpper(53);
-                        break;
-                    case '^':
-                        KeyPressUpper(54);
-                        break;
-                    case '&':
-                        KeyPressUpper(55);
-                        break;
-                    case '*':
-                        KeyPressUpper(56);
-                        break;
-                    case '(':
-                        KeyPressUpper(57);
-                        break;
-                    case ')':
-                        KeyPressUpper(48);
-                        break;
-                    case '-':
-                        KeyPress(189);
-                        break;
-                    case '_':
-                        KeyPressUpper(189);
-                        break;
-                    case '=':
-                        KeyPress(187);
-                        break;
-                    case '+':
-                        KeyPressUpper(187);
-                        break;
-                    case ';':
-                        KeyPress(186);
-                        break;
-                    case ':':
-                        KeyPressUpper(186);
-                        break;
-                    case '/':
-                        KeyPress(191);
-                        break;
-                    case '?':
-                        KeyPressUpper(191);
-                        break;
-                    case '`':
-                        KeyPress(192);
-                        break;
-                    case '~':
-                        KeyPressUpper(192);
-                        break;
-                    case '[':
-                        KeyPress(219);
-                        break;
-                    case '{':
-                        KeyPressUpper(219);
-                        break;
-                    case ']':
-                        KeyPress(221);
-                        break;
-                    case '}':
-                        KeyPressUpper(221);
-                        break;
-                    case '\\':
-                        KeyPress(220);
-                        break;
-                    case '|':
-                        KeyPressUpper(220);
-                        break;
-                    case '\'':
-                        KeyPress(222);
-                        break;
-                    case '"':
-                        KeyPressUpper(222);
-                        break;
-                    case ',':
-                        KeyPress(188);
-                        break;
-                    case '<':
-                        KeyPressUpper(188);
-                        break;
-                    case '.':
-                        KeyPress(190);
-                        break;
-                    case '>':
-                        KeyPressUpper(190);
-                        break;
-                    default:
-                        KeyPressChar(chr);
-                        break;
-                }
+                KeyPressChar(chr.ToString());
                 Delay(iszs ? new Random().Next(1, 100) : delay);
             }
         }
