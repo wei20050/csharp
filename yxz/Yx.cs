@@ -7,8 +7,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace yxz
+// ReSharper disable UnusedMember.Global
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
+// ReSharper disable InconsistentNaming
+
+namespace 扫码枪模拟器
 {
+
     /// <summary>
     /// 系统操作类
     /// </summary>
@@ -70,9 +76,7 @@ namespace yxz
         #region 系统API
 
         [DllImport("user32.dll", EntryPoint = "keybd_event", SetLastError = true)]
-        private static extern void Keybd_event(Keys bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, EntryPoint = "keybd_event", CallingConvention = CallingConvention.Winapi)]
-        private static extern void Keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+        private static extern void Keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
         [DllImport("User32.dll")]
         private static extern bool SetCursorPos(int x, int y);
         [DllImport("user32.dll", EntryPoint = "mouse_event", SetLastError = true)]
@@ -108,9 +112,9 @@ namespace yxz
         [DllImport("user32.dll")]
         private static extern int GetWindowRect(IntPtr hwnd, out Rect lpRect);
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRePaint);
+        private static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRePaint);
         [DllImport("user32.dll")]
-        public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
+        private static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
         [DllImport("User32")]
         private static extern bool OpenClipboard(IntPtr hWndNewOwner);
 
@@ -143,26 +147,26 @@ namespace yxz
         #region 结构
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct Guithreadinfo
+        private struct Guithreadinfo
         {
             public int cbSize;
-            public int flags;
-            public IntPtr hwndActive;
-            public IntPtr hwndFocus;
-            public IntPtr hwndCapture;
-            public IntPtr hwndMenuOwner;
-            public IntPtr hwndMoveSize;
-            public IntPtr hwndCaret;
-            public Rect rectCaret;
+            private readonly int flags;
+            private readonly IntPtr hwndActive;
+            public readonly IntPtr hwndFocus;
+            private readonly IntPtr hwndCapture;
+            private readonly IntPtr hwndMenuOwner;
+            private readonly IntPtr hwndMoveSize;
+            private readonly IntPtr hwndCaret;
+            private readonly Rect rectCaret;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct Rect
+        private struct Rect
         {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
+            public readonly int left;
+            public readonly int top;
+            public readonly int right;
+            public readonly int bottom;
         }
 
         #endregion
@@ -186,214 +190,16 @@ namespace yxz
         }
 
         /// <summary>
-        /// 找透明图
+        /// 获得GetBitmap
         /// </summary>
-        /// <param name="zx">左上角x</param>
-        /// <param name="zy">左上角y</param>
-        /// <param name="yx">右下角x</param>
-        /// <param name="yy">右下角y</param>
-        /// <param name="pic">要查找的图片</param>
-        /// <param name="simc">颜色相似度</param>
-        /// <param name="sim">匹配相似度</param>
-        /// <param name="intX">返回的x坐标</param>
-        /// <param name="intY">返回的y坐标</param>
-        private static void FindPicE(int zx, int zy, int yx, int yy, string pic, double simc, double sim, out int intX, out int intY)
-        {
-            intX = intY = -1;
-            var errorRange = Convert.ToByte(255 - 255 * simc);
-            var parWidth = Screen.AllScreens[0].Bounds.Width;
-            var parHeight = Screen.AllScreens[0].Bounds.Height;
-            var parBitmap = new Bitmap(parWidth, parHeight, PixelFormat.Format24bppRgb);
-            using (var g = Graphics.FromImage(parBitmap))
-            {
-                g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(parWidth, parHeight));
-            }
-            var searchRect = new Rectangle(zx, zy, yx - zx, yy - zy);
-            if (searchRect.IsEmpty)
-            {
-                searchRect = new Rectangle(0, 0, parWidth, parHeight);
-            }
-            var subBitmap = new Bitmap(pic);
-            var subWidth = subBitmap.Width;
-            var subHeight = subBitmap.Height;
-            var bgColor = subBitmap.GetPixel(0, 0); //背景色
-            var searchLeftTop = searchRect.Location;
-            var searchSize = searchRect.Size;
-            var subData = subBitmap.LockBits(new Rectangle(0, 0, subBitmap.Width, subBitmap.Height),
-                ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            var parData = parBitmap.LockBits(new Rectangle(0, 0, parBitmap.Width, parBitmap.Height),
-                ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            var byteArrarySub = new byte[subData.Stride * subData.Height];
-            var byteArraryPar = new byte[parData.Stride * parData.Height];
-            Marshal.Copy(subData.Scan0, byteArrarySub, 0, subData.Stride * subData.Height);
-            Marshal.Copy(parData.Scan0, byteArraryPar, 0, parData.Stride * parData.Height);
-            var iMax = searchLeftTop.Y + searchSize.Height - subData.Height; //行
-            var jMax = searchLeftTop.X + searchSize.Width - subData.Width; //列
-            var startPixelColor = Color.FromArgb(0, 0, 0);
-            int smallOffsetX = 0, smallOffsetY = 0;
-
-
-            for (var m = 0; m < subHeight; m++)
-            {
-                for (var n = 0; n < subWidth; n++)
-                {
-                    smallOffsetX = n;
-                    smallOffsetY = m;
-                    var subIndex = m * subWidth * 4 + n * 4;
-                    var color = Color.FromArgb(byteArrarySub[subIndex + 3], byteArrarySub[subIndex + 2],
-                        byteArrarySub[subIndex + 1], byteArrarySub[subIndex]);
-                    if (ColorAEqualColorB(color, bgColor, errorRange)) continue;
-                    startPixelColor = color;
-                    goto END;
-                }
-            }
-
-            END:
-            for (var i = searchLeftTop.Y; i < iMax; i++)
-            {
-                for (var j = searchLeftTop.X; j < jMax; j++)
-                {
-                    //大图x，y坐标处的颜色值
-                    int x = j, y = i;
-                    var parIndex = i * parWidth * 4 + j * 4;
-                    var colorBig = Color.FromArgb(byteArraryPar[parIndex + 3],
-                        byteArraryPar[parIndex + 2], byteArraryPar[parIndex + 1], byteArraryPar[parIndex]);
-                    if (!ColorAEqualColorB(colorBig, startPixelColor, errorRange)) continue;
-                    var smallStartX = x - smallOffsetX;
-                    var smallStartY = y - smallOffsetY;
-                    var sum = 0; //所有需要比对的有效点
-                    var matchNum = 0; //成功匹配的点
-                    for (var m = 0; m < subHeight; m++)
-                    {
-                        for (var n = 0; n < subWidth; n++)
-                        {
-                            int x1 = n, y1 = m;
-                            var subIndex = m * subWidth * 4 + n * 4;
-                            var color = Color.FromArgb(byteArrarySub[subIndex + 3],
-                                byteArrarySub[subIndex + 2], byteArrarySub[subIndex + 1], byteArrarySub[subIndex]);
-                            if (color == bgColor) continue;
-                            sum++;
-                            int x2 = smallStartX + x1, y2 = smallStartY + y1;
-                            var parReleativeIndex = y2 * parWidth * 4 + x2 * 4; //比对大图对应的像素点的颜色
-                            var colorPixel = Color.FromArgb(byteArraryPar[parReleativeIndex + 3],
-                                byteArraryPar[parReleativeIndex + 2], byteArraryPar[parReleativeIndex + 1],
-                                byteArraryPar[parReleativeIndex]);
-                            if (ColorAEqualColorB(colorPixel, color, errorRange))
-                            {
-                                matchNum++;
-                            }
-                        }
-                    }
-                    var rate = (double)matchNum / sum;
-                    if (!(rate >= sim)) continue;
-                    intX = smallStartX + (int)(subWidth / 2.0);
-                    intY = smallStartY + (int)(subHeight / 2.0);
-                    goto FIND_END;
-                }
-            }
-            FIND_END:
-            subBitmap.UnlockBits(subData);
-            parBitmap.UnlockBits(parData);
-            subBitmap.Dispose();
-            parBitmap.Dispose();
-            GC.Collect();
-        }
-        /// <summary>
-        /// 对比两个颜色的误差
-        /// </summary>
-        /// <param name="colorA">颜色a</param>
-        /// <param name="colorB">颜色b</param>
-        /// <param name="errorRange">误差值</param>
+        /// <param name="imagePath"></param>
         /// <returns></returns>
-        private static bool ColorAEqualColorB(Color colorA, Color colorB, byte errorRange = 10)
+        private static Bitmap GetBitmap(string imagePath)
         {
-            return colorA.A <= colorB.A + errorRange && colorA.A >= colorB.A - errorRange &&
-                   colorA.R <= colorB.R + errorRange && colorA.R >= colorB.R - errorRange &&
-                   colorA.G <= colorB.G + errorRange && colorA.G >= colorB.G - errorRange &&
-                   colorA.B <= colorB.B + errorRange && colorA.B >= colorB.B - errorRange;
-        }
-
-        private static Keys GetKeys(char c)
-        {
-            switch (c)
-            {
-                case '.':
-                    return Keys.Decimal;
-                case '0':
-                    return Keys.D0;
-                case '1':
-                    return Keys.D1;
-                case '2':
-                    return Keys.D2;
-                case '3':
-                    return Keys.D3;
-                case '4':
-                    return Keys.D4;
-                case '5':
-                    return Keys.D5;
-                case '6':
-                    return Keys.D6;
-                case '7':
-                    return Keys.D7;
-                case '8':
-                    return Keys.D8;
-                case '9':
-                    return Keys.D9;
-                case 'a':
-                    return Keys.A;
-                case 'b':
-                    return Keys.B;
-                case 'c':
-                    return Keys.C;
-                case 'd':
-                    return Keys.D;
-                case 'e':
-                    return Keys.E;
-                case 'f':
-                    return Keys.F;
-                case 'g':
-                    return Keys.G;
-                case 'h':
-                    return Keys.H;
-                case 'i':
-                    return Keys.I;
-                case 'j':
-                    return Keys.J;
-                case 'k':
-                    return Keys.K;
-                case 'l':
-                    return Keys.L;
-                case 'm':
-                    return Keys.M;
-                case 'n':
-                    return Keys.N;
-                case 'o':
-                    return Keys.O;
-                case 'p':
-                    return Keys.P;
-                case 'q':
-                    return Keys.Q;
-                case 'r':
-                    return Keys.R;
-                case 's':
-                    return Keys.S;
-                case 't':
-                    return Keys.T;
-                case 'u':
-                    return Keys.U;
-                case 'v':
-                    return Keys.V;
-                case 'w':
-                    return Keys.W;
-                case 'x':
-                    return Keys.X;
-                case 'y':
-                    return Keys.Y;
-                case 'z':
-                    return Keys.Z;
-                default:
-                    return Keys.Space;
-            }
+            var bitmap = new Bitmap(imagePath);
+            var retBitmap = (Bitmap)bitmap.Clone();
+            bitmap.Dispose();
+            return retBitmap;
         }
 
         #endregion
@@ -408,6 +214,7 @@ namespace yxz
         {
             return _lastError;
         }
+
         /// <summary>
         /// 延迟
         /// </summary>
@@ -440,7 +247,7 @@ namespace yxz
                 _lastError = $"打开应用文件或网站: {e}";
             }
         }
-       
+
         /// <summary>
         /// 获取剪切板内容
         /// </summary>
@@ -467,8 +274,9 @@ namespace yxz
                 _lastError = $"获取剪切板内容: {e}";
                 return string.Empty;
             }
-           
+
         }
+
         /// <summary>
         /// 设置剪切板内容
         /// </summary>
@@ -494,6 +302,7 @@ namespace yxz
                 _lastError = $"设置剪切板内容: {e}";
             }
         }
+
         /// <summary>
         /// 输入字符串
         /// </summary>
@@ -513,209 +322,13 @@ namespace yxz
 
         #endregion
 
-        #region 图色操作
-
-        /// <summary>
-        /// 取坐标点颜色
-        /// </summary>
-        /// <param name="x">坐标x</param>
-        /// <param name="y">坐标y</param>
-        /// <returns>颜色字符串</returns>
-        public static string GetColor(int x, int y)
-        {
-            try
-            {
-                var sWidth = Screen.AllScreens[0].Bounds.Width;
-                var sHeight = Screen.AllScreens[0].Bounds.Height;
-                var parBitmap = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
-                using (var g = Graphics.FromImage(parBitmap))
-                {
-                    g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(sWidth, sHeight));
-                }
-                var color = parBitmap.GetPixel(x, y);
-                return color.Name.Substring(2);
-            }
-            catch (Exception e)
-            {
-                _lastError = $"取色: {e}";
-            }
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// 找色
-        /// </summary>
-        /// <param name="zx">左上角x</param>
-        /// <param name="zy">左上角y</param>
-        /// <param name="yx">右下角x</param>
-        /// <param name="yy">右下角y</param>
-        /// <param name="searchColor"></param>
-        /// <param name="sim"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public static void FindColor(int zx, int zy, int yx, int yy, string searchColor, double sim, out int x, out int y)
-        {
-            x = y = -1;
-            try
-            {
-                var sWidth = Screen.AllScreens[0].Bounds.Width;
-                var sHeight = Screen.AllScreens[0].Bounds.Height;
-                var parBitmap = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
-                using (var g = Graphics.FromImage(parBitmap))
-                {
-                    g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(sWidth, sHeight));
-                }
-                var errorRange = (byte)(255 - 255 * sim);
-                var colorX = ColorTranslator.FromHtml($"#{searchColor}");
-                var parData = parBitmap.LockBits(new Rectangle(0, 0, parBitmap.Width, parBitmap.Height),
-                    ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-                var byteArraryPar = new byte[parData.Stride * parData.Height];
-                Marshal.Copy(parData.Scan0, byteArraryPar, 0, parData.Stride * parData.Height);
-                var searchRect = new Rectangle(zx, zy, yx - zx, yy - zy);
-                if (searchRect.IsEmpty)
-                {
-                    searchRect = new Rectangle(0, 0, parBitmap.Width, parBitmap.Height);
-                }
-                var searchLeftTop = searchRect.Location;
-                var searchSize = searchRect.Size;
-                var iMax = searchLeftTop.Y + searchSize.Height;
-                var jMax = searchLeftTop.X + searchSize.Width;
-                var pointX = -1;
-                var pointY = -1;
-                for (var m = searchRect.Y; m < iMax; m++)
-                {
-                    for (var n = searchRect.X; n < jMax; n++)
-                    {
-                        var index = m * parBitmap.Width * 4 + n * 4;
-                        var color = Color.FromArgb(byteArraryPar[index + 3], byteArraryPar[index + 2],
-                            byteArraryPar[index + 1], byteArraryPar[index]);
-                        if (!ColorAEqualColorB(color, colorX, errorRange)) continue;
-                        pointX = n;
-                        pointY = m;
-                        goto END;
-                    }
-                }
-                END:
-                parBitmap.UnlockBits(parData);
-                x = pointX;
-                y = pointY;
-            }
-            catch (Exception e)
-            {
-                _lastError = $"找色: {e}";
-            }
-        }
-
-        /// <summary>
-        /// 找图
-        /// </summary>
-        /// <param name="zx">左上角x</param>
-        /// <param name="zy">左上角y</param>
-        /// <param name="yx">右下角x</param>
-        /// <param name="yy">右下角y</param>
-        /// <param name="pic">要查找的图片</param>
-        /// <param name="sim">相似度</param>
-        /// <param name="intX">返回的x坐标</param>
-        /// <param name="intY">返回的y坐标</param>
-        public static unsafe void FindPic(int zx, int zy, int yx, int yy, string pic, double sim, out int intX, out int intY)
-        {
-            intX = intY = -1;
-            try
-            {
-                var errorRange = Convert.ToByte(255 - 255 * sim);
-                var sWidth = Screen.AllScreens[0].Bounds.Width;
-                var sHeight = Screen.AllScreens[0].Bounds.Height;
-                var sBmp = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
-                using (var g = Graphics.FromImage(sBmp))
-                {
-                    g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(sWidth, sHeight));
-                }
-                var pBmp = new Bitmap(pic);
-                if (pBmp.PixelFormat != PixelFormat.Format24bppRgb) { throw new Exception("图片格式只支持24位bmp,请检查图片!"); }
-                var pWidth = pBmp.Width;
-                var pHeight = pBmp.Height;
-                //四个角的颜色相同做透明图处理
-                var colorn = pBmp.GetPixel(0, 0);
-                if (colorn == pBmp.GetPixel(0, pHeight - 1) &&
-                    colorn == pBmp.GetPixel(pWidth - 1, 0) &&
-                    colorn == pBmp.GetPixel(pWidth - 1, pHeight - 1))
-                {
-                    FindPicE(zx, zy, yx, yy, pic, sim, sim, out intX, out intY);
-                }
-                var rect = new Rectangle(zx, zy, yx - zx, yy - zy);
-                if (rect.IsEmpty)
-                {
-                    rect = new Rectangle(0, 0, sWidth, sHeight);
-                }
-                var sData = sBmp.LockBits(new Rectangle(0, 0, sWidth, sHeight), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-                var pData = pBmp.LockBits(new Rectangle(0, 0, pWidth, pHeight), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-                var sStride = sData.Stride;
-                var pStride = pData.Stride;
-                var pOffset = pStride - pData.Width * 3;
-                var sIptr = sData.Scan0;
-                var pIptr = pData.Scan0;
-                var isOk = false;
-                var breakW = yx + 1;
-                var breakH = yy + 1;
-                for (var h = rect.Y; h < breakH; h++)
-                {
-                    for (var w = rect.X; w < breakW; w++)
-                    {
-                        var pPtr = (byte*)pIptr;
-                        for (var y = 0; y < pHeight; y++)
-                        {
-                            for (var x = 0; x < pWidth; x++)
-                            {
-                                var sPtr = (byte*)(sIptr + sStride * (h + y) + (w + x) * 3);
-                                if (pPtr != null
-                                    && sPtr != null
-                                    && sPtr[0] <= pPtr[0] + errorRange
-                                    && sPtr[0] >= pPtr[0] - errorRange
-                                    && sPtr[1] <= pPtr[1] + errorRange
-                                    && sPtr[1] >= pPtr[1] - errorRange
-                                    && sPtr[2] <= pPtr[2] + errorRange
-                                    && sPtr[2] >= pPtr[2] - errorRange)
-                                {
-                                    isOk = true;
-                                }
-                                else
-                                {
-                                    isOk = false;
-                                    break;
-                                }
-                                pPtr += 3;
-                            }
-                            if (isOk == false)
-                            {
-                                break;
-                            }
-                            pPtr += pOffset;
-                        }
-                        if (!isOk) continue;
-                        intX = w + (int)(pWidth / 2.0);
-                        intY = h + (int)(pHeight / 2.0);
-                        goto end;
-                    }
-                }
-                end:
-                sBmp.UnlockBits(sData);
-                pBmp.UnlockBits(pData);
-            }
-            catch (Exception e)
-            {
-                _lastError = $"找图: {e}";
-            }
-        }
-
-        #endregion
-
         #region 键盘操作
 
         /// <summary>
         /// 键盘按下
         /// </summary>
         /// <param name="bVk">键代码</param>
-        public static void KeyDown(Keys bVk)
+        public static void KeyDown(byte bVk)
         {
             Keybd_event(bVk, 0, 0, 0);
         }
@@ -724,7 +337,7 @@ namespace yxz
         /// 键盘弹起
         /// </summary>
         /// <param name="bVk">键代码</param>
-        public static void KeyUp(Keys bVk)
+        public static void KeyUp(byte bVk)
         {
             Keybd_event(bVk, 0, 2, 0);
         }
@@ -733,44 +346,153 @@ namespace yxz
         /// 键盘按键
         /// </summary>
         /// <param name="bVk">键代码</param>
-        public static void KeyPress(Keys bVk)
+        public static void KeyPress(byte bVk)
         {
             Keybd_event(bVk, 0, 0, 0);
             Keybd_event(bVk, 0, 2, 0);
         }
+
+        /// <summary>
+        /// 键盘按键大写
+        /// </summary>
+        /// <param name="bVk">键代码</param>
+        public static void KeyPressUpper(byte bVk)
+        {
+            KeyDown(16);
+            KeyPress(bVk);
+            KeyUp(16);
+        }
+
         /// <summary>
         /// 键盘按键
         /// </summary>
-        /// <param name="c">键字符</param>
-        public static void KeyPressChar(string c)
+        /// <param name="chr">键字符</param>
+        public static void KeyPressChar(char chr)
         {
-            if (c.Length != 1) return;
-            KeyPress(GetKeys(c.ToLower()[0]));
+            var key = Convert.ToByte(chr.ToString().ToUpper()[0]);
+            if (char.IsUpper(chr))
+            {
+                KeyPressUpper(key);
+            }
+            else
+            {
+                KeyPress(key);
+            }
         }
 
         /// <summary>
         /// 键盘根据文本按键
         /// </summary>
-        /// <param name="keyStr">键文本(只支持0-9 a-z 与.)</param>
-        /// <param name="iszs">是否模拟真实输入</param>
+        /// <param name="keyStr">键文本(只支持标准ASCII可见字符)</param>
         /// <param name="delay">每个字之间的延迟</param>
-        public static void KeyPressStr(string keyStr, int iszs = 0, int delay = 66)
+        /// <param name="iszs">是否模拟真实输入</param>
+        public static void KeyPressStr(string keyStr, int delay = 6, bool iszs = false)
         {
             foreach (var chr in keyStr)
             {
-                if (char.IsUpper(chr))
+                switch (chr)
                 {
-                    Keybd_event(0x14, 0x45, 0x1, (UIntPtr) 0);
-                    Keybd_event(0x14, 0x45, 0x1 | 0x2, (UIntPtr) 0);
-                    KeyPressChar(chr.ToString());
-                    Keybd_event(0x14, 0x45, 0x1, (UIntPtr) 0);
-                    Keybd_event(0x14, 0x45, 0x1 | 0x2, (UIntPtr) 0);
+                    case '!':
+                        KeyPressUpper(49);
+                        break;
+                    case '@':
+                        KeyPressUpper(50);
+                        break;
+                    case '#':
+                        KeyPressUpper(51);
+                        break;
+                    case '$':
+                        KeyPressUpper(52);
+                        break;
+                    case '%':
+                        KeyPressUpper(53);
+                        break;
+                    case '^':
+                        KeyPressUpper(54);
+                        break;
+                    case '&':
+                        KeyPressUpper(55);
+                        break;
+                    case '*':
+                        KeyPressUpper(56);
+                        break;
+                    case '(':
+                        KeyPressUpper(57);
+                        break;
+                    case ')':
+                        KeyPressUpper(48);
+                        break;
+                    case '-':
+                        KeyPress(189);
+                        break;
+                    case '_':
+                        KeyPressUpper(189);
+                        break;
+                    case '=':
+                        KeyPress(187);
+                        break;
+                    case '+':
+                        KeyPressUpper(187);
+                        break;
+                    case ';':
+                        KeyPress(186);
+                        break;
+                    case ':':
+                        KeyPressUpper(186);
+                        break;
+                    case '/':
+                        KeyPress(191);
+                        break;
+                    case '?':
+                        KeyPressUpper(191);
+                        break;
+                    case '`':
+                        KeyPress(192);
+                        break;
+                    case '~':
+                        KeyPressUpper(192);
+                        break;
+                    case '[':
+                        KeyPress(219);
+                        break;
+                    case '{':
+                        KeyPressUpper(219);
+                        break;
+                    case ']':
+                        KeyPress(221);
+                        break;
+                    case '}':
+                        KeyPressUpper(221);
+                        break;
+                    case '\\':
+                        KeyPress(220);
+                        break;
+                    case '|':
+                        KeyPressUpper(220);
+                        break;
+                    case '\'':
+                        KeyPress(222);
+                        break;
+                    case '"':
+                        KeyPressUpper(222);
+                        break;
+                    case ',':
+                        KeyPress(188);
+                        break;
+                    case '<':
+                        KeyPressUpper(188);
+                        break;
+                    case '.':
+                        KeyPress(190);
+                        break;
+                    case '>':
+                        KeyPressUpper(190);
+                        break;
+                    default:
+                        KeyPressChar(chr);
+                        break;
                 }
-                else
-                {
-                    KeyPressChar(chr.ToString());
-                }
-                Delay(iszs == 0 ? delay : new Random().Next(1, 100));
+                Delay(iszs ? new Random().Next(1, 100) : delay);
             }
         }
 
@@ -779,44 +501,47 @@ namespace yxz
         /// </summary>
         public static void KeyCtrlC()
         {
-            KeyDown(Keys.LControlKey);
+            KeyDown(17);
             Delay(66);
-            KeyPress(Keys.C);
+            KeyPress(67);
             Delay(66);
-            KeyUp(Keys.LControlKey);
+            KeyUp(17);
         }
+
         /// <summary>
         /// ctrl+x 剪切
         /// </summary>
         public static void KeyCtrlX()
         {
-            KeyDown(Keys.LControlKey);
+            KeyDown(17);
             Delay(66);
-            KeyPress(Keys.X);
+            KeyPress(88);
             Delay(66);
-            KeyUp(Keys.LControlKey);
+            KeyUp(17);
         }
+
         /// <summary>
         /// ctrl+v 粘贴
         /// </summary>
         public static void KeyCtrlV()
         {
-            KeyDown(Keys.LControlKey);
+            KeyDown(17);
             Delay(66);
-            KeyPress(Keys.V);
+            KeyPress(86);
             Delay(66);
-            KeyUp(Keys.LControlKey);
+            KeyUp(17);
         }
+
         /// <summary>
         /// ctrl+a 全选
         /// </summary>
         public static void KeyCtrlA()
         {
-            KeyDown(Keys.LControlKey);
+            KeyDown(17);
             Delay(66);
-            KeyPress(Keys.A);
+            KeyPress(65);
             Delay(66);
-            KeyUp(Keys.LControlKey);
+            KeyUp(17);
         }
 
         #endregion
@@ -923,6 +648,7 @@ namespace yxz
         {
             SetCursorPos(x, y);
         }
+
         /// <summary>
         /// 获取当前鼠标坐标
         /// </summary>
@@ -938,7 +664,6 @@ namespace yxz
         #endregion
 
         #region 键鼠综合操作
-
 
         /// <summary>
         /// 移动并点击(左键)
@@ -970,18 +695,15 @@ namespace yxz
         /// <param name="x">鼠标x</param>
         /// <param name="y">鼠标y</param>
         /// <param name="s">输入的文本</param>
-        public static void MoveClickSend(int x, int y,string s)
+        public static void MoveClickSend(int x, int y, string s)
         {
             MoveClickL(x, y);
             Delay(66);
-            for (var i = 0; i < 18; i++)
-            {
-                KeyPress(Keys.Back);
-            }
             SetClipboard(s);
             Delay(66);
             KeyCtrlV();
         }
+
         /// <summary>
         /// 移动并点击且键入
         /// </summary>
@@ -991,12 +713,9 @@ namespace yxz
         public static void MoveClickKsy(int x, int y, string s)
         {
             MoveClickL(x, y);
-            for (var i = 0; i < 18; i++)
-            {
-                KeyPress(Keys.Back);
-            }
-            KeyPressStr(s,1);
+            KeyPressStr(s);
         }
+
         #endregion
 
         #region 文件操作
@@ -1021,6 +740,7 @@ namespace yxz
             }
             return 1;
         }
+
         /// <summary>
         /// 创建目录
         /// </summary>
@@ -1042,6 +762,7 @@ namespace yxz
             }
             return 1;
         }
+
         /// <summary>
         /// 删除文件
         /// </summary>
@@ -1060,6 +781,7 @@ namespace yxz
             }
             return 1;
         }
+
         /// <summary>
         /// 删除目录
         /// </summary>
@@ -1078,6 +800,7 @@ namespace yxz
             }
             return 1;
         }
+
         /// <summary>
         /// 确定文件是否存在
         /// </summary>
@@ -1095,6 +818,7 @@ namespace yxz
                 return 0;
             }
         }
+
         /// <summary>
         /// 移动文件
         /// </summary>
@@ -1114,6 +838,7 @@ namespace yxz
             }
             return 1;
         }
+
         /// <summary>
         /// 读取文件内容
         /// </summary>
@@ -1131,6 +856,7 @@ namespace yxz
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// 读取INI文件内容
         /// </summary>
@@ -1152,6 +878,7 @@ namespace yxz
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// 弹出选择文件夹对话框，并返回选择的文件夹路径.
         /// </summary>
@@ -1173,6 +900,7 @@ namespace yxz
             }
             return string.Empty;
         }
+
         /// <summary>
         /// 弹出选择文件对话框，并返回选择的文件路径.
         /// </summary>
@@ -1194,6 +922,7 @@ namespace yxz
             }
             return string.Empty;
         }
+
         /// <summary>
         /// 向指定文件追加字符串
         /// </summary>
@@ -1215,6 +944,7 @@ namespace yxz
             }
             return 1;
         }
+
         /// <summary>
         /// 向指定的Ini写入信息
         /// </summary>
@@ -1310,6 +1040,7 @@ namespace yxz
             }, 0);
             return wndList;
         }
+
         /// <summary>
         /// 获取窗口位置
         /// </summary>
@@ -1337,6 +1068,7 @@ namespace yxz
             }
             return 1;
         }
+
         /// <summary>
         /// 设置窗口大小
         /// </summary>
@@ -1357,6 +1089,7 @@ namespace yxz
                 return 0;
             }
         }
+
         /// <summary>
         /// 移动窗口
         /// </summary>
@@ -1377,6 +1110,7 @@ namespace yxz
                 return 0;
             }
         }
+
         /// <summary>
         /// 设置窗口的状态
         /// </summary>
@@ -1396,6 +1130,137 @@ namespace yxz
                 return 0;
             }
         }
+
+        #endregion
+
+        #region 图色操作
+
+        /// <summary> 
+        /// 屏幕截图 
+        /// </summary> 
+        /// <param name="x"></param> 
+        /// <param name="y"></param> 
+        /// <param name="width"></param> 
+        /// <param name="height"></param> 
+        /// <returns></returns> 
+        public static Bitmap CopyScreen(int x, int y, int width, int height)
+        {
+            var bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.CopyFromScreen(x, y, 0, 0, new Size(width, height));
+            }
+            return bitmap;
+        }
+
+        /// <summary>
+        /// 在大图里找小图
+        /// </summary>
+        /// <param name="S_bmp">大图</param>
+        /// <param name="P_bmp">小图</param>
+        /// <param name="rect">指定只在大图指定区域内查找，全图查找请设为 Rectangle.Empty</param>
+        /// <returns></returns>
+        public static unsafe List<Point> FindPic(Bitmap S_bmp, Bitmap P_bmp, Rectangle rect)
+        {
+            if (S_bmp.PixelFormat != PixelFormat.Format24bppRgb) { throw new Exception("颜色格式只支持24位bmp"); }
+            if (P_bmp.PixelFormat != PixelFormat.Format24bppRgb) { throw new Exception("颜色格式只支持24位bmp"); }
+            var S_Width = S_bmp.Width;
+            var S_Height = S_bmp.Height;
+            var P_Width = P_bmp.Width;
+            var P_Height = P_bmp.Height;
+            if (rect == Rectangle.Empty) { rect = new Rectangle(0, 0, S_Width, S_Height); }
+            var S_Data = S_bmp.LockBits(new Rectangle(0, 0, S_Width, S_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            var P_Data = P_bmp.LockBits(new Rectangle(0, 0, P_Width, P_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            var List = new List<Point>();
+            var S_stride = S_Data.Stride;
+            var P_stride = P_Data.Stride;
+            var P_offset = P_stride - P_Data.Width * 3;
+            var S_Iptr = S_Data.Scan0;
+            var P_Iptr = P_Data.Scan0;
+            var IsOk = false;
+            var _BreakW = S_Width - P_Width + 1;
+            var _BreakH = S_Height - P_Height + 1;
+            for (var h = rect.Y; h < _BreakH; h++)
+            {
+                for (var w = rect.X; w < _BreakW; w++)
+                {
+                    var P_ptr = (byte*)P_Iptr;
+                    for (var y = 0; y < P_Height; y++)
+                    {
+                        for (var x = 0; x < P_Width; x++)
+                        {
+                            var S_ptr = (byte*)(S_Iptr + S_stride * (h + y) + (w + x) * 3);
+                            if (P_ptr != null && S_ptr != null && S_ptr[0] == P_ptr[0] && S_ptr[1] == P_ptr[1] && S_ptr[2] == P_ptr[2])
+                            {
+                                IsOk = true;
+                            }
+                            else
+                            {
+                                IsOk = false; break;
+                            }
+                            P_ptr += 3;
+                        }
+                        if (IsOk == false) { break; }
+                        P_ptr += P_offset;
+                    }
+                    if (IsOk) { List.Add(new Point(w, h)); }
+                    IsOk = false;
+                }
+            }
+            S_bmp.UnlockBits(S_Data);
+            P_bmp.UnlockBits(P_Data);
+            return List;
+        }
+
+
+        /// <summary>
+        /// 取坐标点颜色
+        /// </summary>
+        /// <param name="x">坐标x</param>
+        /// <param name="y">坐标y</param>
+        /// <returns>颜色字符串</returns>
+        public static string GetColor(int x, int y)
+        {
+            try
+            {
+                var sWidth = Screen.AllScreens[0].Bounds.Width;
+                var sHeight = Screen.AllScreens[0].Bounds.Height;
+                var parBitmap = new Bitmap(sWidth, sHeight, PixelFormat.Format24bppRgb);
+                using (var g = Graphics.FromImage(parBitmap))
+                {
+                    g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(sWidth, sHeight));
+                }
+                var color = parBitmap.GetPixel(x, y);
+                return color.Name.Substring(2);
+            }
+            catch (Exception e)
+            {
+                _lastError = $"取色: {e}";
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 找图
+        /// </summary>
+        /// <param name="zx">左上角x</param>
+        /// <param name="zy">左上角y</param>
+        /// <param name="yx">右下角x</param>
+        /// <param name="yy">右下角y</param>
+        /// <param name="pic">要查找的图片路径</param>
+        /// <param name="intX">返回的x坐标</param>
+        /// <param name="intY">返回的y坐标</param>
+        public static void FindPic(int zx, int zy, int yx, int yy, string pic, out int intX, out int intY)
+        {
+            intX = intY = -1;
+            var sBmp = CopyScreen(zx, zy, yx - zx, yy - zy);
+            var pBmp = GetBitmap(pic);
+            var picArr = FindPic(sBmp, pBmp, Rectangle.Empty);
+            if (picArr == null || picArr.Count <= 0) return;
+            intX = picArr[0].X;
+            intY = picArr[0].Y;
+        }
+
         #endregion
 
         #region 后台操作
@@ -1442,7 +1307,7 @@ namespace yxz
         /// <param name="hwnd">窗口句柄</param>
         /// <param name="x">x坐标</param>
         /// <param name="y">y坐标</param>
-        public static void SendLeftClick(int hwnd, int x,int y)
+        public static void SendLeftClick(int hwnd, int x, int y)
         {
             PostMessage((IntPtr)hwnd, 0x201, (IntPtr)1, (IntPtr)(x + (y << 16)));
             PostMessage((IntPtr)hwnd, 0x202, (IntPtr)1, (IntPtr)(x + (y << 16)));
@@ -1511,7 +1376,7 @@ namespace yxz
         {
             SendMessage((IntPtr)hwnd, 0X106, (IntPtr)bVk, IntPtr.Zero);
         }
-        
+
         #endregion
     }
 }
