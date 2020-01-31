@@ -20,7 +20,7 @@ namespace t_Demo
         /// </summary>
         private const string Success = "1";
         [DllImport(DllPath)]
-        private extern static string KeyYZ(string cosKey, string appName, string key,string dn);
+        private static extern string KeyYZ(string cosKey, string appName, string key,string dn);
         /// <summary>
         /// 验证秘钥
         /// </summary>
@@ -32,7 +32,7 @@ namespace t_Demo
             return KeyYZ(CosKey, AppName, key,dn) == Success;
         }
         [DllImport(DllPath)]
-        private extern static string KeyCZ(string cosKey, string appName, string key, string keyNum);
+        private static extern string KeyCZ(string cosKey, string appName, string key, string keyNum);
         /// <summary>
         /// 给秘钥充值
         /// </summary>
@@ -44,7 +44,7 @@ namespace t_Demo
             return KeyCZ(CosKey, AppName, key, keyNum) == Success;
         }
         [DllImport(DllPath)]
-        private extern static string KeySet(string cosKey, string appName, string key, string path);
+        private static extern string KeySet(string cosKey, string appName, string key, string path);
         /// <summary>
         /// 根据秘钥写文本文件到服务器
         /// </summary>
@@ -56,7 +56,7 @@ namespace t_Demo
             return KeySet(CosKey, AppName, key, path) == Success;
         }
         [DllImport(DllPath)]
-        private extern static string KeyGet(string cosKey, string appName, string key, string path);
+        private static extern string KeyGet(string cosKey, string appName, string key, string path);
         /// <summary>
         /// 根据秘钥读文本文件到本地
         /// </summary>
@@ -68,7 +68,7 @@ namespace t_Demo
             return KeyGet(CosKey, AppName, key, path) == Success;
         }
         [DllImport(DllPath)]
-        private extern static string KeyCX(string cosKey, string appName, string key);
+        private static extern string KeyCX(string cosKey, string appName, string key);
         /// <summary>
         /// 查询key
         /// </summary>
@@ -79,7 +79,7 @@ namespace t_Demo
             return KeyCX(CosKey, AppName, key);
         }
         [DllImport(DllPath)]
-        private extern static void KeyLOG(string content, string isErr);
+        private static extern void KeyLOG(string content, string isErr);
         /// <summary>
         /// 写日志
         /// </summary>
@@ -90,7 +90,7 @@ namespace t_Demo
             KeyLOG( content,  isErr);
         }
         [DllImport(DllPath)]
-        private extern static string Encrypt(string content, string key);
+        private static extern string Encrypt(string content, string key);
         /// <summary>
         /// 加密文本
         /// </summary>
@@ -102,7 +102,7 @@ namespace t_Demo
             return Encrypt( content, key);
         }
         [DllImport(DllPath)]
-        private extern static string Decrypt(string content, string key);
+        private static extern string Decrypt(string content, string key);
         /// <summary>
         /// 解密文本
         /// </summary>
